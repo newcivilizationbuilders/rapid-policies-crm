@@ -1,866 +1,757 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rapid Policies CRM</title>
-  <style>
-    :root {
-      --bg: #0f1117;
-      --surface: #1a1d27;
-      --surface2: #22263a;
-      --border: #2e3248;
-      --accent: #4f8ef7;
-      --accent2: #6c63ff;
-      --success: #22c55e;
-      --warning: #f59e0b;
-      --danger: #ef4444;
-      --text: #e8eaf6;
-      --text2: #8892b0;
-      --radius: 10px;
-      --shadow: 0 4px 24px rgba(0,0,0,0.4);
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; }
-    a { color: var(--accent); text-decoration: none; }
-    button { cursor: pointer; border: none; font-family: inherit; }
-
-    /*  Auth  */
-    .auth-wrap { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: radial-gradient(ellipse at 60% 20%, #1a2340 0%, var(--bg) 70%); }
-    .auth-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 48px 40px; width: 100%; max-width: 420px; box-shadow: var(--shadow); }
-    .auth-card h1 { font-size: 1.6rem; font-weight: 700; margin-bottom: 4px; }
-    .auth-card p { color: var(--text2); margin-bottom: 32px; font-size: .9rem; }
-    .auth-card label { display: block; font-size: .82rem; color: var(--text2); margin-bottom: 6px; }
-    .auth-card input { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; color: var(--text); font-size: .95rem; outline: none; transition: border .2s; margin-bottom: 18px; }
-    .auth-card input:focus { border-color: var(--accent); }
-    .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; padding: 12px 24px; border-radius: 8px; font-size: .95rem; font-weight: 600; width: 100%; transition: opacity .2s; }
-    .btn-primary:hover { opacity: .85; }
-    .err-msg { background: rgba(239,68,68,.12); border: 1px solid rgba(239,68,68,.3); color: #fca5a5; border-radius: 8px; padding: 10px 14px; margin-bottom: 16px; font-size: .88rem; }
-    .logo-icon { width: 44px; height: 44px; background: linear-gradient(135deg, var(--accent), var(--accent2)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-bottom: 20px; }
-
-    /*  Layout  */
-    .app { display: flex; min-height: 100vh; }
-    .sidebar { width: 240px; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 20px 0; position: fixed; top: 0; left: 0; height: 100vh; z-index: 10; }
-    .sidebar-logo { padding: 0 20px 24px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border); margin-bottom: 12px; }
-    .sidebar-logo .icon { width: 36px; height: 36px; background: linear-gradient(135deg, var(--accent), var(--accent2)); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
-    .sidebar-logo span { font-weight: 700; font-size: 1rem; color: var(--text); line-height: 1.2; }
-    .sidebar-logo small { display: block; font-size: .7rem; color: var(--text2); font-weight: 400; }
-    nav a { display: flex; align-items: center; gap: 10px; padding: 10px 20px; color: var(--text2); font-size: .9rem; border-radius: 0; transition: background .15s, color .15s; margin: 1px 8px; border-radius: 8px; }
-    nav a:hover { background: var(--surface2); color: var(--text); }
-    nav a.active { background: var(--surface2); color: var(--accent); }
-    nav a .nav-icon { font-size: 1rem; width: 18px; text-align: center; }
-    .sidebar-bottom { margin-top: auto; padding: 12px 8px 0; border-top: 1px solid var(--border); }
-    .user-pill { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; cursor: pointer; }
-    .user-pill:hover { background: var(--surface2); }
-    .avatar { width: 32px; height: 32px; background: linear-gradient(135deg, var(--accent), var(--accent2)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; color: #fff; flex-shrink: 0; }
-    .user-pill-info span { display: block; font-size: .85rem; font-weight: 600; }
-    .user-pill-info small { font-size: .72rem; color: var(--text2); }
-    .btn-logout { background: none; color: var(--text2); font-size: .75rem; padding: 4px 8px; border-radius: 6px; }
-    .btn-logout:hover { color: var(--danger); }
-
-    .main { margin-left: 240px; flex: 1; padding: 32px; min-height: 100vh; }
-    .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
-    .topbar h2 { font-size: 1.4rem; font-weight: 700; }
-    .topbar-actions { display: flex; gap: 10px; }
-    .btn-sm { padding: 8px 16px; border-radius: 8px; font-size: .85rem; font-weight: 600; }
-    .btn-outline { background: none; border: 1px solid var(--border); color: var(--text2); }
-    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
-    .btn-add { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; }
-    .btn-add:hover { opacity: .85; }
-
-    /*  Stats  */
-    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
-    .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
-    .stat-label { font-size: .78rem; color: var(--text2); margin-bottom: 8px; text-transform: uppercase; letter-spacing: .04em; }
-    .stat-value { font-size: 2rem; font-weight: 700; line-height: 1; }
-    .stat-sub { font-size: .78rem; color: var(--text2); margin-top: 6px; }
-    .stat-card.accent { border-color: rgba(79,142,247,.3); background: rgba(79,142,247,.06); }
-    .stat-card.success { border-color: rgba(34,197,94,.3); background: rgba(34,197,94,.06); }
-    .stat-card.warning { border-color: rgba(245,158,11,.3); background: rgba(245,158,11,.06); }
-    .stat-card.danger { border-color: rgba(239,68,68,.3); background: rgba(239,68,68,.06); }
-
-    /*  Table  */
-    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
-    .card-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-    .card-header h3 { font-size: 1rem; font-weight: 600; }
-    .search-bar { display: flex; align-items: center; gap: 8px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 0 12px; }
-    .search-bar input { background: none; border: none; padding: 8px 0; color: var(--text); font-size: .88rem; outline: none; width: 200px; }
-    .search-bar input::placeholder { color: var(--text2); }
-    .filter-row { padding: 12px 20px; display: flex; gap: 8px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
-    .filter-btn { background: none; border: 1px solid var(--border); color: var(--text2); padding: 5px 12px; border-radius: 20px; font-size: .8rem; transition: all .15s; }
-    .filter-btn:hover, .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
-    table { width: 100%; border-collapse: collapse; }
-    th { text-align: left; padding: 12px 20px; font-size: .78rem; color: var(--text2); text-transform: uppercase; letter-spacing: .04em; border-bottom: 1px solid var(--border); }
-    td { padding: 14px 20px; font-size: .88rem; border-bottom: 1px solid var(--border); }
-    tr:last-child td { border-bottom: none; }
-    tr:hover td { background: var(--surface2); }
-    .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: .75rem; font-weight: 600; }
-    .badge.new { background: rgba(79,142,247,.2); color: #93c5fd; }
-    .badge.contacted { background: rgba(245,158,11,.2); color: #fcd34d; }
-    .badge.qualified { background: rgba(34,197,94,.2); color: #86efac; }
-    .badge.closed { background: rgba(108,99,255,.2); color: #a5b4fc; }
-    .badge.lost { background: rgba(239,68,68,.2); color: #fca5a5; }
-    .row-actions { display: flex; gap: 6px; }
-    .btn-icon { background: none; border: 1px solid var(--border); color: var(--text2); padding: 5px 8px; border-radius: 6px; font-size: .8rem; transition: all .15s; }
-    .btn-icon:hover { border-color: var(--accent); color: var(--accent); }
-    .btn-icon.danger:hover { border-color: var(--danger); color: var(--danger); }
-    .pagination { padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); font-size: .83rem; color: var(--text2); }
-    .page-btns { display: flex; gap: 4px; }
-    .page-btns button { background: none; border: 1px solid var(--border); color: var(--text2); padding: 5px 10px; border-radius: 6px; font-size: .82rem; }
-    .page-btns button.active, .page-btns button:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
-
-    /*  Modal  */
-    .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px; }
-    .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; width: 100%; max-width: 520px; box-shadow: var(--shadow); max-height: 90vh; overflow-y: auto; }
-    .modal-header { padding: 20px 24px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-    .modal-header h3 { font-size: 1.1rem; font-weight: 600; }
-    .modal-body { padding: 20px 24px; }
-    .modal-footer { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; }
-    .btn-close { background: none; border: none; color: var(--text2); font-size: 1.2rem; line-height: 1; padding: 2px; }
-    .btn-close:hover { color: var(--text); }
-    .form-group { margin-bottom: 16px; }
-    .form-group label { display: block; font-size: .82rem; color: var(--text2); margin-bottom: 6px; }
-    .form-group input, .form-group select, .form-group textarea { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; color: var(--text); font-size: .9rem; outline: none; font-family: inherit; transition: border .2s; }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--accent); }
-    .form-group textarea { resize: vertical; min-height: 80px; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .btn-cancel { background: var(--surface2); border: 1px solid var(--border); color: var(--text2); padding: 9px 18px; border-radius: 8px; font-size: .88rem; }
-    .btn-cancel:hover { color: var(--text); }
-    .btn-save { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; padding: 9px 18px; border-radius: 8px; font-size: .88rem; font-weight: 600; }
-    .btn-save:hover { opacity: .85; }
-
-    /*  Detail Panel  */
-    .detail-wrap { display: grid; grid-template-columns: 1fr 340px; gap: 20px; }
-    .detail-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
-    .detail-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 24px; }
-    .detail-name { font-size: 1.3rem; font-weight: 700; }
-    .detail-email { color: var(--text2); font-size: .88rem; margin-top: 2px; }
-    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
-    .info-item label { font-size: .75rem; color: var(--text2); text-transform: uppercase; letter-spacing: .04em; display: block; margin-bottom: 4px; }
-    .info-item span { font-size: .9rem; }
-    .section-title { font-size: .85rem; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 12px; }
-    .timeline { list-style: none; }
-    .timeline li { display: flex; gap: 12px; padding-bottom: 16px; position: relative; }
-    .timeline li::before { content: ''; position: absolute; left: 11px; top: 24px; bottom: 0; width: 1px; background: var(--border); }
-    .timeline li:last-child::before { display: none; }
-    .tl-dot { width: 22px; height: 22px; border-radius: 50%; background: var(--surface2); border: 2px solid var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: .65rem; }
-    .tl-dot.blue { background: rgba(79,142,247,.2); border-color: var(--accent); color: var(--accent); }
-    .tl-dot.green { background: rgba(34,197,94,.2); border-color: var(--success); color: var(--success); }
-    .tl-content p { font-size: .87rem; }
-    .tl-content small { font-size: .75rem; color: var(--text2); }
-    .notes-box { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin-top: 8px; }
-    .notes-box textarea { width: 100%; background: none; border: none; color: var(--text); font-size: .88rem; font-family: inherit; resize: vertical; min-height: 80px; outline: none; }
-    .notes-save { background: var(--accent); color: #fff; border-radius: 6px; padding: 6px 14px; font-size: .82rem; margin-top: 8px; }
-
-    /*  Settings  */
-    .settings-grid { display: grid; gap: 20px; }
-    .settings-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
-    .settings-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
-    .settings-card p { font-size: .83rem; color: var(--text2); margin-bottom: 20px; }
-    .settings-card .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text2); }
-    .settings-card .status-dot.connected { background: var(--success); }
-    .btn-connect { background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 9px 18px; border-radius: 8px; font-size: .88rem; font-weight: 600; transition: all .2s; }
-    .btn-connect:hover { border-color: var(--accent); color: var(--accent); }
-    .btn-connect.connected { border-color: rgba(34,197,94,.4); color: var(--success); }
-    .integration-row { display: flex; align-items: center; justify-content: space-between; }
-    .integration-info h4 { font-size: .92rem; font-weight: 600; }
-    .integration-info p { font-size: .8rem; color: var(--text2); margin: 0; }
-
-    /*  Empty / Loading  */
-    .empty { text-align: center; padding: 60px 20px; color: var(--text2); }
-    .empty .icon { font-size: 2.5rem; margin-bottom: 12px; }
-    .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin .7s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .loading-row td { text-align: center; padding: 40px; color: var(--text2); }
-
-    /*  Toast  */
-    .toast-wrap { position: fixed; bottom: 24px; right: 24px; z-index: 999; display: flex; flex-direction: column; gap: 8px; }
-    .toast { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 18px; font-size: .88rem; box-shadow: var(--shadow); display: flex; align-items: center; gap: 10px; min-width: 240px; animation: slideIn .2s ease; }
-    .toast.success { border-color: rgba(34,197,94,.4); }
-    .toast.error { border-color: rgba(239,68,68,.4); }
-    @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: none; } }
-
-    /*  Responsive  */
-    @media (max-width: 1100px) {
-      .stats-grid { grid-template-columns: repeat(2, 1fr); }
-      .detail-wrap { grid-template-columns: 1fr; }
-    }
-    @media (max-width: 768px) {
-      .sidebar { transform: translateX(-100%); }
-      .main { margin-left: 0; padding: 20px; }
-    }
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Rapid Policies CRM</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0f1117;color:#e2e8f0;min-height:100vh}
+.app{display:flex;flex-direction:column;min-height:100vh}
+/* Login */
+.login-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#0f1117 0%,#1a1f2e 100%)}
+.login-card{background:#1e2433;border:1px solid #2d3748;border-radius:16px;padding:40px;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.login-logo{text-align:center;margin-bottom:28px}
+.login-logo h1{font-size:1.8rem;font-weight:700;color:#fff}
+.login-logo p{color:#64748b;font-size:.9rem;margin-top:4px}
+.form-field{margin-bottom:16px}
+.form-field label{display:block;font-size:.8rem;font-weight:600;color:#94a3b8;margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em}
+.form-field input,.form-field select,.form-field textarea{width:100%;background:#0f1117;border:1px solid #2d3748;border-radius:8px;padding:10px 14px;color:#e2e8f0;font-size:.95rem;transition:border-color .2s}
+.form-field input:focus,.form-field select:focus,.form-field textarea:focus{outline:none;border-color:#6366f1}
+.form-field textarea{resize:vertical;min-height:80px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:8px;border:none;font-size:.875rem;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-primary{background:#6366f1;color:#fff}
+.btn-primary:hover{background:#5558e3}
+.btn-primary:disabled{background:#3d3f7a;cursor:not-allowed}
+.btn-secondary{background:#2d3748;color:#e2e8f0}
+.btn-secondary:hover{background:#374151}
+.btn-danger{background:#ef4444;color:#fff}
+.btn-danger:hover{background:#dc2626}
+.btn-sm{padding:6px 12px;font-size:.8rem}
+.btn-xs{padding:4px 8px;font-size:.75rem}
+.btn-full{width:100%;justify-content:center}
+/* Header */
+.header{background:#1e2433;border-bottom:1px solid #2d3748;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.header-brand{display:flex;align-items:center;gap:12px}
+.header-brand h1{font-size:1.1rem;font-weight:700;color:#fff}
+.header-brand .badge{background:#6366f1;color:#fff;font-size:.7rem;padding:2px 8px;border-radius:20px;font-weight:600}
+.header-actions{display:flex;align-items:center;gap:8px}
+/* Layout */
+.main-layout{display:flex;flex:1}
+.sidebar{width:220px;background:#1a1f2e;border-right:1px solid #2d3748;padding:16px;flex-shrink:0;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto}
+.nav-item{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;cursor:pointer;color:#94a3b8;font-size:.875rem;font-weight:500;margin-bottom:2px;transition:all .2s}
+.nav-item:hover,.nav-item.active{background:#2d3748;color:#e2e8f0}
+.nav-item .count{margin-left:auto;background:#374151;color:#94a3b8;font-size:.7rem;padding:1px 6px;border-radius:10px}
+.nav-section{font-size:.7rem;font-weight:700;color:#4b5563;text-transform:uppercase;letter-spacing:.1em;padding:8px 12px 4px;margin-top:8px}
+.content{flex:1;padding:24px;overflow-y:auto}
+/* Stats */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;margin-bottom:24px}
+.stat-card{background:#1e2433;border:1px solid #2d3748;border-radius:12px;padding:16px}
+.stat-num{font-size:1.8rem;font-weight:700;color:#fff}
+.stat-label{font-size:.75rem;color:#64748b;margin-top:2px;font-weight:500}
+.stat-sub{font-size:.7rem;color:#6366f1;margin-top:4px}
+/* Pipeline */
+.pipeline{display:flex;gap:16px;overflow-x:auto;padding-bottom:16px}
+.stage-col{min-width:240px;max-width:280px;flex-shrink:0}
+.stage-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding:8px 12px;border-radius:8px;font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.stage-new{background:#1e293b;color:#94a3b8}
+.stage-contacted{background:#1e3a5f;color:#60a5fa}
+.stage-quoted{background:#1e3350;color:#818cf8}
+.stage-invoiced{background:#1f2d40;color:#f59e0b}
+.stage-paid{background:#1a2f24;color:#34d399}
+.stage-delivered{background:#1a2b25;color:#10b981}
+.stage-completed{background:#1a2433;color:#6ee7b7}
+.stage-badge{background:rgba(255,255,255,.1);padding:2px 6px;border-radius:10px;font-size:.7rem}
+/* Lead card */
+.lead-card{background:#1e2433;border:1px solid #2d3748;border-radius:10px;padding:14px;margin-bottom:10px;cursor:pointer;transition:all .2s;position:relative}
+.lead-card:hover{border-color:#6366f1;transform:translateY(-1px);box-shadow:0 4px 20px rgba(99,102,241,.15)}
+.lead-name{font-weight:600;font-size:.875rem;color:#fff;margin-bottom:2px}
+.lead-company{font-size:.75rem;color:#94a3b8;margin-bottom:6px}
+.lead-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.temp-badge{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:10px;font-size:.7rem;font-weight:600}
+.temp-hot{background:#7f1d1d;color:#fca5a5}
+.temp-warm{background:#7c2d12;color:#fdba74}
+.temp-cold{background:#1e3a5f;color:#93c5fd}
+.source-badge{background:#1e293b;color:#94a3b8;padding:2px 7px;border-radius:10px;font-size:.7rem}
+.service-badge{background:#1e293b;color:#818cf8;padding:2px 7px;border-radius:10px;font-size:.7rem}
+.lead-phone{font-size:.75rem;color:#64748b}
+.lead-email{font-size:.75rem;color:#6366f1}
+.lead-date{font-size:.7rem;color:#4b5563;margin-top:4px}
+/* Lead list table */
+.leads-table{width:100%;border-collapse:collapse}
+.leads-table th{text-align:left;padding:10px 12px;font-size:.75rem;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid #2d3748;background:#1a1f2e;position:sticky;top:0}
+.leads-table td{padding:10px 12px;border-bottom:1px solid #1a1f2e;font-size:.875rem;vertical-align:middle}
+.leads-table tr:hover td{background:#1e2433}
+.leads-table tr{cursor:pointer}
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px}
+.modal{background:#1e2433;border:1px solid #2d3748;border-radius:16px;width:100%;max-width:720px;max-height:90vh;display:flex;flex-direction:column}
+.modal-header{padding:20px 24px;border-bottom:1px solid #2d3748;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.modal-header h2{font-size:1.1rem;font-weight:700;color:#fff}
+.modal-body{padding:20px 24px;overflow-y:auto;flex:1}
+.modal-footer{padding:16px 24px;border-top:1px solid #2d3748;display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-shrink:0}
+.close-btn{background:none;border:none;color:#64748b;cursor:pointer;font-size:1.2rem;padding:4px;border-radius:4px}
+.close-btn:hover{color:#e2e8f0;background:#2d3748}
+/* Stage pipeline in detail */
+.stage-trail{display:flex;align-items:center;gap:0;margin:16px 0;overflow-x:auto}
+.stage-dot{display:flex;flex-direction:column;align-items:center;flex-shrink:0}
+.stage-dot .dot{width:28px;height:28px;border-radius:50%;border:2px solid #374151;background:#1a1f2e;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;color:#64748b;cursor:pointer;transition:all .2s}
+.stage-dot .dot.active{background:#6366f1;border-color:#6366f1;color:#fff}
+.stage-dot .dot.done{background:#10b981;border-color:#10b981;color:#fff}
+.stage-dot .dot:hover{border-color:#6366f1}
+.stage-dot .dot-label{font-size:.65rem;color:#64748b;margin-top:3px;text-align:center;white-space:nowrap}
+.stage-dot .dot-date{font-size:.6rem;color:#4b5563;text-align:center;margin-top:1px}
+.stage-line{flex:1;height:2px;background:#2d3748;min-width:16px;align-self:flex-start;margin-top:13px}
+.stage-line.done{background:#10b981}
+/* Filter bar */
+.filter-bar{display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+.search-input{background:#1e2433;border:1px solid #2d3748;border-radius:8px;padding:8px 14px;color:#e2e8f0;font-size:.875rem;min-width:220px}
+.search-input:focus{outline:none;border-color:#6366f1}
+.filter-select{background:#1e2433;border:1px solid #2d3748;border-radius:8px;padding:8px 12px;color:#e2e8f0;font-size:.875rem}
+/* Detail view */
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.detail-section{background:#1a1f2e;border:1px solid #2d3748;border-radius:10px;padding:16px}
+.detail-section h3{font-size:.8rem;font-weight:700;color:#6366f1;text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px}
+.detail-row{display:flex;gap:8px;margin-bottom:10px;align-items:flex-start}
+.detail-key{font-size:.75rem;color:#64748b;font-weight:600;min-width:90px;flex-shrink:0;padding-top:2px}
+.detail-val{font-size:.875rem;color:#e2e8f0;word-break:break-word}
+.notes-list{list-style:none}
+.note-item{background:#1e2433;border-radius:8px;padding:10px;margin-bottom:8px}
+.note-text{font-size:.875rem;color:#e2e8f0}
+.note-meta{font-size:.7rem;color:#64748b;margin-top:4px}
+.email-item{background:#1e2433;border-radius:8px;padding:10px;margin-bottom:8px;border-left:3px solid #6366f1}
+.email-item.outbound{border-left-color:#10b981}
+.email-subj{font-size:.8rem;font-weight:600;color:#e2e8f0}
+.email-snip{font-size:.75rem;color:#94a3b8;margin-top:2px}
+.email-meta{font-size:.7rem;color:#64748b;margin-top:4px}
+/* Tags */
+.tag{display:inline-block;background:#2d3748;color:#94a3b8;padding:2px 8px;border-radius:10px;font-size:.7rem;margin:2px;cursor:pointer}
+.tag:hover{background:#374151}
+/* Alert */
+.alert{padding:10px 14px;border-radius:8px;font-size:.875rem;margin-bottom:12px}
+.alert-error{background:#7f1d1d;border:1px solid #ef4444;color:#fca5a5}
+.alert-success{background:#1a2f24;border:1px solid #10b981;color:#6ee7b7}
+/* Empty state */
+.empty-state{text-align:center;padding:60px 20px;color:#64748b}
+.empty-state h3{font-size:1rem;margin-bottom:8px;color:#94a3b8}
+/* Tabs */
+.tabs{display:flex;gap:0;border-bottom:1px solid #2d3748;margin-bottom:16px}
+.tab{padding:8px 16px;cursor:pointer;font-size:.875rem;color:#64748b;border-bottom:2px solid transparent;transition:all .2s}
+.tab.active,.tab:hover{color:#e2e8f0;border-bottom-color:#6366f1}
+/* Tooltip */
+.tooltip-wrap{position:relative;display:inline-block}
+/* View toggle */
+.view-toggle{display:flex;background:#1a1f2e;border:1px solid #2d3748;border-radius:8px;overflow:hidden}
+.view-btn{padding:6px 12px;background:none;border:none;color:#64748b;cursor:pointer;font-size:.8rem;transition:all .2s}
+.view-btn.active{background:#2d3748;color:#e2e8f0}
+/* Scroll */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:#1a1f2e}
+::-webkit-scrollbar-thumb{background:#374151;border-radius:3px}
+/* Responsive */
+@media(max-width:768px){
+  .sidebar{display:none}
+  .main-layout{flex-direction:column}
+  .detail-grid{grid-template-columns:1fr}
+  .pipeline{flex-direction:column}
+  .stage-col{min-width:100%;max-width:100%}
+}
+</style>
 </head>
 <body>
 <div id="root"></div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script>
-const { useState, useEffect, useCallback, useRef, createContext, useContext } = React;
-
 const API_BASE = 'https://rapid-policies-backend-production.up.railway.app';
+const STAGES = ['new','contacted','quoted','invoiced','paid','delivered','completed'];
+const STAGE_LABELS = {new:'New',contacted:'Contacted',quoted:'Quoted',invoiced:'Invoiced',paid:'Paid',delivered:'Delivered',completed:'Completed'};
+const STAGE_COLORS = {new:'stage-new',contacted:'stage-contacted',quoted:'stage-quoted',invoiced:'stage-invoiced',paid:'stage-paid',delivered:'stage-delivered',completed:'stage-completed'};
+const TEMP_LABELS = {hot:'Hot',warm:'Warm',cold:'Cold'};
 
-/* 
-   AUTH CONTEXT
- */
-const AuthContext = createContext(null);
-function useAuth() { return useContext(AuthContext); }
+const {useState,useEffect,useCallback,useRef,createElement:h} = React;
 
-function AuthProvider({ children }) {
-  const [token, setToken] = useState(() => localStorage.getItem('rp_token'));
-  const [user, setUser] = useState(() => { try { return JSON.parse(localStorage.getItem('rp_user')); } catch { return null; } });
-
-  const login = useCallback((tok, usr) => {
-    localStorage.setItem('rp_token', tok);
-    localStorage.setItem('rp_user', JSON.stringify(usr));
-    setToken(tok);
-    setUser(usr);
-  }, []);
-
-  const logout = useCallback(() => {
-    localStorage.removeItem('rp_token');
-    localStorage.removeItem('rp_user');
-    setToken(null);
-    setUser(null);
-  }, []);
-
-  const apiFetch = useCallback(async (path, opts = {}) => {
-    const res = await fetch(`${API_BASE}${path}`, {
-      ...opts,
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`, ...(opts.headers || {}) }
-    });
-    if (res.status === 401) { logout(); throw new Error('Unauthorized'); }
-    return res;
-  }, [token, logout]);
-
-  return React.createElement(AuthContext.Provider, { value: { token, user, login, logout, apiFetch } }, children);
-}
-
-/* 
-   TOAST
- */
-const ToastContext = createContext(null);
-function useToast() { return useContext(ToastContext); }
-
-function ToastProvider({ children }) {
-  const [toasts, setToasts] = useState([]);
-  const add = useCallback((msg, type = 'success') => {
-    const id = Date.now();
-    setToasts(t => [...t, { id, msg, type }]);
-    setTimeout(() => setToasts(t => t.filter(x => x.id !== id)), 3500);
-  }, []);
-  return React.createElement(ToastContext.Provider, { value: add },
-    children,
-    React.createElement('div', { className: 'toast-wrap' },
-      toasts.map(t => React.createElement('div', { key: t.id, className: `toast ${t.type}` },
-        React.createElement('span', null, t.type === 'success' ? '+' : 'x'),
-        t.msg
-      ))
-    )
-  );
-}
-
-/* 
-   LOGIN PAGE
- */
-function LoginPage() {
-  const { login } = useAuth();
-  const toast = useToast();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [err, setErr] = useState('');
-  const [loading, setLoading] = useState(false);
-
-  async function handleSubmit(e) {
-    e.preventDefault();
-    setErr(''); setLoading(true);
-    try {
-      const res = await fetch(`${API_BASE}/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || data.error || 'Login failed');
-      login(data.token || data.access_token, data.user || { email });
-      toast('Logged in successfully');
-    } catch (ex) {
-      setErr(ex.message);
-    } finally { setLoading(false); }
-  }
-
-  return React.createElement('div', { className: 'auth-wrap' },
-    React.createElement('div', { className: 'auth-card' },
-      React.createElement('div', { className: 'logo-icon' }, 'RP'),
-      React.createElement('h1', null, 'Rapid Policies CRM'),
-      React.createElement('p', null, 'Sign in to manage your leads and policies'),
-      err && React.createElement('div', { className: 'err-msg' }, err),
-      React.createElement('form', { onSubmit: handleSubmit },
-        React.createElement('label', null, 'Email address'),
-        React.createElement('input', { type: 'email', placeholder: 'you@example.com', value: email, onChange: e => setEmail(e.target.value), required: true }),
-        React.createElement('label', null, 'Password'),
-        React.createElement('input', { type: 'password', placeholder: '', value: password, onChange: e => setPassword(e.target.value), required: true }),
-        React.createElement('button', { type: 'submit', className: 'btn-primary', disabled: loading },
-          loading ? React.createElement('span', { className: 'spinner' }) : 'Sign In'
-        )
-      )
-    )
-  );
-}
-
-/* 
-   SIDEBAR
- */
-function Sidebar({ page, setPage }) {
-  const { user, logout } = useAuth();
-  const navItems = [
-    { id: 'dashboard', label: 'Dashboard' },
-    { id: 'leads', label: 'Leads' },
-    { id: 'settings', label: 'Settings' },
-  ];
-  const initials = (user?.name || user?.email || 'U').slice(0, 2).toUpperCase();
-  return React.createElement('aside', { className: 'sidebar' },
-    React.createElement('div', { className: 'sidebar-logo' },
-      React.createElement('div', { className: 'icon'}, ''),
-      React.createElement('span', null, 'Rapid Policies', React.createElement('small', null, 'Australia'))
-    ),
-    React.createElement('nav', null,
-      navItems.map(n => React.createElement('a', {
-        key: n.id, href: '#', className: page === n.id ? 'active' : '',
-        onClick: e => { e.preventDefault(); setPage(n.id); }
-      }, React.createElement('span', { className: 'nav-icon' }, n.icon), n.label))
-    ),
-    React.createElement('div', { className: 'sidebar-bottom' },
-      React.createElement('div', { className: 'user-pill' },
-        React.createElement('div', { className: 'avatar' }, initials),
-        React.createElement('div', { className: 'user-pill-info' },
-          React.createElement('span', null, user?.name || 'Agent'),
-          React.createElement('small', null, user?.email || '')
-        )
-      ),
-      React.createElement('button', { className: 'btn-logout btn-sm', style: { width: '100%', marginTop: 4 }, onClick: logout }, ' Sign Out')
-    )
-  );
-}
-
-/* 
-   DASHBOARD
-
- */
-function Dashboard({ leads }) {
-  const total = leads.length;
-  const newL = leads.filter(l => l.status === 'new').length;
-  const qualified = leads.filter(l => l.status === 'qualified').length;
-  const closed = leads.filter(l => l.status === 'closed').length;
-  const convRate = total > 0 ? Math.round((closed / total) * 100) : 0;
-
-  const recent = [...leads].sort((a, b) => new Date(b.createdAt || b.created_at || 0) - new Date(a.createdAt || a.created_at || 0)).slice(0, 5);
-
-  return React.createElement('div', null,
-    React.createElement('div', { className: 'topbar' },
-      React.createElement('h2', null, 'Dashboard'),
-      React.createElement('div', { style: { fontSize: '.82rem', color: 'var(--text2)' } }, new Date().toLocaleDateString('en-AU', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }))
-    ),
-    React.createElement('div', { className: 'stats-grid' },
-      React.createElement('div', { className: 'stat-card accent' },
-        React.createElement('div', { className: 'stat-label' }, 'Total Leads'),
-        React.createElement('div', { className: 'stat-value' }, total),
-        React.createElement('div', { className: 'stat-sub' }, 'All time')
-      ),
-      React.createElement('div', { className: 'stat-card warning' },
-        React.createElement('div', { className: 'stat-label' }, 'New Leads'),
-        React.createElement('div', { className: 'stat-value', style: { color: 'var(--warning)' } }, newL),
-        React.createElement('div', { className: 'stat-sub' }, 'Awaiting contact')
-      ),
-      React.createElement('div', { className: 'stat-card success' },
-        React.createElement('div', { className: 'stat-label' }, 'Qualified'),
-        React.createElement('div', { className: 'stat-value', style: { color: 'var(--success)' } }, qualified),
-        React.createElement('div', { className: 'stat-sub' }, 'Ready to close')
-      ),
-      React.createElement('div', { className: 'stat-card' },
-        React.createElement('div', { className: 'stat-label' }, 'Conversion Rate'),
-        React.createElement('div', { className: 'stat-value', style: { color: 'var(--accent)' } }, `${convRate}%`),
-        React.createElement('div', { className: 'stat-sub' }, `${closed} closed`)
-      )
-    ),
-    React.createElement('div', { className: 'card' },
-      React.createElement('div', { className: 'card-header' }, React.createElement('h3', null, 'Recent Leads')),
-      React.createElement('table', null,
-        React.createElement('thead', null,
-          React.createElement('tr', null,
-            React.createElement('th', null, 'Name'),
-            React.createElement('th', null, 'Email'),
-            React.createElement('th', null, 'Phone'),
-            React.createElement('th', null, 'Status'),
-            React.createElement('th', null, 'Source')
-          )
-        ),
-        React.createElement('tbody', null,
-          recent.length === 0
-            ? React.createElement('tr', null, React.createElement('td', { colSpan: 5, style: { textAlign: 'center', padding: 40, color: 'var(--text2)' } }, 'No leads yet. Add your first lead!'))
-            : recent.map(l => React.createElement('tr', { key: l.id || l._id },
-                React.createElement('td', null, l.name || l.full_name || ''),
-                React.createElement('td', null, l.email || ''),
-                React.createElement('td', null, l.phone || ''),
-                React.createElement('td', null, React.createElement('span', { className: `badge ${l.status || 'new'}` }, l.status || 'new')),
-                React.createElement('td', null, l.source || '')
-              ))
-        )
-      )
-    )
-  );
-}
-
-/* 
-   ADD / EDIT LEAD MODAL
- */
-function LeadModal({ lead, onClose, onSave }) {
-  const [form, setForm] = useState({
-    name: '', email: '', phone: '', source: '', status: 'new', policy_type: '', notes: '', ...lead
+//  API helpers 
+function getToken(){return sessionStorage.getItem('crm_token')}
+async function apiFetch(path,options={}){
+  const token=getToken();
+  const res=await fetch(API_BASE+path,{
+    ...options,
+    headers:{'Content-Type':'application/json',...(token?{Authorization:'Bearer '+token}:{}), ...(options.headers||{})}
   });
-  const [saving, setSaving] = useState(false);
-  const toast = useToast();
-  const { apiFetch } = useAuth();
+  if(res.status===401){sessionStorage.removeItem('crm_token');window.location.reload();return;}
+  const data=await res.json().catch(()=>({}));
+  if(!res.ok) throw new Error(data.error||'Request failed');
+  return data;
+}
 
-  async function handleSave() {
-    setSaving(true);
-    try {
-      const method = lead?.id || lead?._id ? 'PUT' : 'POST';
-      const path = lead?.id ? `/leads/${lead.id}` : lead?._id ? `/leads/${lead._id}` : '/leads';
-      const res = await apiFetch(path, { method, body: JSON.stringify(form) });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Save failed');
-      toast(lead?.id || lead?._id ? 'Lead updated' : 'Lead created');
-      onSave(data);
-    } catch (ex) {
-      toast(ex.message, 'error');
-    } finally { setSaving(false); }
+//  Login 
+function LoginPage({onLogin}){
+  const [email,setEmail]=useState('andrew@rapidpolicies.com.au');
+  const [pass,setPass]=useState('');
+  const [err,setErr]=useState('');
+  const [loading,setLoading]=useState(false);
+  async function submit(e){
+    e.preventDefault();setErr('');setLoading(true);
+    try{
+      const d=await apiFetch('/auth/login',{method:'POST',body:JSON.stringify({email,password:pass})});
+      sessionStorage.setItem('crm_token',d.token);
+      onLogin();
+    }catch(e){setErr(e.message);}
+    setLoading(false);
   }
-
-  const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
-
-  return React.createElement('div', { className: 'modal-bg', onClick: onClose },
-    React.createElement('div', { className: 'modal', onClick: e => e.stopPropagation() },
-      React.createElement('div', { className: 'modal-header' },
-        React.createElement('h3', null, lead?.id || lead?._id ? 'Edit Lead' : 'New Lead'),
-        React.createElement('button', { className: 'btn-close', onClick: onClose }, '')
+  return h('div',{className:'login-wrap'},
+    h('div',{className:'login-card'},
+      h('div',{className:'login-logo'},
+        h('h1',null,'Rapid Policies'),
+        h('p',null,'Lead Command Centre')
       ),
-      React.createElement('div', { className: 'modal-body' },
-        React.createElement('div', { className: 'form-row' },
-          React.createElement('div', { className: 'form-group' },
-            React.createElement('label', null, 'Full Name *'),
-            React.createElement('input', { placeholder: 'John Smith', value: form.name || '', onChange: e => set('name', e.target.value) })
-          ),
-          React.createElement('div', { className: 'form-group' },
-            React.createElement('label', null, 'Phone'),
-            React.createElement('input', { placeholder: '04XX XXX XXX', value: form.phone || '', onChange: e => set('phone', e.target.value) })
-          )
+      err&&h('div',{className:'alert alert-error'},err),
+      h('form',{onSubmit:submit},
+        h('div',{className:'form-field'},
+          h('label',null,'Email'),
+          h('input',{type:'email',value:email,onChange:e=>setEmail(e.target.value),required:true})
         ),
-        React.createElement('div', { className: 'form-group' },
-          React.createElement('label', null, 'Email'),
-          React.createElement('input', { type: 'email', placeholder: 'john@example.com', value: form.email || '', onChange: e => set('email', e.target.value) })
+        h('div',{className:'form-field'},
+          h('label',null,'Password'),
+          h('input',{type:'password',value:pass,onChange:e=>setPass(e.target.value),required:true,autoFocus:true})
         ),
-        React.createElement('div', { className: 'form-row' },
-          React.createElement('div', { className: 'form-group' },
-            React.createElement('label', null, 'Status'),
-            React.createElement('select', { value: form.status || 'new', onChange: e => set('status', e.target.value) },
-              ['new','contacted','qualified','closed','lost'].map(s => React.createElement('option', { key: s, value: s }, s.charAt(0).toUpperCase() + s.slice(1)))
-            )
-          ),
-          React.createElement('div', { className: 'form-group' },
-            React.createElement('label', null, 'Source'),
-            React.createElement('select', { value: form.source || '', onChange: e => set('source', e.target.value) },
-              React.createElement('option', { value: '' }, 'Select source'),
-              ['Website','Referral','Facebook','Google','Cold Call','Telegram','Other'].map(s => React.createElement('option', { key: s, value: s }, s))
-            )
-          )
-        ),
-        React.createElement('div', { className: 'form-group' },
-          React.createElement('label', null, 'Policy Type'),
-          React.createElement('select', { value: form.policy_type || '', onChange: e => set('policy_type', e.target.value) },
-            React.createElement('option', { value: '' }, 'Select policy type'),
-            ['Life Insurance','Home & Contents','Car Insurance','Business Insurance','Health Insurance','Travel Insurance','Other'].map(s => React.createElement('option', { key: s, value: s }, s))
-          )
-        ),
-        React.createElement('div', { className: 'form-group' },
-          React.createElement('label', null, 'Notes'),
-          React.createElement('textarea', { placeholder: 'Any additional notes...', value: form.notes || '', onChange: e => set('notes', e.target.value) })
-        )
-      ),
-      React.createElement('div', { className: 'modal-footer' },
-        React.createElement('button', { className: 'btn-cancel', onClick: onClose }, 'Cancel'),
-        React.createElement('button', { className: 'btn-save', onClick: handleSave, disabled: saving },
-          saving ? React.createElement('span', { className: 'spinner' }) : 'Save Lead'
-        )
+        h('button',{type:'submit',className:'btn btn-primary btn-full',disabled:loading},loading?'Signing in...':'Sign In')
       )
     )
   );
 }
 
-/* 
-   LEAD DETAIL
- */
-function LeadDetail({ lead, onBack, onUpdate }) {
-  const [notes, setNotes] = useState(lead.notes || '');
-  const [editing, setEditing] = useState(false);
-  const { apiFetch } = useAuth();
-  const toast = useToast();
-
-  async function saveNotes() {
-    try {
-      const id = lead.id || lead._id;
-      const res = await apiFetch(`/leads/${id}`, { method: 'PUT', body: JSON.stringify({ ...lead, notes }) });
-      const data = await res.json();
-      if (!res.ok) throw new Error('Failed to save notes');
-      toast('Notes saved'); onUpdate(data);
-    } catch { toast('Failed to save notes', 'error'); }
-  }
-
-  async function changeStatus(status) {
-    try {
-      const id = lead.id || lead._id;
-      const res = await apiFetch(`/leads/${id}`, { method: 'PUT', body: JSON.stringify({ ...lead, status }) });
-      const data = await res.json();
-      if (!res.ok) throw new Error('Failed');
-      toast(`Status  ${status}`); onUpdate(data);
-    } catch { toast('Failed to update status', 'error'); }
-  }
-
-  const statuses = ['new','contacted','qualified','closed','lost'];
-
-  return React.createElement('div', null,
-    React.createElement('div', { className: 'topbar' },
-      React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 12 } },
-        React.createElement('button', { className: 'btn-sm btn-outline', onClick: onBack }, ' Back'),
-        React.createElement('h2', null, lead.name || lead.full_name)
-      ),
-      React.createElement('button', { className: 'btn-sm btn-add', onClick: () => setEditing(true) }, ' Edit')
-    ),
-    React.createElement('div', { className: 'detail-wrap' },
-      React.createElement('div', null,
-        React.createElement('div', { className: 'detail-card', style: { marginBottom: 16 } },
-          React.createElement('div', { className: 'section-title' }, 'Lead Information'),
-          React.createElement('div', { className: 'info-grid' },
-            React.createElement('div', { className: 'info-item' }, React.createElement('label', null, 'Email'), React.createElement('span', null, lead.email || '')),
-            React.createElement('div', { className: 'info-item' }, React.createElement('label', null, 'Phone'), React.createElement('span', null, lead.phone || '')),
-            React.createElement('div', { className: 'info-item' }, React.createElement('label', null, 'Status'), React.createElement('span', { className: `badge ${lead.status}` }, lead.status)),
-            React.createElement('div', { className: 'info-item' }, React.createElement('label', null, 'Source'), React.createElement('span', null, lead.source || '')),
-            React.createElement('div', { className: 'info-item' }, React.createElement('label', null, 'Policy Type'), React.createElement('span', null, lead.policy_type || '')),
-            React.createElement('div', { className: 'info-item' }, React.createElement('label', null, 'Created'), React.createElement('span', null, lead.createdAt || lead.created_at ? new Date(lead.createdAt || lead.created_at).toLocaleDateString('en-AU') : ''))
-          )
-        ),
-        React.createElement('div', { className: 'detail-card' },
-          React.createElement('div', { className: 'section-title' }, 'Notes'),
-          React.createElement('div', { className: 'notes-box' },
-            React.createElement('textarea', { value: notes, onChange: e => setNotes(e.target.value), placeholder: 'Add notes about this lead...' })
-          ),
-          React.createElement('button', { className: 'notes-save btn-sm', style: { marginTop: 8 }, onClick: saveNotes }, 'Save Notes')
+//  Stage Trail component 
+function StageTrail({lead,onStageChange}){
+  const cur=STAGES.indexOf(lead.stage);
+  return h('div',{className:'stage-trail'},
+    STAGES.flatMap((s,i)=>{
+      const done=i<cur, active=i===cur;
+      const tsKey=s+'_at';
+      const ts=lead[tsKey];
+      const items=[
+        h('div',{key:s,className:'stage-dot'},
+          h('div',{
+            className:'dot'+(done?' done':active?' active':''),
+            onClick:()=>onStageChange&&onStageChange(s),
+            title:'Set stage to '+STAGE_LABELS[s]
+          },done?'':active?'':''),
+          h('div',{className:'dot-label'},STAGE_LABELS[s]),
+          h('div',{className:'dot-date'},ts?new Date(ts).toLocaleDateString('en-AU',{day:'numeric',month:'short'}):'')
         )
-      ),
-      React.createElement('div', null,
-        React.createElement('div', { className: 'detail-card' },
-          React.createElement('div', { className: 'section-title' }, 'Change Status'),
-          React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 8 } },
-            statuses.map(s => React.createElement('button', {
-              key: s, onClick: () => changeStatus(s),
-              style: { textAlign: 'left', padding: '10px 14px', borderRadius: 8, border: `1px solid ${lead.status === s ? 'var(--accent)' : 'var(--border)'}`, background: lead.status === s ? 'rgba(79,142,247,.12)' : 'none', color: lead.status === s ? 'var(--accent)' : 'var(--text2)', fontWeight: lead.status === s ? 600 : 400, cursor: 'pointer' }
-            }, s.charAt(0).toUpperCase() + s.slice(1)))
-          )
-        )
-      )
-    ),
-    editing && React.createElement(LeadModal, { lead, onClose: () => setEditing(false), onSave: d => { onUpdate(d); setEditing(false); } })
-  );
-}
-
-/* 
-   LEADS PAGE
- */
-function LeadsPage({ leads, setLeads, loading }) {
-  const [filter, setFilter] = useState('all');
-  const [search, setSearch] = useState('');
-  const [page, setPage] = useState(1);
-  const [showModal, setShowModal] = useState(false);
-  const [editLead, setEditLead] = useState(null);
-  const [viewLead, setViewLead] = useState(null);
-  const { apiFetch } = useAuth();
-  const toast = useToast();
-  const PER = 10;
-
-  const filtered = leads.filter(l => {
-    const matchStatus = filter === 'all' || l.status === filter;
-    const q = search.toLowerCase();
-    const matchSearch = !q || (l.name || l.full_name || '').toLowerCase().includes(q) || (l.email || '').toLowerCase().includes(q) || (l.phone || '').toLowerCase().includes(q);
-    return matchStatus && matchSearch;
-  });
-
-  const paginated = filtered.slice((page - 1) * PER, page * PER);
-  const totalPages = Math.ceil(filtered.length / PER);
-
-  async function deleteLead(id) {
-    if (!confirm('Delete this lead?')) return;
-    try {
-      await apiFetch(`/leads/${id}`, { method: 'DELETE' });
-      setLeads(prev => prev.filter(l => (l.id || l._id) !== id));
-      toast('Lead deleted');
-    } catch { toast('Delete failed', 'error'); }
-  }
-
-  function onSave(data) {
-    setLeads(prev => {
-      const id = data.id || data._id;
-      const idx = prev.findIndex(l => (l.id || l._id) === id);
-      if (idx >= 0) { const n = [...prev]; n[idx] = data; return n; }
-      return [data, ...prev];
-    });
-    setShowModal(false); setEditLead(null);
-  }
-
-  if (viewLead) {
-    return React.createElement(LeadDetail, {
-      lead: viewLead,
-      onBack: () => setViewLead(null),
-      onUpdate: d => { setViewLead(d); onSave(d); }
-    });
-  }
-
-  const statusFilters = ['all','new','contacted','qualified','closed','lost'];
-  const counts = { all: leads.length };
-  statusFilters.slice(1).forEach(s => { counts[s] = leads.filter(l => l.status === s).length; });
-
-  return React.createElement('div', null,
-    React.createElement('div', { className: 'topbar' },
-      React.createElement('h2', null, 'Leads'),
-      React.createElement('div', { className: 'topbar-actions' },
-        React.createElement('div', { className: 'search-bar' },
-          React.createElement('span', null, ''),
-          React.createElement('input', { placeholder: 'Search leads...', value: search, onChange: e => { setSearch(e.target.value); setPage(1); } })
-        ),
-        React.createElement('button', { className: 'btn-sm btn-add', onClick: () => setShowModal(true) }, '+ New Lead')
-      )
-    ),
-    React.createElement('div', { className: 'card' },
-      React.createElement('div', { className: 'filter-row' },
-        statusFilters.map(s => React.createElement('button', {
-          key: s, className: `filter-btn ${filter === s ? 'active' : ''}`,
-          onClick: () => { setFilter(s); setPage(1); }
-        }, `${s.charAt(0).toUpperCase() + s.slice(1)} (${counts[s] || 0})`))
-      ),
-      React.createElement('table', null,
-        React.createElement('thead', null,
-          React.createElement('tr', null,
-            React.createElement('th', null, 'Name'),
-            React.createElement('th', null, 'Contact'),
-            React.createElement('th', null, 'Policy Type'),
-            React.createElement('th', null, 'Status'),
-            React.createElement('th', null, 'Source'),
-            React.createElement('th', null, 'Actions')
-          )
-        ),
-        React.createElement('tbody', null,
-          loading
-            ? React.createElement('tr', { className: 'loading-row' }, React.createElement('td', { colSpan: 6 }, React.createElement('span', { className: 'spinner' })))
-            : paginated.length === 0
-              ? React.createElement('tr', null, React.createElement('td', { colSpan: 6, style: { textAlign: 'center', padding: 40, color: 'var(--text2)' } }, search || filter !== 'all' ? 'No leads match your filters.' : 'No leads yet. Click "+ New Lead" to get started.'))
-              : paginated.map(l => {
-                  const id = l.id || l._id;
-                  return React.createElement('tr', { key: id },
-                    React.createElement('td', null,
-                      React.createElement('a', { href: '#', style: { color: 'var(--text)', fontWeight: 600 }, onClick: e => { e.preventDefault(); setViewLead(l); } }, l.name || l.full_name || '')
-                    ),
-                    React.createElement('td', null,
-                      React.createElement('div', null, l.email || ''),
-                      React.createElement('div', { style: { fontSize: '.78rem', color: 'var(--text2)' } }, l.phone || '')
-                    ),
-                    React.createElement('td', null, l.policy_type || ''),
-                    React.createElement('td', null, React.createElement('span', { className: `badge ${l.status || 'new'}` }, l.status || 'new')),
-                    React.createElement('td', null, l.source || ''),
-                    React.createElement('td', null,
-                      React.createElement('div', { className: 'row-actions' },
-                        React.createElement('button', { className: 'btn-icon', title: 'View', onClick: () => setViewLead(l) }, ''),
-                        React.createElement('button', { className: 'btn-icon', title: 'Edit', onClick: () => setEditLead(l) }, ''),
-                        React.createElement('button', { className: 'btn-icon danger', title: 'Delete', onClick: () => deleteLead(id) }, '')
-                      )
-                    )
-                  );
-                })
-        )
-      ),
-      React.createElement('div', { className: 'pagination' },
-        React.createElement('span', null, `Showing ${filtered.length === 0 ? 0 : (page - 1) * PER + 1}${Math.min(page * PER, filtered.length)} of ${filtered.length}`),
-        totalPages > 1 && React.createElement('div', { className: 'page-btns' },
-          Array.from({ length: totalPages }, (_, i) => i + 1).map(p =>
-            React.createElement('button', { key: p, className: page === p ? 'active' : '', onClick: () => setPage(p) }, p)
-          )
-        )
-      )
-    ),
-    (showModal || editLead) && React.createElement(LeadModal, {
-      lead: editLead || null,
-      onClose: () => { setShowModal(false); setEditLead(null); },
-      onSave
+      ];
+      if(i<STAGES.length-1) items.push(h('div',{key:s+'-line',className:'stage-line'+(done?' done':'')}));
+      return items;
     })
   );
 }
 
-/* 
-   SETTINGS PAGE
- */
-function SettingsPage() {
-  const [telegram, setTelegram] = useState({ token: '', chat_id: '', connected: false });
-  const [gmail, setGmail] = useState({ connected: false, email: '' });
-  const [xero, setXero] = useState({ connected: false });
-  const [saving, setSaving] = useState('');
-  const toast = useToast();
-  const { apiFetch } = useAuth();
+//  Temperature selector 
+function TempSelect({value,onChange}){
+  return h('div',{style:{display:'flex',gap:6}},
+    ['hot','warm','cold'].map(t=>
+      h('button',{key:t,className:'btn btn-sm temp-badge temp-'+t,onClick:()=>onChange(t),
+        style:{opacity:value===t?1:0.4,transform:value===t?'scale(1.05)':'scale(1)'}},
+        t==='hot'?'Urgent':t==='warm'?'Warm':'Cold'
+      )
+    )
+  );
+}
 
-  useEffect(() => {
-    apiFetch('/settings').then(r => r.json()).then(d => {
-      if (d.telegram) setTelegram(t => ({ ...t, ...d.telegram }));
-      if (d.gmail) setGmail(g => ({ ...g, ...d.gmail }));
-      if (d.xero) setXero(x => ({ ...x, ...d.xero }));
-    }).catch(() => {});
-  }, []);
+//  Lead Detail Modal 
+function LeadDetailModal({leadId,onClose,onSave}){
+  const [lead,setLead]=useState(null);
+  const [tab,setTab]=useState('overview');
+  const [editing,setEditing]=useState(false);
+  const [form,setForm]=useState({});
+  const [noteText,setNoteText]=useState('');
+  const [loading,setLoading]=useState(true);
+  const [saving,setSaving]=useState(false);
+  const [msg,setMsg]=useState('');
 
-  async function saveTelegram() {
-    setSaving('telegram');
-    try {
-      const res = await apiFetch('/settings/telegram', { method: 'POST', body: JSON.stringify({ token: telegram.token, chat_id: telegram.chat_id }) });
-      if (!res.ok) throw new Error('Failed');
-      setTelegram(t => ({ ...t, connected: true }));
-      toast('Telegram settings saved');
-    } catch { toast('Failed to save Telegram settings', 'error'); }
-    finally { setSaving(''); }
+  useEffect(()=>{
+    loadLead();
+  },[leadId]);
+
+  async function loadLead(){
+    setLoading(true);
+    try{
+      const d=await apiFetch('/leads/'+leadId);
+      setLead(d);setForm(d);
+    }catch(e){setMsg(e.message);}
+    setLoading(false);
   }
 
-  async function connectGmail() {
-    toast('Redirecting to Gmail OAuth');
-    try {
-      const res = await apiFetch('/auth/gmail');
-      const data = await res.json();
-      if (data.url) window.open(data.url, '_blank');
-    } catch { toast('Could not start Gmail OAuth', 'error'); }
+  async function saveChanges(){
+    setSaving(true);setMsg('');
+    try{
+      const d=await apiFetch('/leads/'+leadId,{method:'PATCH',body:JSON.stringify(form)});
+      setLead(d);setForm(d);setEditing(false);setMsg('Saved!');
+      onSave&&onSave(d);
+      setTimeout(()=>setMsg(''),2000);
+    }catch(e){setMsg(e.message);}
+    setSaving(false);
   }
 
-  async function connectXero() {
-    toast('Redirecting to Xero OAuth');
-    try {
-      const res = await apiFetch('/auth/xero');
-      const data = await res.json();
-      if (data.url) window.open(data.url, '_blank');
-    } catch { toast('Could not start Xero OAuth', 'error'); }
+  async function changeStage(s){
+    try{
+      const d=await apiFetch('/leads/'+leadId,{method:'PATCH',body:JSON.stringify({stage:s})});
+      setLead(d);setForm(d);onSave&&onSave(d);
+    }catch(e){setMsg(e.message);}
   }
 
-  return React.createElement('div', null,
-    React.createElement('div', { className: 'topbar' }, React.createElement('h2', null, 'Settings')),
-    React.createElement('div', { className: 'settings-grid' },
-      /* Telegram */
-      React.createElement('div', { className: 'settings-card' },
-        React.createElement('h3', null,
-          ' Telegram Integration',
-          React.createElement('span', { className: `status-dot ${telegram.connected ? 'connected' : ''}` })
+  async function changeTemp(t){
+    try{
+      const d=await apiFetch('/leads/'+leadId,{method:'PATCH',body:JSON.stringify({temperature:t})});
+      setLead(d);setForm(d);onSave&&onSave(d);
+    }catch(e){setMsg(e.message);}
+  }
+
+  async function addNote(){
+    if(!noteText.trim()) return;
+    try{
+      await apiFetch('/leads/'+leadId+'/notes',{method:'POST',body:JSON.stringify({content:noteText.trim()})});
+      setNoteText('');loadLead();
+    }catch(e){setMsg(e.message);}
+  }
+
+  async function deleteLead(){
+    if(!confirm('Delete this lead permanently?')) return;
+    try{
+      await apiFetch('/leads/'+leadId,{method:'DELETE'});
+      onSave&&onSave(null,'deleted');onClose();
+    }catch(e){setMsg(e.message);}
+  }
+
+  function set(k,v){setForm(f=>({...f,[k]:v}))}
+
+  if(loading) return h('div',{className:'modal-overlay'},h('div',{className:'modal'},h('div',{className:'modal-body'},h('p',null,'Loading...'))));
+
+  return h('div',{className:'modal-overlay',onClick:e=>{if(e.target===e.currentTarget)onClose()}},
+    h('div',{className:'modal'},
+      // Header
+      h('div',{className:'modal-header'},
+        h('div',{style:{flex:1}},
+          editing
+            ?h('input',{value:form.name||'',onChange:e=>set('name',e.target.value),style:{background:'transparent',border:'none',color:'#fff',fontSize:'1.1rem',fontWeight:700,width:'100%'}})
+            :h('h2',null,lead.name||(lead.phone?lead.phone:'Unknown Lead')),
+          !editing&&lead.company&&h('p',{style:{color:'#94a3b8',fontSize:'.8rem',marginTop:2}},lead.company)
         ),
-        React.createElement('p', null, 'Receive lead notifications and interact with leads via Telegram bot.'),
-        React.createElement('div', { className: 'form-row' },
-          React.createElement('div', { className: 'form-group' },
-            React.createElement('label', null, 'Bot Token'),
-            React.createElement('input', { placeholder: '123456:ABC-DEF...', value: telegram.token, onChange: e => setTelegram(t => ({ ...t, token: e.target.value })) })
-          ),
-          React.createElement('div', { className: 'form-group' },
-            React.createElement('label', null, 'Chat ID'),
-            React.createElement('input', { placeholder: '-100123456789', value: telegram.chat_id, onChange: e => setTelegram(t => ({ ...t, chat_id: e.target.value })) })
+        h('div',{style:{display:'flex',gap:8,alignItems:'center'}},
+          !editing&&h('button',{className:'btn btn-sm btn-secondary',onClick:()=>setEditing(true)},'Edit'),
+          editing&&h('button',{className:'btn btn-sm btn-primary',onClick:saveChanges,disabled:saving},saving?'Saving...':'Save'),
+          editing&&h('button',{className:'btn btn-sm btn-secondary',onClick:()=>{setEditing(false);setForm(lead)}},'Cancel'),
+          h('button',{className:'close-btn',onClick:onClose},'x')
+        )
+      ),
+      // Body
+      h('div',{className:'modal-body'},
+        msg&&h('div',{className:'alert '+(msg==='Saved!'?'alert-success':'alert-error')},msg),
+        // Stage trail
+        h(StageTrail,{lead,onStageChange:changeStage}),
+        // Temp
+        h('div',{style:{display:'flex',alignItems:'center',gap:12,marginBottom:16}},
+          h('span',{style:{fontSize:'.75rem',color:'#64748b',fontWeight:600}},'Temperature:'),
+          h(TempSelect,{value:lead.temperature,onChange:changeTemp})
+        ),
+        // Tabs
+        h('div',{className:'tabs'},
+          ['overview','notes','emails'].map(t=>
+            h('div',{key:t,className:'tab'+(tab===t?' active':''),onClick:()=>setTab(t)},
+              t==='overview'?'Overview':t==='notes'?('Notes'+(lead.notes?.length?'':'')):('Emails'+(lead.emails?.length?' ('+lead.emails.length+')':''))
+            )
           )
         ),
-        React.createElement('button', { className: `btn-connect ${telegram.connected ? 'connected' : ''}`, onClick: saveTelegram, disabled: saving === 'telegram' },
-          saving === 'telegram' ? React.createElement('span', { className: 'spinner' }) : (telegram.connected ? ' Connected  Update' : 'Save & Connect')
+        // Overview tab
+        tab==='overview'&&h('div',{className:'detail-grid'},
+          h('div',{className:'detail-section'},
+            h('h3',null,'Contact'),
+            ['name','company','email','phone','source','service_type','state'].map(k=>
+              h('div',{key:k,className:'detail-row'},
+                h('div',{className:'detail-key'},k.replace('_',' ')),
+                editing
+                  ?h('input',{value:form[k]||'',onChange:e=>set(k,e.target.value),style:{background:'#0f1117',border:'1px solid #374151',borderRadius:4,padding:'3px 7px',color:'#e2e8f0',fontSize:'.8rem',flex:1}})
+                  :h('div',{className:'detail-val'},lead[k]||h('span',{style:{color:'#4b5563'}},''))
+              )
+            )
+          ),
+          h('div',{className:'detail-section'},
+            h('h3',null,'Timeline'),
+            ['arrived_at','contacted_at','quoted_at','invoiced_at','paid_at','delivered_at','completed_at'].map(k=>{
+              const val=lead[k];
+              const label=k.replace('_at','').replace('arrived','arrived');
+              return h('div',{key:k,className:'detail-row'},
+                h('div',{className:'detail-key'},label),
+                h('div',{className:'detail-val',style:{fontSize:'.8rem'}},
+                  val?new Date(val).toLocaleString('en-AU',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})
+                     :h('span',{style:{color:'#4b5563'}},'')
+                )
+              );
+            }),
+            lead.notes&&h('div',{style:{marginTop:12}},
+              h('div',{className:'detail-key',style:{marginBottom:6}},'Notes'),
+              editing
+                ?h('textarea',{value:form.notes||'',onChange:e=>set('notes',e.target.value),style:{width:'100%',background:'#0f1117',border:'1px solid #374151',borderRadius:4,padding:'6px',color:'#e2e8f0',fontSize:'.8rem',minHeight:80}})
+                :h('div',{style:{fontSize:'.8rem',color:'#94a3b8',whiteSpace:'pre-wrap'}},lead.notes||'')
+            )
+          )
+        ),
+        // Notes tab
+        tab==='notes'&&h('div',null,
+          h('div',{style:{display:'flex',gap:8,marginBottom:12}},
+            h('textarea',{value:noteText,onChange:e=>setNoteText(e.target.value),placeholder:'Add a note...',style:{flex:1,background:'#1a1f2e',border:'1px solid #2d3748',borderRadius:8,padding:'8px 12px',color:'#e2e8f0',fontSize:'.875rem',minHeight:60}}),
+            h('button',{className:'btn btn-primary',onClick:addNote,style:{alignSelf:'flex-end'}},'Add')
+          ),
+          (lead.notes_list||lead._notes||[]).length===0
+            ?h('div',{className:'empty-state'},h('p',null,'No notes yet'))
+            :h('ul',{className:'notes-list'},
+              (lead.notes_list||lead._notes||[]).map(n=>
+                h('li',{key:n.id,className:'note-item'},
+                  h('p',{className:'note-text'},n.content),
+                  h('p',{className:'note-meta'},n.author+'  '+new Date(n.created_at).toLocaleDateString('en-AU'))
+                )
+              )
+            )
+        ),
+        // Emails tab
+        tab==='emails'&&h('div',null,
+          (lead.emails||[]).length===0
+            ?h('div',{className:'empty-state'},h('p',null,'No email history synced'))
+            :(lead.emails||[]).map(e=>
+              h('div',{key:e.id,className:'email-item '+(e.direction==='outbound'?'outbound':'')},
+                h('div',{className:'email-subj'},e.subject||'(no subject)'),
+                h('div',{className:'email-snip'},e.snippet||''),
+                h('div',{className:'email-meta'},
+                  (e.direction==='outbound'?'Sent':'Received')+'  '+
+                  (e.from_address||'')+'  '+
+                  (e.sent_at?new Date(e.sent_at).toLocaleDateString('en-AU'):'')
+                )
+              )
+            )
         )
       ),
-      /* Gmail */
-      React.createElement('div', { className: 'settings-card' },
-        React.createElement('h3', null, ' Gmail Integration', React.createElement('span', { className: `status-dot ${gmail.connected ? 'connected' : ''}` })),
-        React.createElement('p', null, 'Send and track emails to leads directly from the CRM via your Gmail account.'),
-        React.createElement('div', { className: 'integration-row' },
-          React.createElement('div', { className: 'integration-info' },
-            React.createElement('h4', null, gmail.connected ? `Connected: ${gmail.email}` : 'Not connected'),
-            React.createElement('p', null, gmail.connected ? 'Your Gmail account is linked.' : 'Connect your Gmail to enable email features.')
+      // Footer
+      h('div',{className:'modal-footer'},
+        h('button',{className:'btn btn-danger btn-sm',onClick:deleteLead},'Delete Lead'),
+        h('button',{className:'btn btn-secondary',onClick:onClose},'Close')
+      )
+    )
+  );
+}
+
+//  Add/Edit Lead Form Modal 
+function LeadFormModal({lead,onClose,onSave}){
+  const [form,setForm]=useState(lead||{stage:'new',temperature:'cold',source:'Other'});
+  const [saving,setSaving]=useState(false);
+  const [err,setErr]=useState('');
+  function set(k,v){setForm(f=>({...f,[k]:v}))}
+
+  async function submit(e){
+    e.preventDefault();setErr('');setSaving(true);
+    try{
+      let d;
+      if(lead?.id){
+        d=await apiFetch('/leads/'+lead.id,{method:'PATCH',body:JSON.stringify(form)});
+      }else{
+        d=await apiFetch('/leads',{method:'POST',body:JSON.stringify(form)});
+      }
+      onSave(d);onClose();
+    }catch(e){setErr(e.message);}
+    setSaving(false);
+  }
+
+  return h('div',{className:'modal-overlay',onClick:e=>{if(e.target===e.currentTarget)onClose()}},
+    h('div',{className:'modal'},
+      h('div',{className:'modal-header'},
+        h('h2',null,lead?.id?'Edit Lead':'Add New Lead'),
+        h('button',{className:'close-btn',onClick:onClose},'x')
+      ),
+      h('div',{className:'modal-body'},
+        err&&h('div',{className:'alert alert-error'},err),
+        h('form',{id:'lead-form',onSubmit:submit},
+          h('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}},
+            [
+              {k:'name',label:'Full Name',placeholder:'e.g. Michelinah Macharia'},
+              {k:'company',label:'Company',placeholder:'e.g. Guardian Angels Health'},
+              {k:'email',label:'Email',type:'email',placeholder:'e.g. info@company.com.au'},
+              {k:'phone',label:'Phone',placeholder:'e.g. 0439 323 251'},
+            ].map(({k,label,type,placeholder})=>
+              h('div',{key:k,className:'form-field'},
+                h('label',null,label),
+                h('input',{type:type||'text',value:form[k]||'',onChange:e=>set(k,e.target.value),placeholder})
+              )
+            ),
+            h('div',{key:'source',className:'form-field'},
+              h('label',null,'Source'),
+              h('select',{value:form.source||'Other',onChange:e=>set('source',e.target.value)},
+                ['Website','Aria Bot','Referral','Facebook','Google','Cold Call','Telegram','Google Sheet','Gmail','Synthflow','Other'].map(s=>h('option',{key:s,value:s},s))
+              )
+            ),
+            h('div',{key:'service_type',className:'form-field'},
+              h('label',null,'Service Type'),
+              h('select',{value:form.service_type||'',onChange:e=>set('service_type',e.target.value)},
+                ['','NDIS','Aged Care - Home Care','Aged Care - Residential','Allied Health','Support Coordination','Both NDIS & Aged Care'].map(s=>h('option',{key:s,value:s},s||'Select...'))
+              )
+            ),
+            h('div',{key:'stage',className:'form-field'},
+              h('label',null,'Stage'),
+              h('select',{value:form.stage||'new',onChange:e=>set('stage',e.target.value)},
+                STAGES.map(s=>h('option',{key:s,value:s},STAGE_LABELS[s]))
+              )
+            ),
+            h('div',{key:'temperature',className:'form-field'},
+              h('label',null,'Temperature'),
+              h('select',{value:form.temperature||'cold',onChange:e=>set('temperature',e.target.value)},
+                ['hot','warm','cold'].map(t=>h('option',{key:t,value:t},TEMP_LABELS[t]))
+              )
+           ),
+            h('div',{key:'state',className:'form-field'},
+              h('label',null,'State'),
+              h('select',{value:form.state||'',onChange:e=>set('state',e.target.value)},
+                ['','NSW','VIC','QLD','SA','WA','TAS','ACT','NT'].map(s=>h('option',{key:s,value:s},s||'Select...'))
+              )
+            )
           ),
-          React.createElement('button', { className: `btn-connect ${gmail.connected ? 'connected' : ''}`, onClick: connectGmail },
-            gmail.connected ? ' Re-connect' : 'Connect Gmail'
+          h('div',{className:'form-field'},
+            h('label',null,'Notes'),
+            h('textarea',{value:form.notes||'',onChange:e=>set('notes',e.target.value),placeholder:'Any initial notes about this lead...',rows:3})
           )
         )
       ),
-      /* Xero */
-      React.createElement('div', { className: 'settings-card' },
-        React.createElement('h3', null, ' Xero Integration', React.createElement('span', { className: `status-dot ${xero.connected ? 'connected' : ''}` })),
-        React.createElement('p', null, 'Automatically create invoices and sync policy payments with Xero accounting.'),
-        React.createElement('div', { className: 'integration-row' },
-          React.createElement('div', { className: 'integration-info' },
-            React.createElement('h4', null, xero.connected ? 'Xero Connected' : 'Not connected'),
-            React.createElement('p', null, xero.connected ? 'Invoices will sync automatically.' : 'Connect Xero to enable billing features.')
-          ),
-          React.createElement('button', { className: `btn-connect ${xero.connected ? 'connected' : ''}`, onClick: connectXero },
-            xero.connected ? ' Re-connect' : 'Connect Xero'
+      h('div',{className:'modal-footer'},
+        h('button',{className:'btn btn-secondary',onClick:onClose},'Cancel'),
+        h('button',{type:'submit',form:'lead-form',className:'btn btn-primary',disabled:saving},saving?'Saving...':'Save Lead')
+      )
+    )
+  );
+}
+
+//  Main App 
+function App(){
+  const [authed,setAuthed]=useState(!!getToken());
+  const [leads,setLeads]=useState([]);
+  const [loading,setLoading]=useState(false);
+  const [view,setView]=useState('pipeline');
+  const [stageFilter,setStageFilter]=useState('all');
+  const [tempFilter,setTempFilter]=useState('all');
+  const [search,setSearch]=useState('');
+  const [sortBy,setSortBy]�]seState('arrived');
+  const [selectedLead,setSelectedLead]=useState(null);
+  const [showAdd,setShowAdd]=useState(false);
+  const [duplicates,setDuplicates]=useState([]);
+  const [showDupes,setShowDupes]=useState(false);
+
+  const loadLeads=useCallback(async()=>{
+    setLoading(true);
+    try{const d=await apiFetch('/leads');setLeads(Array.isArray(d)?d:[]);}
+    catch(e){console.error(e);}
+    setLoading(false);
+  },[]);
+
+  const loadDupes=useCallback(async()=>{
+    try{const d=await apiFetch('/leads/search/duplicates');setDuplicates(Array.isArray(d)?d:[]);}
+    catch(e){console.error(e);}
+    },[]);
+
+  useEffect(()=>{if(authed){loadLeads();loadDupes();}
+    },[authed]);
+
+  function handleSave(updated,action){
+    if(action==='deleted'){setLeads(ls=>ls.filter(l=>l.id!==selectedLead));setSelectedLead(null);}
+    else if(updated){setLeads(ls=>ls.map(l=>l.id===updated.id?updated:l));}
+  }
+
+  function handleAdd(newLead){
+    setLeads(ls=>[newLead,...ls]);
+  }
+
+  const filtered=leads.filter(l=>{
+    if(stageFilter!=='all'&&l.stage!==stageFilter) return false;
+    if(tempFilter!=='all'&&l.temperature!==tempFilter) return false;
+    if(search){
+      const q=search.toLowerCase();
+      return (l.name||'').toLowerCase().includes(q)||
+             (l.company||'').toLowerCase().includes(q)||
+             (l.email||'').toLowerCase().includes(q)||
+             (l.phone||'').toLowerCase().includes(q);
+    }
+    return true;
+  }).sort((a,b)=>{
+    if(sortBy==='arrived') return new Date(b.arrived_at||b.created_at)-new Date(a.arrived_at||a.created_at);
+    if(sortBy==='name') return (a.name||'').localeCompare(b.name||'');
+    if(sortBy==='stage') return STAGES.indexOf(a.stage)-STAGES.indexOf(b.stage);
+    if(sortBy==='temp'){const o={hot:0,warm:1,cold:2};return o[a.temperature]-o[b.temperature];}
+    return 0;
+  });
+
+  const bystage=STAGES.reduce((acc,s)=>{acc[s]=filtered.filter(l=>l.stage===s);return acc},{});
+  const stats={
+    total:leads.length,
+    hot:leads.filter(l=>l.temperature==='hot').length,
+    warm:leads.filter(l=>l.temperature==='warm').length,
+    quoted:leads.filter(l=>l.stage==='quoted').length,
+    invoiced:leads.filter(l=>l.stage==='invoiced').length,
+    paid:leads.filter(l=>l.stage==='paid').length,
+    completed:leads.filter(l=>l.stage==='completed'||l.stage==='delivered').length,
+  };
+
+  if(!authed) return h(LoginPage,{onLogin:()=>setAuthed(true)});
+
+  return h('div',{className:'app'},
+    // Header
+    h('div',{className:'header'},
+      h('div',{className:'header-brand'},
+        h('h1',null,'Rapid Policies CRM'),
+        h('span',{className:'badge'},leads.length+' Leads')
+      ),
+      h('div',{className:'header-actions'},
+        duplicates.length>0&&h('button',{className:'btn btn-sm',style:{background:'#7c2d12',color:'#fdba74'},onClick:()=>setShowDupes(true)},'! '+duplicates.length+' Duplicates'),
+        h('button',{className:'btn btn-sm btn-primary',onClick:()=>setShowAdd(true)},'+ Add Lead'),
+        h('button',{className:'btn btn-sm btn-secondary',onClick:()=>{sessionStorage.removeItem('crm_token');setAuthed(false);}},'Sign Out')
+      )
+    ),
+    // Layout
+    h('div',{className:'main-layout'},
+      // Sidebar
+      h('div',{className:'sidebar'},
+        h('div',{className:'nav-section'},'Views'),
+        h('div',{className:'nav-item'+(view==='pipeline'?' active':''),onClick:()=>setView('pipeline')},'Pipeline'),
+        h('div',{className:'nav-item'+(view==='list'?' active':''),onClick:()=>setView('list')},'List View'),
+        h('div',{className:'nav-section'},'Filter by Stage'),
+        h('div',{className:'nav-item'+(stageFilter==='all'?' active':''),onClick:()=>setStageFilter('all')},
+          'All Stages',h('span',{className:'count'},leads.length)
+        ),
+        STAGES.map(s=>
+          h('div',{key:s,className:'nav-item'+(stageFilter===s?' active':''),onClick:()=>setStageFilter(s)},
+            STAGE_LABELS[s],h('span',{className:'count'},leads.filter(l=>l.stage===s).length)
+          )
+        ),
+        h('div',{className:'nav-section'},'Filter by Temp'),
+        ['all','hot','warm','cold'].map(t=>
+          h('div',{key:t,className:'nav-item'+(tempFilter===t?' active':''),onClick:()=>setTempFilter(t)},
+            t==='all'?'All Temp':h('span',{className:'temp-badge temp-'+t},TEMP_LABELS[t]),
+            t!=='all'&&h('span',{className:'count'},leads.filter(l=>l.temperature===t).length)
           )
         )
       ),
-      /* API Info */
-      React.createElement('div', { className: 'settings-card' },
-        React.createElement('h3', null, ' Backend API'),
-        React.createElement('p', null, 'The CRM connects to the following backend service.'),
-        React.createElement('div', { className: 'form-group' },
-          React.createElement('label', null, 'API Base URL'),
-          React.createElement('input', { readOnly: true, value: API_BASE, style: { opacity: .7, cursor: 'text' } })
+      // Content
+      h('div',{className:'content'},
+        // Stats
+        h('div',{className:'stats-row'},
+          h('div',{className:'stat-card'},h('div',{className:'stat-num'},stats.total),h('div',{className:'stat-label'},'Total Leads')),
+          h('div',{className:'stat-card'},h('div',{className:'stat-num',style:{color:'}fca5a5'}},stats.hot),h('div',{className:'stat-label'},'Urgent')),
+          h('div',{className:'stat-card'},h('div',{className:'stat-num',style:{color:'}fdba74'}},stats.warm),h('div',{className:'stat-label'},'Warm')),
+          h('div',{className:'stat-card'},h('div',{className:'stat-num',style:{color:'#818cf8'}},stats.quoted),h('div',{className:'stat-label'},'Quoted')),
+          h('div',{className:'stat-card'},h('div',{className:'stat-num',style:{color:'#f59e0b'}},stats.invoiced),h('div',{className:'stat-label'},'Invoiced')),
+          h('div',{className:'stat-card'},h('div',{className:'stat-num',style:{color:'|34d399'}},stats.paid),h('div',{className:'stat-label'},'Paid')),
+          h('div',{className:'stat-card'},h('div',{className:'stat-num',style:{color:'#6ee7b7'}},stats.completed),h('div',{className:'stat-label'},'Delivered')),
+        ),
+        // Filter bar
+        h('div',{className:'filter-bar'},
+          h('input',{className:'search-input',placeholder:'Search name, company, email, phone...',value:search,onChange:e=>setSearch(e.target.value)}),
+          h('select',{className:'filter-select',value:sortBy,onChange:e=>setSortBy(e.target.value)},
+            h('option',{value:'arrived'},'Newest First'),
+            h('option',{value:'name'},'Name A-Z'),
+            h('option',{value:'stage'},'By Stage'),
+            h('option',{value:'temp'},'By Temperature')
+          ),
+          h('div',{className:'view-toggle'},
+            h('button',{className:'view-btn'+(view==='pipeline'?' active':''),onClick:()=>setView('pipeline')},'Pipeline'),
+            h('button',{className:'view-btn'+(view==='list'?' active':''),onClick:()=>setView('list')},'List')
+          )
+        ),
+        // Loading
+        loading&&h('div',{style:{textAlign:'center',padding:40,color:'#64748b'}},'Loading leads...'),
+        // Pipeline view
+        !loading&&view==='pipeline'&&h('div',{className:'pipeline'},
+          STAGES.map(s=>
+            h('div',{key:s,className:'stage-col'},
+              h('div',{className:'stage-header '+STAGE_COLORS[s]},
+                h('span',null,STAGE_LABELS[s]),
+                h('span',{className:'stage-badge'},bystage[s].length)
+              ),
+              bystage[s].length===0&&h('div',{style:{color:'#4b5563',fontSize:'.75rem',padding:'12px',textAlign:'center'}},'No leads'),
+              bystage[s].map(lead=>h('div',{key:lead.id,className:'lead-card',onClick:()=>setSelectedLead(lead.id)},
+                h('div',{className:'lead-name'},lead.name||(lead.phone||'Unknown')),
+                lead.company&&h('div',{className:'lead-company'},lead.company),
+                h('div',{className:'lead-meta'},
+                  h('span',{className:'temp-badge temp-'+lead.temperature},
+                    lead.temperature==='hot'?'Urgent':lead.temperature==='warm'?'Warm':'Cold'
+                  ),
+                  h('span',{className:'source-badge'},lead.source||'Other'),
+                  lead.service_type&&h('span',{className:'service-badge'},lead.service_type)
+                ),
+                lead.phone&&h('div',{className:'lead-phone'},lead.phone),
+                lead.email&&h('div',{className:'lead-email'},lead.email),
+                h('div',{className:'lead-date'},'In: '+new Date(lead.arrived_at||lead.created_at).toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'2-digit'}))
+              ))
+            )
+          )
+        ),
+        // List view
+        !loading&&view==='list'&&h('div',{style:{overflowX:'auto'}},
+          filtered.length===0&&h('div',{className:'empty-state'},h('h3',null,'No leads found'),h('p',null,'Try adjusting your filters')),
+          filtered.length>0&&h('table',{className:'leads-table'},
+            h('thead',null,h('tr',null,
+              ['Name','Company','Stage','Temp','Source','Phone','Email','Arrived'].map(col=>
+                h('th',{key:col},col)
+              )
+            )),
+            h('tbody',null,
+              filtered.map(lead=>h('tr',{key:lead.id,onClick:()=>setSelectedLead(lead.id)},
+                h('td',null,h('strong',null,lead.name||'Unknown')),
+                h('td',null,lead.company||''),
+                h('td',null,h('span',{className:'stage-header '+STAGE_COLORS[lead.stage],style:{padding:'2px 8px',borderRadius:10,fontSize:'.7rem'}},STAGE_LABELS[lead.stage])),
+                h('td',null,h('span',{className:'temp-badge temp-'+lead.temperature},lead.temperature==='hot'?'Urgent':lead.temperature==='warm'?'Warm':'Cold')),
+                h('td',null,h('span',{className:'source-badge'},lead.source||'')),
+                h('td',null,lead.phone||''),
+                h('td',null,lead.email||''),
+                h('td',null,new Date(lead.arrived_at||lead.created_at).toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'2-digit'}))
+              ))
+            )
+          )
+        )
+      )
+    ),
+    // Lead Detail Modal
+    selectedLead&&h(LeadDetailModal,{
+      leadId:selectedLead,
+      onClose:()=>setSelectedLead(null),
+      onSave:handleSave
+    }),
+    // Add Lead Modal
+    showAdd&&h(LeadFormModal,{
+      onClose:()=>setShowAdd(false),
+      onSave:(l)=>{handleAdd(l);setShowAdd(false);}
+    }),
+    // Duplicates Modal
+    showDupes&&h('div',{className:'modal-overlay',onClick:e=>{if(e.target===e.currentTarget)setShowDupes(false)}},
+      h('div',{className:'modal'},
+        h('div',{className:'modal-header'},
+          h('h2',null,'Potential Duplicates ('+duplicates.length+')'),
+          h('button',{className:'close-btn',onClick:()=>setShowDupes(false)},'x')
+        ),
+        h('div',{className:'modal-body'},
+          h('p',{style:{color:'|94a3b8',marginBottom:16,fontSize:'.875rem'}},'Review these leads that may be duplicates. Click a lead to view it.'),
+          duplicates.map((d,i)=>
+            h('div',{key:i,style:{background:'#1a1f2e',borderRadius:8,padding:12,marginBottom:8,display:'flex',gap:12,alignItems:'center'}},
+              h('div',{style:{flex:1}},
+                h('span',{style:{cursor:'pointer',color:'#6366f1'},onClick:()=>{setShowDupes(false);setSelectedLead(d.id1);}},d.name1||d.email1||d.phone1||'Lead '+d.id1),
+                h('span',{style:{color:'|64748b',margin:'0 8px'}},'vs'),
+                h('span',{style:{cursor:'pointer',color:'|6366f1'},onClick:()=>{setShowDupes(false);setSelectedLead(d.id2);}},d.name2||d.email2||d.phone2||'Lead '+d.id2),
+                h('span',{style:{background:'|2d3748',color:'#94a3b8',fontSize:'.7rem',padding:'2px 6px',borderRadius:6,marginLeft:8}},d.match_type)
+              )
+            )
+          )
         )
       )
     )
   );
 }
 
-/* 
-   MAIN APP
- */
-function App() {
-  const { token, apiFetch } = useAuth();
-  const [page, setPage] = useState('dashboard');
-  const [leads, setLeads] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (!token) return;
-    setLoading(true);
-    apiFetch('/leads')
-      .then(r => r.json())
-      .then(d => setLeads(Array.isArray(d) ? d : d.leads || d.data || []))
-      .catch(() => setLeads([]))
-      .finally(() => setLoading(false));
-  }, [token]);
-
-  if (!token) return React.createElement(LoginPage);
-
-  let content;
-  if (page === 'dashboard') content = React.createElement(Dashboard, { leads });
-  else if (page === 'leads') content = React.createElement(LeadsPage, { leads, setLeads, loading });
-  else if (page === 'settings') content = React.createElement(SettingsPage);
-
-  return React.createElement('div', { className: 'app' },
-    React.createElement(Sidebar, { page, setPage }),
-    React.createElement('main', { className: 'main' }, content)
-  );
-}
-
-/* 
-   ENTRY POINT
- */
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  React.createElement(AuthProvider, null,
-    React.createElement(ToastProvider, null,
-      React.createElement(App)
-    )
-  )
-);
+const root=ReactDOM.createRoot(document.getElementById('root'));
+root.render(React.createElement(App));
 </script>
 </body>
 </html>
-
