@@ -1416,7 +1416,7 @@ const PipelinePage = ({ onUnauth }) => {
     setContacts(cs=>cs.map(c=>c.id===dragging.id?{...c,status:id}:c));
     setDragging(null);setDragOver(null);
     try{await api(`/contacts/${dragging.id}`,{method:'PATCH',body:JSON.stringify({status:id})});toast('Stage updated','success');}
- 0  catch(e){setContacts(prev);toast('Failed to update stage','error');}
+    catch(e){setContacts(prev);toast('Failed to update stage','error');}
   };
   const handleUpdate=u=>{setContacts(p=>p.map(c=>c.id===u.id?u:c));if(selected?.id===u.id)setSelected(u);};
 
