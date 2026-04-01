@@ -771,7 +771,7 @@ const fmt = {
   email: c => c?.email || c?.email_address || '',
 };
 
-const SOURCE_ICONS = { email:'�q️', phone:'📞', form:'📋', telegram:'✈️', synthflow:'🤖', website:'🌐', google_sheets:'📊', manual:'✏️', default:'❓' };
+const SOURCE_ICONS = { email:'�q️', phone:'\u{1F4DE}', form:'\u{1F4CB}', telegram:'✈️', synthflow:'\u{1F916}', website:'\u{1F310}', google_sheets:'\u{1F4CA}', manual:'✏️', default:'❓' };
 
 const STAGES = [
   { id:'inquiry',    label:'Inquiry',    color:'#00d4ff' },
@@ -896,9 +896,9 @@ const LoginPage = ({ onLogin }) => {
       <div className="login-wrap">
         <div className="login-card">
           <div className="login-brand">
-            <span className="login-logo">🛡️</span>
+            <span className="login-logo">{'\u{1F6E1}\u{FE0F}'}</span>
             <div className="login-title">Rapid Policies</div>
-            <div className="login-sub">Australia · Insurance CRM</div>
+            <div className="login-sub">Rapid Policies Australia Pty Ltd</div>
           </div>
           {err && <div className="error-msg">{err}</div>}
           <form onSubmit={submit}>
@@ -1059,36 +1059,36 @@ const DashboardPage = ({ onUnauth }) => {
       </div>
       <div className="page-body">
         <div className="metrics-grid">
-          <MetricCard label="Total Leads"  target={metrics.total}   icon="👥" sub="All time" />
-          <MetricCard label="Hot Leads"    target={metrics.hot}     icon="🔥" colorClass="red"   sub="Needs attention" />
-          <MetricCard label="Quotes Sent"  target={metrics.quotes}  icon="📄" colorClass="amber" sub="Total issued" />
-          <MetricCard label="Revenue"      target={metrics.revenue} icon="💰" colorClass="green" sub="Total payments" isCurrency />
+          <MetricCard label="Total Leads"  target={metrics.total}   icon={'\u{1F465}'} sub="All time" />
+          <MetricCard label="Hot Leads"    target={metrics.hot}     icon={'\u{1F525}'} colorClass="red"   sub="Needs attention" />
+          <MetricCard label="Quotes Sent"  target={metrics.quotes}  icon={'\u{1F4C4}'} colorClass="amber" sub="Total issued" />
+          <MetricCard label="Revenue"      target={metrics.revenue} icon={'\u{1F4B0}'} colorClass="green" sub="Total payments" isCurrency />
         </div>
         <div className="charts-row">
           <GlassCard className="chart-card" style={{padding:18}}>
-            <div className="chart-title">📈 Leads In — Last 30 Days</div>
+            <div className="chart-title">{'\u{1F4C8}'} Leads In — Last 30 Days</div>
             <div className="chart-wrap"><canvas ref={c1r}></canvas></div>
           </GlassCard>
           <GlassCard className="chart-card" style={{padding:18}}>
-            <div className="chart-title">💵 Revenue by Month</div>
+            <div className="chart-title">{'\u{1F4B5}'} Revenue by Month</div>
             <div className="chart-wrap"><canvas ref={c2r}></canvas></div>
           </GlassCard>
         </div>
         <div className="charts-row">
           <GlassCard className="chart-card" style={{padding:18}}>
-            <div className="chart-title">📊 Leads by Source</div>
+            <div className="chart-title">{'\u{1F4CA}'} Leads by Source</div>
             <div className="chart-wrap"><canvas ref={c3r}></canvas></div>
           </GlassCard>
           <GlassCard className="chart-card" style={{padding:18}}>
-            <div className="chart-title">🎯 Status Breakdown</div>
+            <div className="chart-title">{'\u{1F3AF}'} Status Breakdown</div>
             <div className="chart-wrap"><canvas ref={c4r}></canvas></div>
           </GlassCard>
         </div>
         <div className="activity-grid">
           {[
-            {icon:'📞',val:activity.calls,  lbl:'Calls this month'},
+            {icon:'\u{1F4DE}',val:activity.calls,  lbl:'Calls this month'},
             {icon:'✉️',val:activity.emails, lbl:'Emails this month'},
-            {icon:'📋',val:activity.forms,  lbl:'Form submissions'},
+            {icon:'\u{1F4CB}',val:activity.forms,  lbl:'Form submissions'},
             {icon:'⚡',val:activity.jobs,   lbl:'Jobs in progress'},
           ].map(a=>(
             <GlassCard key={a.lbl} className="activity-card" style={{padding:18}}>
@@ -1169,9 +1169,9 @@ const ContactPanel = ({ contact:init, onClose, onUpdate }) => {
         </div>
         <div className="panel-body">
           <div className="quick-actions">
-            {fmt.phone(contact)&&<a href={`tel:${fmt.phone(contact)}`} className="quick-btn"><span className="qb-icon">📞</span>Call</a>}
+            {fmt.phone(contact)&&<a href={`tel:${fmt.phone(contact)}`} className="quick-btn"><span className="qb-icon">{'\u{1F4DE}'}</span>Call</a>}
             {fmt.email(contact)&&<a href={`mailto:${fmt.email(contact)}`} className="quick-btn"><span className="qb-icon">✉️</span>Email</a>}
-            {fmt.phone(contact)&&<a href={`https://wa.me/${fmt.phone(contact).replace(/\D/g,'')}`} target="_blank" className="quick-btn"><span className="qb-icon">💬</span>WhatsApp</a>}
+            {fmt.phone(contact)&&<a href={`https://wa.me/${fmt.phone(contact).replace(/\D/g,'')}`} target="_blank" className="quick-btn"><span className="qb-icon">{'\u{1F4AC}'}</span>WhatsApp</a>}
           </div>
           <div className="info-grid">
             <div className="info-item"><label>Phone</label><p>{fmt.phone(contact)||'—'}</p></div>
@@ -1195,7 +1195,7 @@ const ContactPanel = ({ contact:init, onClose, onUpdate }) => {
           <div className="section-heading" style={{marginTop:24}}>Activity Timeline</div>
           {tlLoading?<div className="spinner spinner-sm" style={{margin:'20px auto'}} />:(
             <div>
-              {timeline.length===0&&<div className="empty-state"><div className="es-icon">🕐</div><p>No activity recorded yet.</p></div>}
+              {timeline.length===0&&<div className="empty-state"><div className="es-icon">{'\u{1F550}'}</div><p>No activity recorded yet.</p></div>}
               {timeline.map((item,i)=>(
                 <div key={i} className="tl-item">
                   <div className={`tl-dot tl-dot-${item.type}`}/>
@@ -1317,7 +1317,7 @@ const ContactsPage = ({ onUnauth }) => {
       <div className="page-body">
         <div className="toolbar">
           <div className="search-wrap">
-            <span className="search-icon">🔍</span>
+            <span className="search-icon">{'\u{1F50D}'}</span>
             <input className="search-input" type="text" placeholder="Search name, email, phone..."
               value={search} onChange={e=>setSearch(e.target.value)}/>
           </div>
@@ -1335,7 +1335,7 @@ const ContactsPage = ({ onUnauth }) => {
         </div>
         {/* Mobile cards */}
         <div className="contact-cards">
-          {filtered.length===0&&<div className="empty-state"><div className="es-icon">👥</div><p>No contacts found.</p></div>}
+          {filtered.length===0&&<div className="empty-state"><div className="es-icon">{'\u{1F465}'}</div><p>No contacts found.</p></div>}
           {filtered.map(c=>{
             const tags=c.tags||[];
             return(
@@ -1478,10 +1478,10 @@ const SettingsPage = () => {
   const integrations=[
     {key:'telegram',icon:'✈️',title:'Telegram Bot',desc:'Receives new leads from your Telegram bot in real-time',status:'green',statusText:'Bot active',items:[{label:'Webhook URL',value:`${B}/webhook/telegram`,k:'tg'}]},
     {key:'gmail',icon:'✉️',title:'Gmail',desc:'Captures inbound emails as leads and tracks engagement',status:'green',statusText:'Connected',items:[{label:'Webhook URL',value:`${B}/webhook/gmail`,k:'gmail'}]},
-    {key:'xero',icon:'📊',title:'Xero Accounting',desc:'Syncs quotes, invoices and payments automatically',status:'yellow',statusText:'OAuth required',cta:{label:'Connect Xero →',fn:()=>window.open(`${B}/auth/xero`,'_blank')}},
-    {key:'synthflow',icon:'🤖',title:'SynthFlow AI Calls',desc:'AI voice agent — logs call transcripts automatically',status:'green',statusText:'Active',items:[{label:'Paste into SynthFlow settings',value:`${B}/webhook/synthflow`,k:'sf'}]},
-    {key:'gsheets',icon:'📋',title:'Google Sheets',desc:'Import leads from spreadsheet triggers',status:'green',statusText:'Active',items:[{label:'Webhook URL',value:`${B}/webhook/google-sheets`,k:'gs'}]},
-    {key:'form',icon:'🌐',title:'Website Lead Form',desc:'Embed a quote form on your website',status:'green',statusText:'Active',items:[{label:'Form URL',value:`${B}/form`,k:'formurl'},{label:'Embed snippet',value:`<script src="${B}/widget/form.js" data-key="YOUR_KEY">\x3c/script>`,k:'embed'}]},
+    {key:'xero',icon:'\u{1F4CA}',title:'Xero Accounting',desc:'Syncs quotes, invoices and payments automatically',status:'yellow',statusText:'OAuth required',cta:{label:'Connect Xero →',fn:()=>window.open(`${B}/auth/xero`,'_blank')}},
+    {key:'synthflow',icon:'\u{1F916}',title:'SynthFlow AI Calls',desc:'AI voice agent — logs call transcripts automatically',status:'green',statusText:'Active',items:[{label:'Paste into SynthFlow settings',value:`${B}/webhook/synthflow`,k:'sf'}]},
+    {key:'gsheets',icon:'\u{1F4CB}',title:'Google Sheets',desc:'Import leads from spreadsheet triggers',status:'green',statusText:'Active',items:[{label:'Webhook URL',value:`${B}/webhook/google-sheets`,k:'gs'}]},
+    {key:'form',icon:'\u{1F310}',title:'Website Lead Form',desc:'Embed a quote form on your website',status:'green',statusText:'Active',items:[{label:'Form URL',value:`${B}/form`,k:'formurl'},{label:'Embed snippet',value:`<script src="${B}/widget/form.js" data-key="YOUR_KEY">\x3c/script>`,k:'embed'}]},
   ];
   return (
     <div>
@@ -1516,9 +1516,9 @@ const SettingsPage = () => {
    NAVIGATION
    ========================================= */
 const NAV = [
-  {id:'dashboard',icon:'📊',label:'Dashboard'},
-  {id:'contacts', icon:'👥',label:'Contacts'},
-  {id:'pipeline', icon:'🚀',label:'Pipeline'},
+  {id:'dashboard',icon:'\u{1F4CA}',label:'Dashboard'},
+  {id:'contacts', icon:'\u{1F465}',label:'Contacts'},
+  {id:'pipeline', icon:'\u{1F680}',label:'Pipeline'},
   {id:'settings', icon:'⚙️',label:'Settings'},
 ];
 
@@ -1528,7 +1528,7 @@ const Sidebar = ({ page, setPage, user, onLogout }) => {
     <aside className="sidebar">
       <div className="sidebar-brand">
         <div className="sidebar-logo-row">
-          <span className="sidebar-logo-icon">🛡️</span>
+          <span className="sidebar-logo-icon">{'\u{1F6E1}\u{FE0F}'}</span>
           <div className="sidebar-title">Rapid Policies</div>
         </div>
         <div className="sidebar-sub">Australia CRM Platform</div>
@@ -1556,7 +1556,7 @@ const Sidebar = ({ page, setPage, user, onLogout }) => {
 
 const MobileHeader = ({ user, onLogout }) => (
   <div className="mobile-header">
-    <div className="mobile-brand">🛡️ Rapid Policies</div>
+    <div className="mobile-brand">{'\u{1F6E1}\u{FE0F}'} Rapid Policies</div>
     <button className="btn btn-secondary btn-sm" onClick={onLogout} style={{fontSize:12,minHeight:36,padding:'6px 12px'}}>Sign out</button>
   </div>
 );
