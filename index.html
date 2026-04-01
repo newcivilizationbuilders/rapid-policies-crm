@@ -1481,7 +1481,7 @@ const SettingsPage = () => {
     {key:'xero',icon:'📊',title:'Xero Accounting',desc:'Syncs quotes, invoices and payments automatically',status:'yellow',statusText:'OAuth required',cta:{label:'Connect Xero →',fn:()=>window.open(`${B}/auth/xero`,'_blank')}},
     {key:'synthflow',icon:'🤖',title:'SynthFlow AI Calls',desc:'AI voice agent — logs call transcripts automatically',status:'green',statusText:'Active',items:[{label:'Paste into SynthFlow settings',value:`${B}/webhook/synthflow`,k:'sf'}]},
     {key:'gsheets',icon:'📋',title:'Google Sheets',desc:'Import leads from spreadsheet triggers',status:'green',statusText:'Active',items:[{label:'Webhook URL',value:`${B}/webhook/google-sheets`,k:'gs'}]},
-    {key:'form',icon:'🌐',title:'Website Lead Form',desc:'Embed a quote form on your website',status:'green',statusText:'Active',items:[{label:'Form URL',value:`${B}/form`,k:'formurl'},{label:'Embed snippet',value:`<script src="${B}/widget/form.js" data-key="YOUR_KEY"><\/script>`,k:'embed'}]},
+    {key:'form',icon:'🌐',title:'Website Lead Form',desc:'Embed a quote form on your website',status:'green',statusText:'Active',items:[{label:'Form URL',value:`${B}/form`,k:'formurl'},{label:'Embed snippet',value:`<script src="${B}/widget/form.js" data-key="YOUR_KEY">\x3c/script>`,k:'embed'}]},
   ];
   return (
     <div>
