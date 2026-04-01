@@ -716,7 +716,27 @@ body::before {
   .charts-row { grid-template-columns: 1fr; }
   .settings-grid { grid-template-columns: 1fr; }
 }
-  </style>
+  /* === NEW FEATURES CSS === */
+.panel-tabs button:focus{outline:none}
+.contact-card[data-status="lead"]{border-left:3px solid #3b82f6}
+.contact-card[data-status="quoted"]{border-left:3px solid #f59e0b}
+.contact-card[data-status="invoiced"]{border-left:3px solid #8b5cf6}
+.contact-card[data-status="customer"]{border-left:3px solid #10b981}
+.contact-card[data-status="delivered"]{border-left:3px solid #10b981}
+.contact-card[data-status="active"]{border-left:3px solid #06b6d4}
+.contact-card[data-status="inquiry"]{border-left:3px solid #6b7280}
+.kanban-board{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:16px;overflow-x:auto;min-height:calc(100vh - 130px)}
+@media(max-width:900px){.kanban-board{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:500px){.kanban-board{grid-template-columns:1fr}}
+.kanban-col{background:var(--bg2);border-radius:8px;padding:10px;display:flex;flex-direction:column;min-height:300px}
+.kanban-col-header{font-size:12px;font-weight:700;padding:6px 4px;border-bottom:2px solid var(--border);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.kanban-card{background:var(--bg3);border-radius:6px;padding:10px;margin-bottom:8px;cursor:grab;border:1px solid var(--border);transition:transform .1s,box-shadow .1s}
+.kanban-card:hover{transform:translateY(-1px);box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.kanban-card.dragging{opacity:.45;cursor:grabbing}
+.kanban-col.drag-over{border:2px dashed var(--accent);background:var(--bg4,#111827)}
+.email-thread-item{border:1px solid var(--border);border-radius:6px;padding:8px;margin-bottom:6px;font-size:12px;cursor:default}
+.email-thread-item:hover{background:var(--bg3)}
+</style>
 </head>
 <body>
 <div id="root"></div>
@@ -1107,116 +1127,267 @@ const DashboardPage = ({ onUnauth }) => {
    ========================================= */
 const ContactPanel = ({ contact:init, onClose, onUpdate }) => {
   const toast = useToast();
-  const [contact, setContact] = useState(init);
-  const [timeline, setTimeline] = useState([]);
-  const [tlLoading, setTlLoading] = useState(true);
-  const [status, setStatus] = useState(init.status||'inquiry');
-  const [note, setNote] = useState('');
-  const [saving, setSaving] = useState(false);
-  const [addingNote, setAddingNote] = useState(false);
+  const [contact, setContact] = React.useState(init);
+  const [timeline, setTimeline] = React.useState([]);
+  const [tlLoading, setTlLoading] = React.useState(true);
+  const [status, setStatus] = React.useState(init.status||'inquiry');
+  const [note, setNote] = React.useState('');
+  const [addingNote, setAddingNote] = React.useState(false);
+  const [activeTab, setActiveTab] = React.useState('activity');
+  const [emails, setEmails] = React.useState([]);
+  const [docLinks, setDocLinks] = React.useState([]);
+  const [docUrl, setDocUrl] = React.useState('');
+  const [docLabel, setDocLabel] = React.useState('');
+  const [addingDoc, setAddingDoc] = React.useState(false);
+  const [showCompose, setShowCompose] = React.useState(false);
+  const [composeData, setComposeData] = React.useState({to:'',subject:'',body:'',replyTo:null});
+  const [sendingEmail, setSendingEmail] = React.useState(false);
+  const [showXero, setShowXero] = React.useState(false);
+  const [xeroForm, setXeroForm] = React.useState({serviceDesc:'',items:[{desc:'',qty:1,unitPrice:0,discount:0}],gst:true});
+  const [xeroQuote, setXeroQuote] = React.useState(null);
 
-  useEffect(()=>{ loadTimeline(); },[contact.id]);
+  React.useEffect(()=>{
+    let cancelled=false;
+    (async()=>{
+      setTlLoading(true);
+      const id=contact.id;
+      const [acts,ems,calls,forms]=await Promise.allSettled([
+        api('/activities?contact_id='+id+'&limit=50'),
+        api('/emails?contact_id='+id+'&limit=30'),
+        api('/calls?contact_id='+id+'&limit=20'),
+        api('/registration_forms?contact_id='+id+'&limit=10')
+      ]);
+      if(cancelled)return;
+      const allItems=[];
+      if(acts.status==='fulfilled')allItems.push(...(acts.value?.data||[]));
+      if(calls.status==='fulfilled')allItems.push(...(calls.value?.data||[]));
+      if(forms.status==='fulfilled')allItems.push(...(forms.value?.data||[]));
+      const docs=allItems.filter(a=>a.type==='document');
+      setDocLinks(docs);
+      allItems.sort((a,b)=>new Date(b.created_at||b.date||0)-new Date(a.created_at||a.date||0));
+      setTimeline(allItems.filter(a=>a.type!=='document'));
+      if(ems.status==='fulfilled')setEmails(ems.value?.data||[]);
+      setTlLoading(false);
+    })();
+    return()=>{cancelled=true;};
+  },[contact.id]);
 
-  const loadTimeline = async ()=>{
-    setTlLoading(true);
-    const id=contact.id;
-    const [acts,emails,calls,forms] = await Promise.allSettled([
-      api(`/activities?contact_id=${id}&limit=50`),
-      api(`/emails?contact_id=${id}&limit=30`),
-      api(`/calls?contact_id=${id}&limit=20`),
-      api(`/registration_forms?contact_id=${id}&limit=10`),
-    ]);
-    let tl=[];
-    normalizeList(emails.value,'emails').forEach(e=>tl.push({type:'email',title:e.subject||'Email received',desc:e.snippet||(e.body||'').slice(0,100),time:e.created_at||e.received_at}));
-    normalizeList(calls.value,'calls').forEach(c=>tl.push({type:'call',title:`Call${c.duration_seconds?` (${Math.round(c.duration_seconds/60)}m)`:''}`,desc:c.notes||(c.transcript||'').slice(0,100),time:c.created_at||c.called_at}));
-    normalizeList(forms.value,'forms').forEach(f=>tl.push({type:'form',title:'Form submission',desc:f.policy_type||f.form_type||'',time:f.created_at}));
-    normalizeList(acts.value,'activities').forEach(a=>tl.push({type:a.type||a.activity_type||'activity',title:a.title||a.activity_type||'Activity',desc:a.description||a.notes||'',time:a.created_at}));
-    tl.sort((a,b)=>new Date(b.time||0)-new Date(a.time||0));
-    setTimeline(tl); setTlLoading(false);
-  };
-
-  const updateStatus = async(s)=>{
-    setStatus(s); setSaving(true);
+  const updateStatus=async(s)=>{
+    setStatus(s);
     try{
-      await api(`/contacts/${contact.id}`,{method:'PATCH',body:JSON.stringify({status:s})});
-      const u={...contact,status:s}; setContact(u); onUpdate(u);
+      await api('/contacts/'+contact.id,{method:'PATCH',body:JSON.stringify({status:s})});
+      const updated={...contact,status:s};
+      setContact(updated); onUpdate&&onUpdate(updated);
       toast('Status updated','success');
-    }catch(e){ toast('Failed to update status','error'); }
-    finally{ setSaving(false); }
+    }catch(e){toast('Failed to update status','error');}
   };
 
-  const addNote = async()=>{
-    if(!note.trim()) return;
+  const addNote=async()=>{
+    if(!note.trim())return;
     setAddingNote(true);
     try{
       await api('/activities',{method:'POST',body:JSON.stringify({contact_id:contact.id,type:'note',title:'Note',description:note})});
-      setNote(''); toast('Note saved','success'); loadTimeline();
-    }catch(e){ toast('Failed to save note','error'); }
-    finally{ setAddingNote(false); }
+      setNote(''); toast('Note added','success');
+      const acts=await api('/activities?contact_id='+contact.id+'&limit=50');
+      setTimeline((acts?.data||[]).filter(a=>a.type!=='document').sort((a,b)=>new Date(b.created_at||0)-new Date(a.created_at||0)));
+    }catch(e){toast('Failed to add note','error');}
+    finally{setAddingNote(false);}
   };
 
-  const tags=contact.tags||[], name=fmt.name(contact);
+  const addDocument=async()=>{
+    if(!docUrl.trim())return;
+    setAddingDoc(true);
+    try{
+      await api('/activities',{method:'POST',body:JSON.stringify({contact_id:contact.id,type:'document',title:docLabel||docUrl,description:docUrl})});
+      setDocLinks(prev=>[...prev,{type:'document',title:docLabel||docUrl,description:docUrl,created_at:new Date().toISOString()}]);
+      setDocUrl(''); setDocLabel('');
+      toast('Document link saved','success');
+    }catch(e){toast('Failed to save link','error');}
+    finally{setAddingDoc(false);}
+  };
+
+  const sendEmail=async(asDraft)=>{
+    setSendingEmail(true);
+    try{
+      if(asDraft){
+        await api('/activities',{method:'POST',body:JSON.stringify({contact_id:contact.id,type:'email_draft',title:composeData.subject,description:'To: '+composeData.to+'\n\n'+composeData.body})});
+        toast('Draft saved','success');
+      }else{
+        await api('/send-email',{method:'POST',body:JSON.stringify({contact_id:contact.id,to:composeData.to,subject:composeData.subject,body:composeData.body,reply_to_id:composeData.replyTo?.id})});
+        setTimeline(prev=>[{type:'email_sent',title:composeData.subject,description:composeData.body,created_at:new Date().toISOString()},...prev]);
+        toast('Email sent!','success');
+      }
+      setShowCompose(false);
+      setComposeData({to:'',subject:'',body:'',replyTo:null});
+    }catch(e){toast(asDraft?'Failed to save draft':'Failed to send email','error');}
+    finally{setSendingEmail(false);}
+  };
+
+  const calcXeroTotal=()=>{
+    const sub=xeroForm.items.reduce((s,i)=>s+(i.qty*i.unitPrice*(1-(i.discount||0)/100)),0);
+    const gst=xeroForm.gst?sub*0.1:0;
+    return{sub,gst,total:sub+gst};
+  };
+
+  const createXeroQuote=async()=>{
+    try{
+      const r=await api('/xero/quotes',{method:'POST',body:JSON.stringify({contact_id:contact.id,items:xeroForm.items,gst:xeroForm.gst,service_desc:xeroForm.serviceDesc})});
+      setXeroQuote(r); toast('Quote created in Xero!','success');
+    }catch(e){toast('Xero: '+(e.message||'Check Xero authorization'),'error');}
+  };
+
+  const TABS=[{id:'activity',label:'Activity'},{id:'emails',label:'Emails'},{id:'documents',label:'Docs'},{id:'quote',label:'Quote/Inv'}];
+  const totals=calcXeroTotal();
+  const STMAP={inquiry:'#6b7280',lead:'#3b82f6',quoted:'#f59e0b',invoiced:'#8b5cf6',customer:'#10b981',active:'#06b6d4',delivered:'#10b981'};
+  const stColor=STMAP[status]||'#6b7280';
+
   return (
-    <>
-      <div className="panel-overlay" onClick={onClose}/>
-      <div className="panel-drawer">
-        <div className="panel-top">
-          <div>
-            <div className="panel-name">{name}</div>
-            <div className="panel-meta">{contact.source&&<>{SOURCE_ICONS[contact.source]||'❓'} {contact.source} · </>}Added {fmt.date(contact.created_at)}</div>
-          </div>
-          <button className="panel-close" onClick={onClose}>✕</button>
+    <div className="contact-panel">
+      <div className="panel-header">
+        <div style={{display:'flex',alignItems:'center',gap:6,flexWrap:'wrap'}}>
+          <StatusBadge status={status}/>
+          {contact.db_match&&<span style={{fontSize:10,background:'#1a3a6b',color:'#7cb9ff',padding:'2px 6px',borderRadius:10,border:'1px solid #2a5a9b'}}>&#128269; DB Match</span>}
         </div>
-        <div className="panel-body">
-          <div className="quick-actions">
-            {fmt.phone(contact)&&<a href={`tel:${fmt.phone(contact)}`} className="quick-btn"><span className="qb-icon">{'\u{1F4DE}'}</span>Call</a>}
-            {fmt.email(contact)&&<a href={`mailto:${fmt.email(contact)}`} className="quick-btn"><span className="qb-icon">✉️</span>Email</a>}
-            {fmt.phone(contact)&&<a href={`https://wa.me/${fmt.phone(contact).replace(/\D/g,'')}`} target="_blank" className="quick-btn"><span className="qb-icon">{'\u{1F4AC}'}</span>WhatsApp</a>}
-          </div>
-          <div className="info-grid">
-            <div className="info-item"><label>Phone</label><p>{fmt.phone(contact)||'—'}</p></div>
-            <div className="info-item"><label>Email</label><p style={{fontSize:12,wordBreak:'break-word'}}>{fmt.email(contact)||'—'}</p></div>
-            <div className="info-item"><label>Company</label><p>{contact.company||contact.company_name||'—'}</p></div>
-            <div className="info-item"><label>Policy Type</label><p>{contact.policy_type||'—'}</p></div>
-          </div>
-          <div className="section-heading">Tags</div>
-          <div style={{marginBottom:16}}>
-            {tags.length>0?tags.map((t,i)=><TagChip key={i} tag={t}/>):<span style={{fontSize:13,color:'var(--text3)'}}>No tags assigned</span>}
-          </div>
-          <div className="section-heading">Status {saving&&'…'}</div>
-          <select className="form-select" style={{marginBottom:20}} value={status} onChange={e=>updateStatus(e.target.value)}>
-            {['inquiry','hot','cold','qualified','quote_sent','won','closed'].map(s=><option key={s} value={s}>{s.charAt(0).toUpperCase()+s.slice(1).replace('_',' ')}</option>)}
+        <button className="btn-close" onClick={onClose}>&#10005;</button>
+      </div>
+      <div className="panel-name">
+        <h2 style={{margin:'4px 0',fontSize:17,borderLeft:'3px solid '+stColor,paddingLeft:8}}>{fmt.fullName(contact)}</h2>
+        {contact.company_name&&<div style={{color:'var(--text3)',fontSize:12,paddingLeft:11}}>{contact.company_name}</div>}
+      </div>
+      <div className="panel-body">
+        <div className="quick-actions">
+          {fmt.phone(contact)&&<a href={'tel:'+fmt.phone(contact)} className="quick-btn"><span className="qb-icon">&#128222;</span>Call</a>}
+          {fmt.email(contact)&&<a href={'mailto:'+fmt.email(contact)} className="quick-btn"><span className="qb-icon">&#128231;</span>Email</a>}
+          <button className="quick-btn" onClick={()=>{setComposeData({to:fmt.email(contact)||'',subject:'',body:'',replyTo:null});setShowCompose(true);setActiveTab('emails');}}><span className="qb-icon">&#9993;&#65039;</span>Compose</button>
+          <button className="quick-btn" onClick={()=>{setShowXero(true);setActiveTab('quote');}}><span className="qb-icon">&#128203;</span>Quote</button>
+        </div>
+        <div style={{margin:'8px 0'}}>
+          <select className="form-select" value={status} onChange={e=>updateStatus(e.target.value)} style={{width:'100%',fontSize:12}}>
+            {['inquiry','lead','quoted','invoiced','customer','active','delivered'].map(s=>
+              <option key={s} value={s}>{s.charAt(0).toUpperCase()+s.slice(1)}</option>
+            )}
           </select>
-          <div className="section-heading">Add Note / Activity</div>
-          <textarea className="form-textarea" value={note} onChange={e=>setNote(e.target.value)} placeholder="Log a call, note, or follow-up..." />
-          <button className="btn btn-primary btn-sm" style={{marginTop:8}} onClick={addNote} disabled={addingNote||!note.trim()}>
-            {addingNote?'Saving…':'Save Note'}
-          </button>
-          <div className="section-heading" style={{marginTop:24}}>Activity Timeline</div>
-          {tlLoading?<div className="spinner spinner-sm" style={{margin:'20px auto'}} />:(
-            <div>
-              {timeline.length===0&&<div className="empty-state"><div className="es-icon">{'\u{1F550}'}</div><p>No activity recorded yet.</p></div>}
-              {timeline.map((item,i)=>(
-                <div key={i} className="tl-item">
-                  <div className={`tl-dot tl-dot-${item.type}`}/>
-                  <div className="tl-body">
-                    <div className="tl-title">{item.title}</div>
-                    {item.desc&&<div className="tl-desc">{item.desc}</div>}
-                    <div className="tl-time">{fmt.dateTime(item.time)}</div>
-                  </div>
+        </div>
+        <div style={{display:'flex',borderBottom:'1px solid var(--border)',marginBottom:10}}>
+          {TABS.map(t=>(
+            <button key={t.id} onClick={()=>setActiveTab(t.id)} style={{flex:1,padding:'6px 2px',fontSize:10,background:'none',border:'none',borderBottom:activeTab===t.id?'2px solid var(--accent)':'2px solid transparent',color:activeTab===t.id?'var(--accent)':'var(--text3)',cursor:'pointer',fontWeight:activeTab===t.id?700:400,whiteSpace:'nowrap'}}>
+              {t.label}
+            </button>
+          ))}
+        </div>
+
+        {activeTab==='activity'&&<>
+          <div style={{marginBottom:8}}>
+            <textarea className="form-input" placeholder="Add a note..." value={note} onChange={e=>setNote(e.target.value)} rows={2} style={{fontSize:12,resize:'vertical',width:'100%',boxSizing:'border-box'}}/>
+            <button className="btn btn-primary btn-sm" onClick={addNote} disabled={addingNote||!note.trim()} style={{marginTop:4,width:'100%'}}>{addingNote?'Saving...':'Add Note'}</button>
+          </div>
+          {tlLoading?<div className="spinner"/>:timeline.length===0
+            ?<div style={{color:'var(--text3)',fontSize:12,textAlign:'center',padding:16}}>No activity yet</div>
+            :<div className="timeline">{timeline.map((item,i)=>(
+              <div key={i} className="tl-item">
+                <div className="tl-icon">{item.type==='call'?'&#128222;':item.type==='note'?'&#128221;':item.type==='email_sent'?'&#128228;':item.type==='email_draft'?'&#128203;':'&#128204;'}</div>
+                <div className="tl-content">
+                  <div className="tl-title">{item.title||item.type}</div>
+                  {item.description&&<div className="tl-desc" style={{fontSize:11,color:'var(--text3)',marginTop:2}}>{item.description.substring(0,150)}{item.description.length>150?'...':''}</div>}
+                  <div className="tl-date">{fmt.date(item.created_at||item.date)}</div>
+                </div>
+              </div>
+            ))}</div>}
+        </>}
+
+        {activeTab==='emails'&&<>
+          <button className="btn btn-primary btn-sm" style={{width:'100%',marginBottom:8}} onClick={()=>{setComposeData({to:fmt.email(contact)||'',subject:'',body:'',replyTo:null});setShowCompose(true);}}>&#9993; Compose New Email</button>
+          {emails.length===0
+            ?<div style={{color:'var(--text3)',fontSize:12,textAlign:'center',padding:16}}>No emails on record</div>
+            :emails.map((em,i)=>(
+              <div key={i} className="email-thread-item">
+                <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:2}}>
+                  <div style={{fontWeight:600,flex:1,marginRight:8,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{em.subject||'(no subject)'}</div>
+                  <div style={{color:'var(--text3)',fontSize:10,whiteSpace:'nowrap'}}>{fmt.date(em.date||em.created_at)}</div>
+                </div>
+                <div style={{color:'var(--text3)',marginBottom:4,fontSize:11}}>From: {em.from_email||em.from||em.sender||'&#8212;'}</div>
+                {em.snippet&&<div style={{color:'var(--text2)',fontStyle:'italic',marginBottom:4,fontSize:11}}>{em.snippet}</div>}
+                <button className="btn btn-sm" style={{fontSize:10,padding:'2px 8px'}} onClick={()=>{setComposeData({to:fmt.email(contact)||'',subject:'Re: '+(em.subject||''),body:'',replyTo:em});setShowCompose(true);}}>&#8617; Reply</button>
+              </div>
+            ))}
+        </>}
+
+        {activeTab==='documents'&&<>
+          <div style={{marginBottom:10}}>
+            <input className="form-input" placeholder="Label (optional)" value={docLabel} onChange={e=>setDocLabel(e.target.value)} style={{fontSize:12,marginBottom:4,width:'100%',boxSizing:'border-box'}}/>
+            <input className="form-input" placeholder="Google Drive link or paste URL..." value={docUrl} onChange={e=>setDocUrl(e.target.value)} style={{fontSize:12,marginBottom:4,width:'100%',boxSizing:'border-box'}}/>
+            <button className="btn btn-primary btn-sm" style={{width:'100%'}} onClick={addDocument} disabled={addingDoc||!docUrl.trim()}>{addingDoc?'Saving...':'Add Link'}</button>
+          </div>
+          {docLinks.length===0
+            ?<div style={{color:'var(--text3)',fontSize:12,textAlign:'center',padding:16}}>No documents attached yet</div>
+            :docLinks.map((d,i)=>(
+              <div key={i} style={{display:'flex',alignItems:'center',gap:6,padding:'6px 0',borderBottom:'1px solid var(--border)',fontSize:12}}>
+                <span>&#128196;</span>
+                <a href={d.description} target="_blank" rel="noreferrer" style={{color:'var(--accent)',flex:1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{d.title||d.description}</a>
+                <span style={{color:'var(--text3)',fontSize:10}}>{fmt.date(d.created_at)}</span>
+              </div>
+            ))}
+        </>}
+
+        {activeTab==='quote'&&<>
+          {!showXero
+            ?<button className="btn btn-primary" style={{width:'100%'}} onClick={()=>setShowXero(true)}>&#128203; Create Quote / Invoice</button>
+            :<div style={{fontSize:12}}>
+              <div style={{fontWeight:600,marginBottom:8,color:'var(--text1)'}}>New Quote &#8212; {fmt.fullName(contact)}</div>
+              <textarea className="form-input" placeholder="Service description..." value={xeroForm.serviceDesc} onChange={e=>setXeroForm(f=>({...f,serviceDesc:e.target.value}))} rows={2} style={{fontSize:12,marginBottom:8,width:'100%',boxSizing:'border-box'}}/>
+              <div style={{fontSize:10,color:'var(--text3)',marginBottom:4}}>Line Items (Desc / Qty / Price / Disc%):</div>
+              {xeroForm.items.map((item,idx)=>(
+                <div key={idx} style={{display:'grid',gridTemplateColumns:'1fr 50px 80px 55px 22px',gap:3,marginBottom:4,alignItems:'center'}}>
+                  <input className="form-input" placeholder="Description" value={item.desc} onChange={e=>setXeroForm(f=>{const it=[...f.items];it[idx]={...it[idx],desc:e.target.value};return{...f,items:it};})} style={{fontSize:10}}/>
+                  <input className="form-input" placeholder="Qty" type="number" min="0" step="1" value={item.qty} onChange={e=>setXeroForm(f=>{const it=[...f.items];it[idx]={...it[idx],qty:+e.target.value};return{...f,items:it};})} style={{fontSize:10}}/>
+                  <input className="form-input" placeholder="$" type="number" min="0" step="0.01" value={item.unitPrice} onChange={e=>setXeroForm(f=>{const it=[...f.items];it[idx]={...it[idx],unitPrice:+e.target.value};return{...f,items:it};})} style={{fontSize:10}}/>
+                  <input className="form-input" placeholder="%" type="number" min="0" max="100" value={item.discount} onChange={e=>setXeroForm(f=>{const it=[...f.items];it[idx]={...it[idx],discount:+e.target.value};return{...f,items:it};})} style={{fontSize:10}}/>
+                  {xeroForm.items.length>1&&<button onClick={()=>setXeroForm(f=>({...f,items:f.items.filter((_,j)=>j!==idx)}))} style={{background:'none',border:'none',color:'var(--text3)',cursor:'pointer',fontSize:16,padding:0,lineHeight:1}}>&#215;</button>}
                 </div>
               ))}
-            </div>
-          )}
-        </div>
+              <button className="btn btn-sm" style={{marginBottom:8,fontSize:11}} onClick={()=>setXeroForm(f=>({...f,items:[...f.items,{desc:'',qty:1,unitPrice:0,discount:0}]}))}>+ Add Line Item</button>
+              <div style={{display:'flex',alignItems:'center',gap:6,marginBottom:8}}>
+                <input type="checkbox" id="gstChk" checked={xeroForm.gst} onChange={e=>setXeroForm(f=>({...f,gst:e.target.checked}))}/>
+                <label htmlFor="gstChk" style={{cursor:'pointer',fontSize:12}}>Include GST (10%)</label>
+              </div>
+              <div style={{background:'var(--bg3)',borderRadius:6,padding:8,marginBottom:10}}>
+                <div style={{display:'flex',justifyContent:'space-between',marginBottom:3}}><span>Subtotal</span><span>${totals.sub.toFixed(2)}</span></div>
+                {xeroForm.gst&&<div style={{display:'flex',justifyContent:'space-between',marginBottom:3,color:'var(--text3)'}}><span>GST (10%)</span><span>${totals.gst.toFixed(2)}</span></div>}
+                <div style={{display:'flex',justifyContent:'space-between',fontWeight:700,marginTop:4,paddingTop:4,borderTop:'1px solid var(--border)'}}><span>Total (AUD)</span><span>${totals.total.toFixed(2)}</span></div>
+              </div>
+              <div style={{display:'flex',flexDirection:'column',gap:6}}>
+                <button className="btn btn-primary btn-sm" onClick={()=>{if(window.confirm('Create this quote in Xero? This requires Xero authorization.'))createXeroQuote();}}>1&#65039;&#8419; Create in Xero</button>
+                <button className="btn btn-sm" disabled={!xeroQuote} style={{opacity:xeroQuote?1:0.5}} onClick={()=>toast('PDF download requires active Xero connection','info')}>2&#65039;&#8419; Download PDF</button>
+                <button className="btn btn-sm" disabled={!xeroQuote} style={{opacity:xeroQuote?1:0.5}} onClick={()=>{setComposeData({to:fmt.email(contact)||'',subject:'Your Quote from Rapid Policies',body:'Hi '+fmt.fullName(contact)+',\n\nPlease find your quote attached.\n\nKind regards,\nAndrew',replyTo:null});setShowCompose(true);}}>3&#65039;&#8419; Send via Email</button>
+                {xeroQuote&&<button className="btn btn-primary btn-sm" style={{marginTop:4}} onClick={()=>{if(window.confirm('Convert this quote to an invoice in Xero?'))toast('Converting to invoice... (requires Xero authorization)','info');}}>&#128260; Convert to Invoice</button>}
+              </div>
+            </div>}
+        </>}
       </div>
-    </>
+
+      {showCompose&&(
+        <div className="modal-overlay" onClick={e=>{if(e.target===e.currentTarget)setShowCompose(false);}}>
+          <div className="modal" style={{width:480,maxWidth:'95vw'}}>
+            <div className="modal-header">
+              <h3 style={{margin:0}}>{composeData.replyTo?'Reply to Email':'Compose Email'}</h3>
+              <button className="btn-close" onClick={()=>setShowCompose(false)}>&#10005;</button>
+            </div>
+            <div style={{padding:16,display:'flex',flexDirection:'column',gap:10}}>
+              {composeData.replyTo&&<div style={{background:'var(--bg3)',borderRadius:4,padding:8,fontSize:11,color:'var(--text3)',borderLeft:'3px solid var(--accent)'}}>Replying to: {composeData.replyTo.subject||'(no subject)'}</div>}
+              <div><label style={{fontSize:11,color:'var(--text3)',display:'block',marginBottom:2}}>To</label><input className="form-input" value={composeData.to} onChange={e=>setComposeData(d=>({...d,to:e.target.value}))} style={{width:'100%',boxSizing:'border-box'}}/></div>
+              <div><label style={{fontSize:11,color:'var(--text3)',display:'block',marginBottom:2}}>Subject</label><input className="form-input" value={composeData.subject} onChange={e=>setComposeData(d=>({...d,subject:e.target.value}))} style={{width:'100%',boxSizing:'border-box'}}/></div>
+              <div><label style={{fontSize:11,color:'var(--text3)',display:'block',marginBottom:2}}>Body</label><textarea className="form-input" value={composeData.body} onChange={e=>setComposeData(d=>({...d,body:e.target.value}))} rows={7} style={{resize:'vertical',width:'100%',boxSizing:'border-box'}}/></div>
+            </div>
+            <div style={{display:'flex',gap:8,justifyContent:'flex-end',padding:'12px 16px',borderTop:'1px solid var(--border)'}}>
+              <button className="btn" onClick={()=>sendEmail(true)} disabled={sendingEmail}>&#128190; Save Draft</button>
+              <button className="btn btn-primary" onClick={()=>{if(window.confirm('Send this email to '+composeData.to+'?'))sendEmail(false);}} disabled={sendingEmail||!composeData.to||!composeData.subject}>{sendingEmail?'Sending...':'&#128228; Send Now'}</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
-
-/* =========================================
-   ADD CONTACT MODAL
-   ========================================= */
 const AddContactModal = ({ onClose, onSaved }) => {
   const toast = useToast();
   const [form, setForm] = useState({ first_name:'',last_name:'',phone:'',email:'',source:'manual',status:'inquiry',policy_type:'' });
@@ -1339,7 +1510,7 @@ const ContactsPage = ({ onUnauth }) => {
           {filtered.map(c=>{
             const tags=c.tags||[];
             return(
-              <GlassCard key={c.id} className="contact-card" style={{padding:14}} onClick={()=>setSelected(c)}>
+              <GlassCard key={c.id} className="contact-card" data-status={c.status||'inquiry'} style={{padding:14}} onClick={()=>setSelected(c)}>
                 <div className="contact-card-header">
                   <div><div className="contact-card-name">{fmt.name(c)}</div><div className="contact-card-meta">{fmt.phone(c)||fmt.email(c)||'—'}</div></div>
                   <StatusBadge status={c.status}/>
@@ -1388,89 +1559,132 @@ const ContactsPage = ({ onUnauth }) => {
    ========================================= */
 const PipelinePage = ({ onUnauth }) => {
   const toast = useToast();
-  const [contacts, setContacts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [dragging, setDragging] = useState(null);
-  const [dragOver, setDragOver] = useState(null);
-  const [selected, setSelected] = useState(null);
+  const [contacts, setContacts] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+  const [dragging, setDragging] = React.useState(null);
+  const [dragOver, setDragOver] = React.useState(null);
+  const [selContact, setSelContact] = React.useState(null);
 
-  useEffect(()=>{load();},[]);
+  const STAGES=[
+    {id:'lead',label:'Lead',color:'#3b82f6',hint:'New inquiries, not yet quoted'},
+    {id:'quoted',label:'Quoted',color:'#f59e0b',hint:'Quote sent, pending close'},
+    {id:'invoiced',label:'Invoiced',color:'#8b5cf6',hint:'Invoice sent, awaiting payment'},
+    {id:'delivered',label:'Delivered',color:'#10b981',hint:'Complete'},
+  ];
 
-  const load = async()=>{
-    setLoading(true);
+  React.useEffect(()=>{
+    (async()=>{
+      setLoading(true);
+      try{
+        const r=await api('/contacts?limit=500');
+        setContacts(r?.data||r||[]);
+      }catch(e){
+        if(e?.status===401)onUnauth&&onUnauth();
+        toast('Failed to load pipeline','error');
+      }finally{setLoading(false);}
+    })();
+  },[]);
+
+  const getStageContacts=(sid)=>contacts.filter(c=>{
+    const s=(c.status||'').toLowerCase();
+    if(sid==='lead')return !s||s==='lead'||s==='inquiry';
+    if(sid==='quoted')return s==='quoted';
+    if(sid==='invoiced')return s==='invoiced';
+    if(sid==='delivered')return s==='delivered'||s==='customer'||s==='active';
+    return false;
+  });
+
+  const NEXT_STATUS={lead:'quoted',quoted:'invoiced',invoiced:'customer',delivered:null};
+  const STATUS_FOR_STAGE={lead:'lead',quoted:'quoted',invoiced:'invoiced',delivered:'customer'};
+
+  const moveNext=async(c,stageId)=>{
+    const ns=NEXT_STATUS[stageId];
+    if(!ns){toast('Already at final stage','info');return;}
     try{
-      const data=await api('/contacts?limit=1000');
-      setContacts(normalizeList(data,'contacts','leads','items'));
-    }catch(e){
-      if(e.status===401){onUnauth();return;}
-      toast('Failed to load pipeline','error');
-    }finally{setLoading(false);}
+      await api('/contacts/'+c.id,{method:'PATCH',body:JSON.stringify({status:ns})});
+      setContacts(prev=>prev.map(x=>x.id===c.id?{...x,status:ns}:x));
+      toast('Moved to '+ns,'success');
+    }catch(e){toast('Failed to update stage','error');}
   };
 
   const onDragStart=(e,c)=>{setDragging(c);e.dataTransfer.effectAllowed='move';};
-  const onDragOver=(e,id)=>{e.preventDefault();e.dataTransfer.dropEffect='move';setDragOver(id);};
-  const onDrop=async(e,id)=>{
-    e.preventDefault();
-    if(!dragging||dragging.status===id){setDragging(null);setDragOver(null);return;}
-    const prev=[...contacts];
-    setContacts(cs=>cs.map(c=>c.id===dragging.id?{...c,status:id}:c));
-    setDragging(null);setDragOver(null);
-    try{await api(`/contacts/${dragging.id}`,{method:'PATCH',body:JSON.stringify({status:id})});toast('Stage updated','success');}
-    catch(e){setContacts(prev);toast('Failed to update stage','error');}
+  const onDragOver=(e,sid)=>{e.preventDefault();setDragOver(sid);};
+  const onDrop=async(e,sid)=>{
+    e.preventDefault();setDragOver(null);
+    if(!dragging)return;
+    const ns=STATUS_FOR_STAGE[sid];
+    if((dragging.status||'lead')===ns)return;
+    try{
+      await api('/contacts/'+dragging.id,{method:'PATCH',body:JSON.stringify({status:ns})});
+      setContacts(prev=>prev.map(x=>x.id===dragging.id?{...x,status:ns}:x));
+      toast('Moved to '+sid,'success');
+    }catch(e){toast('Failed to move contact','error');}
+    setDragging(null);
   };
-  const handleUpdate=u=>{setContacts(p=>p.map(c=>c.id===u.id?u:c));if(selected?.id===u.id)setSelected(u);};
 
-  if(loading) return <div className="page-body"><div className="spinner"/></div>;
+  if(loading)return <div className="page-body"><div className="spinner"/></div>;
+
+  const totalContacts=contacts.length;
 
   return (
     <div>
-      <div className="page-header">
-        <div className="page-title">Pipeline</div>
-        <div className="page-sub">Drag cards to advance leads · {contacts.length} total</div>
-      </div>
-      <div className="page-body">
-        <div className="kanban-board">
-          {STAGES.map(stage=>{
-            const cards=contacts.filter(c=>{
-              const s=(c.status||'').toLowerCase().replace(/\s+/g,'_');
-              return s===stage.id||(stage.id==='hot'&&(s==='hot_lead'||s==='hotlead'));
-            });
-            return(
-              <div key={stage.id} className="kanban-col" style={{borderTop:`2px solid ${stage.color}`}}>
-                <div className="kanban-col-head">
-                  <div className="kanban-col-title" style={{color:stage.color}}>{stage.label}</div>
-                  <div className="kanban-col-count">{cards.length} lead{cards.length!==1?'s':''}</div>
-                </div>
-                <div className={`kanban-cards kanban-drop ${dragOver===stage.id?'drag-over':''}`}
-                  onDragOver={e=>onDragOver(e,stage.id)}
-                  onDrop={e=>onDrop(e,stage.id)}
-                  onDragLeave={()=>setDragOver(null)}>
-                  {cards.length===0&&<div style={{padding:'16px 8px',textAlign:'center',fontSize:12,color:'var(--text3)',opacity:0.5}}>Drop here</div>}
-                  {cards.map(c=>(
-                    <div key={c.id} className={`kanban-card ${dragging?.id===c.id?'dragging':''}`}
-                      draggable onDragStart={e=>onDragStart(e,c)} onClick={()=>setSelected(c)}>
-                      <div className="kc-name">{fmt.name(c)}</div>
-                      <div className="kc-phone">{fmt.phone(c)||fmt.email(c)||'—'}</div>
-                      <div className="kc-footer">
-                        <span className="kc-source">{SOURCE_ICONS[c.source]||SOURCE_ICONS.default}</span>
-                        {c.value&&<span className="kc-value">{fmt.currency(c.value)}</span>}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            );
-          })}
+      <div className="page-header" style={{display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:8}}>
+        <div>
+          <div className="page-title">Pipeline</div>
+          <div style={{fontSize:11,color:'var(--text3)'}}>{totalContacts} contacts &bull; Drag to move between stages</div>
+        </div>
+        <div style={{display:'flex',gap:6}}>
+          {STAGES.map(st=>(
+            <div key={st.id} style={{fontSize:11,textAlign:'center'}}>
+              <span style={{color:st.color,fontWeight:700}}>{getStageContacts(st.id).length}</span>
+              <span style={{color:'var(--text3)',marginLeft:4}}>{st.label}</span>
+            </div>
+          ))}
         </div>
       </div>
-      {selected&&<ContactPanel contact={selected} onClose={()=>setSelected(null)} onUpdate={handleUpdate}/>}
+      <div className="kanban-board">
+        {STAGES.map(stage=>{
+          const cards=getStageContacts(stage.id);
+          return (
+            <div key={stage.id}
+              className={'kanban-col'+(dragOver===stage.id?' drag-over':'')}
+              onDragOver={e=>onDragOver(e,stage.id)}
+              onDrop={e=>onDrop(e,stage.id)}
+              onDragLeave={()=>setDragOver(null)}>
+              <div className="kanban-col-header" style={{borderBottomColor:stage.color}}>
+                <span style={{color:stage.color}}>{stage.label}</span>
+                <span style={{background:stage.color,color:'#fff',borderRadius:12,padding:'1px 8px',fontSize:11,fontWeight:700}}>{cards.length}</span>
+              </div>
+              <div style={{fontSize:10,color:'var(--text3)',marginBottom:6}}>{stage.hint}</div>
+              {cards.length===0&&<div style={{textAlign:'center',color:'var(--text3)',fontSize:11,padding:'20px 8px',borderRadius:6,border:'1px dashed var(--border)'}}>Drop here</div>}
+              {cards.map(c=>(
+                <div key={c.id}
+                  className={'kanban-card'+(dragging?.id===c.id?' dragging':'')}
+                  draggable
+                  onDragStart={e=>onDragStart(e,c)}
+                  onDragEnd={()=>setDragging(null)}>
+                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:3}}>
+                    <div style={{fontWeight:600,fontSize:12,flex:1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{fmt.fullName(c)}</div>
+                    {c.db_match&&<span title="Matched in background DB" style={{fontSize:9,background:'#1a3a6b',color:'#7cb9ff',padding:'1px 5px',borderRadius:8,marginLeft:3,border:'1px solid #2a5a9b',whiteSpace:'nowrap',flexShrink:0}}>&#128269; DB</span>}
+                  </div>
+                  {c.company_name&&<div style={{fontSize:10,color:'var(--text3)',marginBottom:2,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{c.company_name}</div>}
+                  <div style={{fontSize:10,color:'var(--text3)',marginBottom:1}}>{fmt.email(c)||<span style={{color:'var(--text4)'}}>No email</span>}</div>
+                  <div style={{fontSize:10,color:'var(--text3)',marginBottom:5}}>{fmt.phone(c)||<span style={{color:'var(--text4)'}}>No phone</span>}</div>
+                  {(c.last_activity_at||c.updated_at)&&<div style={{fontSize:9,color:'var(--text3)',marginBottom:6}}>Last: {fmt.date(c.last_activity_at||c.updated_at)}</div>}
+                  <div style={{display:'flex',gap:4}}>
+                    <button className="btn btn-sm" style={{flex:1,fontSize:10,padding:'3px 0'}} onClick={()=>setSelContact(c)}>View</button>
+                    {stage.id!=='delivered'&&<button className="btn btn-primary btn-sm" style={{flex:1,fontSize:10,padding:'3px 0'}} onClick={()=>moveNext(c,stage.id)}>&#8594; Next</button>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          );
+        })}
+      </div>
+      {selContact&&<ContactPanel contact={selContact} onClose={()=>setSelContact(null)} onUpdate={updated=>{setContacts(prev=>prev.map(c=>c.id===updated.id?updated:c));setSelContact(updated);}}/>}
     </div>
   );
 };
-
-/* =========================================
-   SETTINGS PAGE
-   ========================================= */
 const SettingsPage = () => {
   const [copied, setCopied] = useState('');
   const copy=(text,key)=>{navigator.clipboard.writeText(text).catch(()=>{});setCopied(key);setTimeout(()=>setCopied(''),2500);};
