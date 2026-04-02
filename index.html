@@ -3,1838 +3,256 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#080c18">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Rapid Policies">
-  <meta name="description" content="Rapid Policies Australia — Insurance CRM">
-  <title>Rapid Policies CRM</title>
-  <link rel="apple-touch-icon" href="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">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>RPA REVENUE COMMAND OS v4.1</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
   <style>
-/* ===== RESET ===== */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { font-size: 16px; -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
-body {
-  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-  background: #080c18;
-  color: #e2e8f8;
-  min-height: 100vh;
-  min-height: -webkit-fill-available;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-}
+    :root {
+      --neon-cyan: #00f0ff;
+      --neon-purple: #c724ff;
+      --neon-green: #00ff9d;
+      --glass: rgba(10,15,40,0.92);
+      --glow: 0 0 35px #00f0ff;
+    }
+    body { background:#05080f; color:#e0f8ff; font-family:'Space Grotesk',sans-serif; margin:0; overflow:hidden; height:100vh; }
+    #neural-bg { position:fixed; inset:0; z-index:-2; background:radial-gradient(circle at 50% 20%, rgba(0,240,255,0.1) 0%, transparent 70%); pointer-events:none; }
+    .neural-node { position:absolute; width:4px; height:4px; background:#00f0ff; border-radius:50%; box-shadow:0 0 14px #00f0ff; animation:neuralPulse 6s infinite alternate; }
+    @keyframes neuralPulse { 0%{transform:scale(0.7);opacity:0.4} 100%{transform:scale(1.8);opacity:1} }
 
-/* ===== CSS CUSTOM PROPERTIES ===== */
-:root {
-  --bg0: #080c18;
-  --bg1: #0d1224;
-  --bg2: rgba(26,31,56,0.75);
-  --bg3: rgba(36,43,72,0.85);
-  --glass: rgba(16,22,44,0.8);
-  --glass2: rgba(20,28,52,0.9);
-  --border: rgba(255,255,255,0.08);
-  --border2: rgba(0,212,255,0.25);
-  --text: #e8eeff;
-  --text2: #8899cc;
-  --text3: #4a5a88;
-  --blue: #00d4ff;
-  --blue2: #0ea5e9;
-  --purple: #a855f7;
-  --green: #00ff88;
-  --amber: #f59e0b;
-  --red: #ff3b6b;
-  --cyan: #22d3ee;
-  --nav-h: 64px;
-  --sidebar-w: 240px;
-  --radius: 16px;
-  --radius-sm: 10px;
-  --glow-blue: 0 0 20px rgba(0,212,255,0.35);
-  --glow-purple: 0 0 20px rgba(168,85,247,0.35);
-  --glow-green: 0 0 20px rgba(0,255,136,0.35);
-  --glow-red: 0 0 20px rgba(255,59,107,0.4);
-}
+    .omnibar { position:fixed; top:0; left:0; right:0; height:68px; background:rgba(5,8,15,0.95); backdrop-filter:blur(20px); border-bottom:1px solid #00f0ff; z-index:1000; display:flex; align-items:center; padding:0 24px; gap:16px; }
+    .command-rail { position:fixed; left:0; top:68px; bottom:0; width:220px; background:var(--glass); border-right:1px solid #00f0ff; padding:24px 16px; overflow-y:auto; z-index:900; }
+    .theatre { margin-left:220px; margin-right:320px; margin-top:68px; height:calc(100vh - 68px - 78px); padding:24px; overflow:auto; }
+    .intelligence-rail { position:fixed; right:0; top:68px; bottom:78px; width:320px; background:var(--glass); border-left:1px solid #00f0ff; padding:24px 16px; overflow-y:auto; z-index:900; }
+    .agent-dock { position:fixed; bottom:0; left:220px; right:320px; height:78px; background:rgba(5,8,15,0.95); backdrop-filter:blur(20px); border-top:1px solid #00f0ff; display:flex; align-items:center; padding:0 16px; gap:12px; overflow-x:auto; z-index:950; }
 
-/* ===== SCROLLBARS ===== */
-::-webkit-scrollbar { width: 5px; height: 5px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(0,212,255,0.2); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(0,212,255,0.4); }
+    .holo-card { background:var(--glass); border:1px solid #00f0ff; border-radius:16px; padding:16px; box-shadow:var(--glow); transition:all .3s cubic-bezier(0.23,1,0.32,1); }
+    .holo-card:hover { transform:translateY(-4px); box-shadow:0 0 60px #00f0ff; }
 
-/* ===== ANIMATIONS ===== */
-@keyframes gradientShift {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-@keyframes cardIn {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes fadeIn {
-  from { opacity: 0; } to { opacity: 1; }
-}
-@keyframes slideInRight {
-  from { transform: translateX(100%); opacity: 0; }
-  to   { transform: translateX(0); opacity: 1; }
-}
-@keyframes slideUp {
-  from { transform: translateY(100%); } to { transform: translateY(0); }
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-@keyframes pulse-hot {
-  0%,100% { box-shadow: 0 0 0 0 rgba(255,59,107,0.5), inset 0 0 8px rgba(255,59,107,0.2); }
-  50%      { box-shadow: 0 0 0 5px rgba(255,59,107,0), inset 0 0 8px rgba(255,59,107,0.4); }
-}
-@keyframes glow-pulse {
-  0%,100% { opacity: 1; }
-  50%      { opacity: 0.6; }
-}
-@keyframes float {
-  0%,100% { transform: translateY(0px); }
-  50%      { transform: translateY(-8px); }
-}
-@keyframes shimmer {
-  from { background-position: -200% 0; }
-  to   { background-position: 200% 0; }
-}
-@keyframes toastIn {
-  from { opacity: 0; transform: translateX(-50%) translateY(12px); }
-  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
-}
+    .river { display:flex; gap:20px; overflow-x:auto; padding:20px 0; position:relative; }
+    .stage { flex-shrink:0; width:218px; background:rgba(15,22,55,0.95); border-radius:18px; padding:14px; border:2px solid transparent; position:relative; }
+    .stage::after { content:''; position:absolute; bottom:-2px; left:0; right:0; height:4px; background:linear-gradient(90deg, transparent, #00f0ff); animation:flowLine 4s linear infinite; }
+    @keyframes flowLine { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
 
-/* ===== BACKGROUND GRID PATTERN ===== */
-body::before {
-  content: '';
-  position: fixed; inset: 0; pointer-events: none; z-index: 0;
-  background-image:
-    linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
-  mask-image: radial-gradient(ellipse at 50% 50%, black 40%, transparent 80%);
-}
+    .dossier { position:fixed; inset:0; background:rgba(5,8,15,0.98); z-index:9999; display:none; flex-direction:column; }
+    .dossier.open { display:flex; }
+    .dossier-header { height:84px; background:rgba(10,15,40,0.98); border-bottom:3px solid #00f0ff; padding:0 32px; display:flex; align-items:center; justify-content:space-between; }
+    .dossier-tabs { display:flex; border-bottom:1px solid #00f0ff; }
+    .dossier-tab { padding:18px 24px; font-weight:600; border-bottom:3px solid transparent; cursor:pointer; }
+    .dossier-tab.active { border-bottom-color:#00f0ff; color:#00f0ff; }
 
-/* ===== GLASSMORPHISM CARDS ===== */
-.glass-card {
-  background: var(--glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: 0 4px 30px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
-  transition: border-color 0.25s, box-shadow 0.25s;
-  position: relative;
-  overflow: hidden;
-}
-.glass-card::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(0,212,255,0.3), transparent);
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-.glass-card:hover::before { opacity: 1; }
-.glass-card:hover {
-  border-color: rgba(0,212,255,0.2);
-  box-shadow: 0 4px 30px rgba(0,0,0,0.4), var(--glow-blue);
-}
-
-/* ===== BUTTONS ===== */
-.btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-  min-height: 44px; padding: 10px 22px;
-  border: none; border-radius: var(--radius-sm);
-  font-size: 14px; font-weight: 700; font-family: inherit;
-  cursor: pointer; transition: all 0.2s; text-decoration: none;
-  white-space: nowrap; letter-spacing: 0.2px;
-  position: relative; overflow: hidden;
-}
-.btn:active { transform: scale(0.97); }
-.btn-primary {
-  background: linear-gradient(135deg, #0ea5e9, #00d4ff);
-  color: #0a0e1a;
-  box-shadow: 0 4px 15px rgba(0,212,255,0.35);
-}
-.btn-primary:hover {
-  background: linear-gradient(135deg, #00d4ff, #38bdf8);
-  box-shadow: 0 4px 25px rgba(0,212,255,0.55);
-  transform: translateY(-1px);
-}
-.btn-primary:disabled { background: var(--glass); color: var(--text3); box-shadow: none; cursor: not-allowed; transform: none; }
-.btn-secondary {
-  background: var(--glass2); color: var(--text2);
-  border: 1px solid var(--border);
-}
-.btn-secondary:hover { background: var(--bg3); color: var(--text); border-color: var(--border2); }
-.btn-danger { background: rgba(255,59,107,0.12); color: var(--red); border: 1px solid rgba(255,59,107,0.3); }
-.btn-sm { min-height: 36px; padding: 7px 16px; font-size: 13px; border-radius: 8px; }
-.btn-icon { min-height: 44px; min-width: 44px; padding: 0; border-radius: 10px; font-size: 18px; }
-
-/* ===== FORMS ===== */
-.form-group { margin-bottom: 18px; }
-.form-label { display: block; font-size: 12px; font-weight: 700; color: var(--text3); margin-bottom: 7px; text-transform: uppercase; letter-spacing: 0.6px; }
-.form-input, .form-select, .form-textarea {
-  width: 100%;
-  background: rgba(8,12,24,0.8);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-sm); padding: 12px 14px;
-  color: var(--text); font-size: 15px; font-family: inherit;
-  outline: none; transition: all 0.2s;
-  -webkit-appearance: none;
-}
-.form-input:focus, .form-select:focus, .form-textarea:focus {
-  border-color: var(--blue);
-  box-shadow: 0 0 0 3px rgba(0,212,255,0.12);
-}
-.form-input::placeholder, .form-textarea::placeholder { color: var(--text3); }
-.form-select { cursor: pointer; }
-.form-textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
-.error-msg {
-  background: rgba(255,59,107,0.1); border: 1px solid rgba(255,59,107,0.3);
-  color: var(--red); padding: 12px 16px; border-radius: var(--radius-sm);
-  font-size: 14px; margin-bottom: 16px; font-weight: 500;
-}
-.success-msg {
-  background: rgba(0,255,136,0.08); border: 1px solid rgba(0,255,136,0.25);
-  color: var(--green); padding: 12px 16px; border-radius: var(--radius-sm);
-  font-size: 14px; margin-bottom: 16px;
-}
-
-/* ===== BADGES ===== */
-.badge {
-  display: inline-flex; align-items: center; gap: 5px;
-  padding: 4px 10px; border-radius: 20px;
-  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px;
-  white-space: nowrap;
-}
-.badge-inquiry  { background: rgba(0,212,255,0.12); color: var(--blue); border: 1px solid rgba(0,212,255,0.2); }
-.badge-hot      { background: rgba(255,59,107,0.12); color: var(--red); border: 1px solid rgba(255,59,107,0.25); animation: pulse-hot 2.5s ease infinite; }
-.badge-cold     { background: rgba(74,90,136,0.2); color: var(--text2); border: 1px solid rgba(74,90,136,0.3); }
-.badge-qualified { background: rgba(168,85,247,0.12); color: var(--purple); border: 1px solid rgba(168,85,247,0.25); }
-.badge-won      { background: rgba(0,255,136,0.1); color: var(--green); border: 1px solid rgba(0,255,136,0.2); }
-.badge-closed   { background: rgba(36,43,72,0.5); color: var(--text3); border: 1px solid rgba(74,90,136,0.2); }
-.badge-quote_sent, .badge-quote-sent { background: rgba(245,158,11,0.12); color: var(--amber); border: 1px solid rgba(245,158,11,0.25); }
-.badge-default  { background: rgba(74,90,136,0.2); color: var(--text2); border: 1px solid rgba(74,90,136,0.3); }
-
-.tag-chip {
-  display: inline-flex; align-items: center;
-  padding: 3px 9px; border-radius: 12px;
-  font-size: 11px; font-weight: 600; margin: 2px;
-  white-space: nowrap; letter-spacing: 0.2px;
-}
-.tag-hot    { background: rgba(255,59,107,0.15); color: var(--red); }
-.tag-cold   { background: rgba(0,212,255,0.12); color: #7dd3fc; }
-.tag-default { background: rgba(74,90,136,0.2); color: var(--text2); }
-
-/* ===== SPINNER ===== */
-.spinner {
-  border: 3px solid rgba(0,212,255,0.15); border-top-color: var(--blue);
-  border-radius: 50%; width: 36px; height: 36px;
-  animation: spin 0.7s linear infinite; margin: 48px auto;
-}
-.spinner-sm { width: 18px; height: 18px; border-width: 2px; margin: 0; }
-
-/* ===== SKELETON LOADER ===== */
-.skeleton {
-  background: linear-gradient(90deg, rgba(26,31,56,0.6) 25%, rgba(0,212,255,0.06) 50%, rgba(26,31,56,0.6) 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s ease infinite;
-  border-radius: 8px;
-}
-
-/* ===== LOGIN PAGE ===== */
-.login-bg {
-  position: fixed; inset: 0; z-index: -1;
-  background: linear-gradient(-45deg, #080c18, #0d1a3a, #1a0a3a, #0a1a2a, #0a2a1a, #080c18);
-  background-size: 500% 500%;
-  animation: gradientShift 16s ease infinite;
-}
-.login-wrap {
-  display: flex; align-items: center; justify-content: center;
-  min-height: 100vh; padding: 20px; position: relative;
-}
-.login-stars {
-  position: fixed; inset: 0; overflow: hidden; z-index: -1; pointer-events: none;
-}
-.login-star {
-  position: absolute; width: 2px; height: 2px;
-  background: white; border-radius: 50%; animation: glow-pulse 3s ease infinite;
-}
-.login-card {
-  background: var(--glass);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(0,212,255,0.2);
-  border-radius: 24px; padding: 40px 32px;
-  width: 100%; max-width: 420px;
-  box-shadow: 0 30px 60px rgba(0,0,0,0.6), 0 0 40px rgba(0,212,255,0.1), inset 0 1px 0 rgba(255,255,255,0.06);
-  animation: cardIn 0.5s ease;
-}
-.login-brand { text-align: center; margin-bottom: 32px; }
-.login-logo { font-size: 56px; margin-bottom: 14px; display: block; animation: float 4s ease-in-out infinite; }
-.login-title {
-  font-size: 24px; font-weight: 800; color: var(--text);
-  background: linear-gradient(135deg, #e8eeff, #00d4ff);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.login-sub { font-size: 13px; color: var(--text3); margin-top: 5px; letter-spacing: 0.3px; }
-
-/* ===== APP SHELL ===== */
-.app-shell { display: flex; min-height: 100vh; position: relative; z-index: 1; }
-
-/* ===== SIDEBAR ===== */
-.sidebar {
-  width: var(--sidebar-w); background: var(--glass);
-  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-  border-right: 1px solid var(--border);
-  display: flex; flex-direction: column;
-  flex-shrink: 0; position: sticky; top: 0; height: 100vh;
-  z-index: 40;
-}
-.sidebar-brand {
-  padding: 20px 18px; border-bottom: 1px solid var(--border);
-}
-.sidebar-logo-row { display: flex; align-items: center; gap: 10px; margin-bottom: 2px; }
-.sidebar-logo-icon { font-size: 22px; }
-.sidebar-logo-img { width: 28px; height: 28px; object-fit: contain; }
-.sidebar-title {
-  font-size: 16px; font-weight: 800; color: var(--text);
-  background: linear-gradient(135deg, #e8eeff, #00d4ff);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.sidebar-sub { font-size: 11px; color: var(--text3); letter-spacing: 0.3px; }
-.sidebar-nav { padding: 10px 8px; flex: 1; overflow-y: auto; }
-.nav-item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 11px 12px; border-radius: var(--radius-sm);
-  cursor: pointer; color: var(--text2);
-  font-size: 14px; font-weight: 600;
-  transition: all 0.2s; margin-bottom: 2px; min-height: 44px;
-  border: 1px solid transparent;
-}
-.nav-item:hover { background: rgba(0,212,255,0.06); color: var(--text); border-color: rgba(0,212,255,0.1); }
-.nav-item.active {
-  background: rgba(0,212,255,0.1); color: var(--blue);
-  border-color: rgba(0,212,255,0.2);
-  box-shadow: inset 3px 0 0 var(--blue);
-}
-.nav-icon { font-size: 17px; width: 22px; text-align: center; flex-shrink: 0; }
-.sidebar-footer { padding: 14px 16px; border-top: 1px solid var(--border); }
-.user-row { display: flex; align-items: center; gap: 10px; }
-.user-avatar {
-  width: 34px; height: 34px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--blue2), var(--purple));
-  display: flex; align-items: center; justify-content: center;
-  font-size: 14px; font-weight: 800; color: white; flex-shrink: 0;
-  box-shadow: 0 0 12px rgba(0,212,255,0.3);
-}
-.user-name { font-size: 13px; font-weight: 700; color: var(--text); }
-.user-email { font-size: 11px; color: var(--text3); }
-.logout-btn { background: none; border: none; color: var(--text3); font-size: 12px; cursor: pointer; padding: 4px 0; margin-top: 2px; font-family: inherit; transition: color 0.2s; }
-.logout-btn:hover { color: var(--red); }
-
-/* ===== MAIN CONTENT ===== */
-.main-content {
-  flex: 1; overflow-y: auto; overflow-x: hidden;
-  padding-bottom: 80px;
-  background: transparent;
-}
-.page-header { padding: 24px 20px 0; }
-.page-title {
-  font-size: 22px; font-weight: 800; color: var(--text);
-  background: linear-gradient(135deg, #e8eeff 0%, #aac4ff 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text; display: inline-block;
-}
-.page-sub { font-size: 13px; color: var(--text3); margin-top: 4px; }
-.page-body { padding: 16px 16px 24px; }
-
-/* ===== HEADER BAR (mobile) ===== */
-.mobile-header {
-  display: none;
-  position: sticky; top: 0; z-index: 40;
-  background: var(--glass); backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border);
-  padding: 12px 16px;
-  align-items: center; justify-content: space-between;
-}
-.mobile-brand {
-  font-size: 16px; font-weight: 800;
-  background: linear-gradient(135deg, #e8eeff, #00d4ff);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* ===== MOBILE BOTTOM NAV ===== */
-.mobile-nav {
-  display: none;
-  position: fixed; bottom: 0; left: 0; right: 0;
-  background: var(--glass); backdrop-filter: blur(16px);
-  border-top: 1px solid var(--border);
-  z-index: 50; height: var(--nav-h);
-}
-.mobile-nav-inner {
-  display: grid; grid-template-columns: repeat(4, 1fr);
-  height: 100%;
-}
-.mobile-nav-btn {
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 3px; cursor: pointer; color: var(--text3);
-  font-size: 10px; font-weight: 600; letter-spacing: 0.2px;
-  border: none; background: none; transition: all 0.2s;
-  padding: 4px; min-height: 44px; font-family: inherit;
-}
-.mobile-nav-btn .mn-icon { font-size: 21px; }
-.mobile-nav-btn.active { color: var(--blue); text-shadow: 0 0 10px rgba(0,212,255,0.5); }
-
-/* ===== DASHBOARD ===== */
-.metrics-grid {
-  display: grid; grid-template-columns: repeat(2, 1fr);
-  gap: 12px; margin-bottom: 16px;
-}
-.metric-card {
-  animation: cardIn 0.5s ease both;
-}
-.metric-card:nth-child(1) { animation-delay: 0.05s; }
-.metric-card:nth-child(2) { animation-delay: 0.1s; }
-.metric-card:nth-child(3) { animation-delay: 0.15s; }
-.metric-card:nth-child(4) { animation-delay: 0.2s; }
-.metric-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-.metric-label { font-size: 11px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 0.6px; }
-.metric-icon { font-size: 22px; }
-.metric-value {
-  font-size: 28px; font-weight: 800; color: var(--text);
-  line-height: 1; letter-spacing: -0.5px;
-  text-shadow: 0 0 20px rgba(0,212,255,0.3);
-}
-.metric-value.blue  { color: var(--blue);   text-shadow: var(--glow-blue); }
-.metric-value.red   { color: var(--red);    text-shadow: var(--glow-red); }
-.metric-value.amber { color: var(--amber);  text-shadow: 0 0 15px rgba(245,158,11,0.4); }
-.metric-value.green { color: var(--green);  text-shadow: var(--glow-green); }
-.metric-sub { font-size: 11px; color: var(--text3); margin-top: 5px; }
-
-.charts-row { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 16px; }
-.chart-card { animation: cardIn 0.5s ease both; }
-.chart-title { font-size: 13px; font-weight: 700; color: var(--text2); margin-bottom: 14px; letter-spacing: 0.2px; }
-.chart-wrap { position: relative; height: 180px; }
-
-.activity-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-.activity-card {
-  display: flex; align-items: center; gap: 14px;
-  animation: cardIn 0.5s ease both;
-}
-.ac-icon { font-size: 28px; flex-shrink: 0; }
-.ac-val { font-size: 22px; font-weight: 800; color: var(--text); }
-.ac-lbl { font-size: 11px; color: var(--text2); margin-top: 2px; font-weight: 500; }
-
-/* ===== CONTACTS ===== */
-.toolbar { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
-.toolbar-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-.search-wrap { position: relative; flex: 1; min-width: 180px; }
-.search-icon { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); font-size: 14px; color: var(--text3); pointer-events: none; }
-.search-input {
-  width: 100%; background: var(--glass); backdrop-filter: blur(8px);
-  border: 1.5px solid var(--border); border-radius: var(--radius-sm);
-  padding: 11px 14px 11px 38px; color: var(--text);
-  font-size: 15px; font-family: inherit; outline: none; min-height: 44px; transition: all 0.2s;
-}
-.search-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,212,255,0.1); }
-.search-input::placeholder { color: var(--text3); }
-.filter-select {
-  background: var(--glass); backdrop-filter: blur(8px);
-  border: 1.5px solid var(--border); border-radius: var(--radius-sm);
-  padding: 11px 14px; color: var(--text2);
-  font-size: 13px; font-family: inherit; outline: none; cursor: pointer; min-height: 44px;
-  -webkit-appearance: none; transition: all 0.2s;
-}
-.filter-select:focus { border-color: var(--blue); color: var(--text); }
-
-/* Mobile contact cards */
-.contact-cards { display: flex; flex-direction: column; gap: 10px; }
-.contact-card {
-  cursor: pointer; transition: all 0.2s;
-  animation: cardIn 0.3s ease both;
-}
-.contact-card:active { transform: scale(0.99); }
-.contact-card:hover { border-color: rgba(0,212,255,0.3); box-shadow: var(--glow-blue); }
-.contact-card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 6px; }
-.contact-card-name { font-size: 15px; font-weight: 700; color: var(--text); }
-.contact-card-meta { font-size: 12px; color: var(--text2); margin-top: 2px; }
-.contact-card-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
-
-/* Desktop table */
-.table-wrap {
-  background: var(--glass); backdrop-filter: blur(12px);
-  border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden;
-}
-.data-table { width: 100%; border-collapse: collapse; }
-.data-table th {
-  text-align: left; padding: 12px 14px;
-  font-size: 10px; font-weight: 800; color: var(--text3);
-  text-transform: uppercase; letter-spacing: 0.8px;
-  border-bottom: 1px solid var(--border); background: rgba(0,212,255,0.03);
-}
-.data-table td {
-  padding: 12px 14px; font-size: 14px; color: var(--text2);
-  border-bottom: 1px solid rgba(255,255,255,0.03); vertical-align: middle;
-}
-.data-table tr:last-child td { border-bottom: none; }
-.data-table tbody tr { transition: background 0.15s; cursor: pointer; }
-.data-table tbody tr:hover td {
-  background: rgba(0,212,255,0.04); color: var(--text);
-}
-.data-table tbody tr:hover td:first-child {
-  border-left: 2px solid var(--blue);
-}
-.td-name { font-weight: 700; color: var(--text) !important; }
-
-/* ===== CONTACT DETAIL PANEL ===== */
-.panel-overlay {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,0.7); z-index: 200;
-  backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
-}
-.panel-drawer {
-  position: fixed; right: 0; top: 0;
-  width: 100%; max-width: 100%; height: 100%;
-  background: var(--glass2); backdrop-filter: blur(20px);
-  border-left: 1px solid rgba(0,212,255,0.15);
-  z-index: 201; overflow-y: auto;
-  display: flex; flex-direction: column;
-  box-shadow: -20px 0 60px rgba(0,0,0,0.6), 0 0 30px rgba(0,212,255,0.1);
-  animation: slideInRight 0.25s ease;
-}
-.panel-top {
-  padding: 16px 20px; border-bottom: 1px solid var(--border);
-  display: flex; align-items: flex-start; justify-content: space-between;
-  position: sticky; top: 0; background: var(--glass2);
-  backdrop-filter: blur(20px); z-index: 1;
-}
-.panel-close {
-  background: rgba(255,59,107,0.1); border: 1px solid rgba(255,59,107,0.2);
-  color: var(--red); border-radius: 8px; width: 36px; height: 36px;
-  font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center;
-  transition: all 0.2s; flex-shrink: 0;
-}
-.panel-close:hover { background: rgba(255,59,107,0.2); box-shadow: var(--glow-red); }
-.panel-body { padding: 20px; flex: 1; }
-.panel-name {
-  font-size: 20px; font-weight: 800; color: var(--text);
-  background: linear-gradient(135deg, #e8eeff, #a5c0ff);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.panel-meta { font-size: 13px; color: var(--text3); margin-top: 4px; }
-
-.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
-.info-item label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.7px; display: block; margin-bottom: 4px; font-weight: 700; }
-.info-item p { font-size: 14px; color: var(--text); font-weight: 600; }
-
-.section-heading {
-  font-size: 10px; font-weight: 800; color: var(--blue);
-  text-transform: uppercase; letter-spacing: 1px;
-  margin: 20px 0 10px; opacity: 0.8;
-}
-
-/* Quick actions */
-.quick-actions { display: flex; gap: 8px; margin-bottom: 18px; }
-.quick-btn {
-  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 5px; padding: 12px 8px;
-  background: var(--glass2); border: 1px solid var(--border);
-  border-radius: 12px; cursor: pointer;
-  font-size: 12px; font-weight: 600; color: var(--text2);
-  min-height: 60px; transition: all 0.2s;
-  text-decoration: none; font-family: inherit;
-}
-.quick-btn:hover { background: rgba(0,212,255,0.08); color: var(--blue); border-color: rgba(0,212,255,0.25); }
-.qb-icon { font-size: 20px; }
-
-/* Timeline */
-.tl-item { display: flex; gap: 10px; margin-bottom: 16px; }
-.tl-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
-.tl-dot-email    { background: var(--blue);   box-shadow: 0 0 6px rgba(0,212,255,0.5); }
-.tl-dot-call     { background: var(--green);  box-shadow: 0 0 6px rgba(0,255,136,0.5); }
-.tl-dot-form     { background: var(--purple); box-shadow: 0 0 6px rgba(168,85,247,0.5); }
-.tl-dot-xero     { background: var(--amber);  box-shadow: 0 0 6px rgba(245,158,11,0.5); }
-.tl-dot-note     { background: var(--text3); }
-.tl-dot-activity { background: var(--cyan);   box-shadow: 0 0 6px rgba(34,211,238,0.5); }
-.tl-body { flex: 1; }
-.tl-title { font-size: 13px; font-weight: 700; color: var(--text); }
-.tl-desc { font-size: 12px; color: var(--text2); margin-top: 2px; line-height: 1.5; }
-.tl-time { font-size: 11px; color: var(--text3); margin-top: 3px; }
-
-/* ===== PIPELINE KANBAN ===== */
-.kanban-board {
-  display: flex; gap: 12px;
-  overflow-x: auto; padding-bottom: 16px;
-  min-height: calc(100vh - 200px);
-  -webkit-overflow-scrolling: touch;
-}
-.kanban-board::-webkit-scrollbar { height: 4px; }
-.kanban-col {
-  flex-shrink: 0; width: 220px;
-  background: var(--glass); backdrop-filter: blur(12px);
-  border: 1px solid var(--border); border-radius: var(--radius);
-  display: flex; flex-direction: column;
-  transition: border-color 0.2s;
-}
-.kanban-col-head { padding: 12px 14px; border-bottom: 1px solid var(--border); }
-.kanban-col-title { font-size: 13px; font-weight: 800; letter-spacing: 0.2px; }
-.kanban-col-count { font-size: 11px; color: var(--text3); margin-top: 2px; }
-.kanban-cards { padding: 8px; flex: 1; min-height: 80px; }
-.kanban-drop { border-radius: 10px; min-height: 60px; transition: all 0.2s; }
-.kanban-drop.drag-over {
-  background: rgba(0,212,255,0.06);
-  border: 2px dashed rgba(0,212,255,0.4);
-  box-shadow: inset 0 0 20px rgba(0,212,255,0.05);
-}
-.kanban-card {
-  background: rgba(8,12,24,0.8);
-  border: 1px solid var(--border);
-  border-radius: 10px; padding: 12px; margin-bottom: 8px;
-  cursor: grab; transition: all 0.2s;
-}
-.kanban-card:hover {
-  box-shadow: 0 4px 20px rgba(0,0,0,0.4), 0 0 15px rgba(0,212,255,0.15);
-  border-color: rgba(0,212,255,0.2); transform: translateY(-1px);
-}
-.kanban-card.dragging { opacity: 0.35; cursor: grabbing; transform: scale(0.95); }
-.kc-name { font-size: 13px; font-weight: 700; color: var(--text); }
-.kc-phone { font-size: 12px; color: var(--text3); margin-top: 2px; }
-.kc-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
-.kc-source { font-size: 14px; }
-.kc-value { font-size: 12px; color: var(--green); font-weight: 700; }
-
-/* ===== SETTINGS ===== */
-.settings-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
-.settings-card { animation: cardIn 0.4s ease both; }
-.settings-card:nth-child(1) { animation-delay: 0.05s; }
-.settings-card:nth-child(2) { animation-delay: 0.10s; }
-.settings-card:nth-child(3) { animation-delay: 0.15s; }
-.settings-card:nth-child(4) { animation-delay: 0.20s; }
-.settings-card:nth-child(5) { animation-delay: 0.25s; }
-.settings-card:nth-child(6) { animation-delay: 0.30s; }
-.settings-card h3 { font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
-.settings-desc { font-size: 13px; color: var(--text3); margin-bottom: 14px; line-height: 1.5; }
-.status-row { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text2); margin-bottom: 14px; }
-.status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-.dot-green  { background: var(--green);  box-shadow: 0 0 8px rgba(0,255,136,0.6); }
-.dot-gray   { background: var(--text3); }
-.dot-yellow { background: var(--amber);  box-shadow: 0 0 8px rgba(245,158,11,0.6); }
-.code-block {
-  background: rgba(0,0,0,0.5); border: 1px solid var(--border);
-  border-radius: 8px; padding: 10px 12px;
-  font-size: 12px; color: var(--cyan); font-family: 'Courier New', monospace;
-  word-break: break-all; margin-bottom: 8px; line-height: 1.5;
-  overflow-x: auto;
-}
-.copy-btn {
-  background: none; border: 1px solid var(--border);
-  color: var(--text2); border-radius: 8px;
-  padding: 7px 14px; font-size: 12px; cursor: pointer;
-  min-height: 36px; transition: all 0.2s; font-family: inherit;
-}
-.copy-btn:hover { background: rgba(0,212,255,0.08); color: var(--blue); border-color: rgba(0,212,255,0.3); }
-.copy-btn.copied { border-color: var(--green); color: var(--green); }
-
-/* ===== MODAL ===== */
-.modal-overlay {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,0.75); z-index: 300;
-  display: flex; align-items: flex-end; padding: 0;
-  backdrop-filter: blur(4px); animation: fadeIn 0.2s ease;
-}
-.modal-sheet {
-  width: 100%; background: var(--glass2);
-  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(0,212,255,0.15); border-radius: 24px 24px 0 0;
-  padding: 20px 20px 32px; max-height: 90vh; overflow-y: auto;
-  animation: slideUp 0.25s ease;
-}
-.modal-handle { width: 40px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 18px; }
-.modal-title { font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 18px; }
-
-/* ===== TOAST ===== */
-.toast {
-  position: fixed; bottom: 76px; left: 50%; transform: translateX(-50%);
-  background: var(--glass); backdrop-filter: blur(16px);
-  border: 1px solid rgba(0,212,255,0.25); color: var(--text);
-  padding: 11px 22px; border-radius: 30px;
-  font-size: 14px; font-weight: 600; z-index: 600;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.5), 0 0 15px rgba(0,212,255,0.15);
-  animation: toastIn 0.3s ease; white-space: nowrap;
-}
-
-/* ===== EMPTY STATE ===== */
-.empty-state { text-align: center; padding: 44px 20px; color: var(--text3); }
-.es-icon { font-size: 38px; margin-bottom: 10px; opacity: 0.6; }
-
-/* ===== RESPONSIVE: TABLET ===== */
-@media (min-width: 640px) {
-  .page-header { padding: 26px 24px 0; }
-  .page-body { padding: 18px 24px 28px; }
-  .metrics-grid { grid-template-columns: repeat(2, 1fr); }
-  .activity-grid { grid-template-columns: repeat(2, 1fr); }
-  .settings-grid { grid-template-columns: repeat(2, 1fr); }
-  .charts-row { grid-template-columns: 1fr 1fr; }
-  .contact-cards { display: none !important; }
-  .table-wrap { display: block !important; }
-  .toolbar { flex-direction: row; }
-  .modal-overlay { align-items: center; padding: 20px; }
-  .modal-sheet { border-radius: 24px; max-width: 500px; margin: 0 auto; }
-}
-
-/* ===== RESPONSIVE: DESKTOP ===== */
-@media (min-width: 1024px) {
-  .sidebar { display: flex !important; }
-  .mobile-nav { display: none !important; }
-  .mobile-header { display: none !important; }
-  .main-content { padding-bottom: 0; }
-  .metrics-grid { grid-template-columns: repeat(4, 1fr); }
-  .activity-grid { grid-template-columns: repeat(4, 1fr); }
-  .panel-drawer { max-width: 520px; }
-}
-
-/* ===== RESPONSIVE: MOBILE ===== */
-@media (max-width: 1023px) {
-  .sidebar { display: none; }
-  .mobile-nav { display: block; }
-  .mobile-header { display: flex; }
-  .table-wrap { display: none; }
-  .contact-cards { display: flex; }
-}
-@media (max-width: 639px) {
-  .charts-row { grid-template-columns: 1fr; }
-  .settings-grid { grid-template-columns: 1fr; }
-}
-  /* === NEW FEATURES CSS === */
-.panel-tabs button:focus{outline:none}
-.contact-card[data-status="lead"]{border-left:3px solid #3b82f6}
-.contact-card[data-status="quoted"]{border-left:3px solid #f59e0b}
-.contact-card[data-status="invoiced"]{border-left:3px solid #8b5cf6}
-.contact-card[data-status="customer"]{border-left:3px solid #10b981}
-.contact-card[data-status="delivered"]{border-left:3px solid #10b981}
-.contact-card[data-status="active"]{border-left:3px solid #06b6d4}
-.contact-card[data-status="inquiry"]{border-left:3px solid #6b7280}
-.kanban-board{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:16px;overflow-x:auto;min-height:calc(100vh - 130px)}
-@media(max-width:900px){.kanban-board{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:500px){.kanban-board{grid-template-columns:1fr}}
-.kanban-col{background:var(--bg2);border-radius:8px;padding:10px;display:flex;flex-direction:column;min-height:300px}
-.kanban-col-header{font-size:12px;font-weight:700;padding:6px 4px;border-bottom:2px solid var(--border);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
-.kanban-card{background:var(--bg3);border-radius:6px;padding:10px;margin-bottom:8px;cursor:grab;border:1px solid var(--border);transition:transform .1s,box-shadow .1s}
-.kanban-card:hover{transform:translateY(-1px);box-shadow:0 2px 8px rgba(0,0,0,.25)}
-.kanban-card.dragging{opacity:.45;cursor:grabbing}
-.kanban-col.drag-over{border:2px dashed var(--accent);background:var(--bg4,#111827)}
-.email-thread-item{border:1px solid var(--border);border-radius:6px;padding:8px;margin-bottom:6px;font-size:12px;cursor:default}
-.email-thread-item:hover{background:var(--bg3)}
-</style>
+    .pulse { animation:pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
+  </style>
 </head>
 <body>
 <div id="root"></div>
-<script type="text/babel">
-const { useState, useEffect, useRef, useCallback, createContext, useContext } = React;
 
-/* =========================================
-   CONSTANTS
-   ========================================= */
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
 const API = 'https://rapid-policies-backend-production.up.railway.app/api';
-const BACKEND = 'https://rapid-policies-backend-production.up.railway.app';
 let _token = null;
 
-/* =========================================
-   API HELPER
-   ========================================= */
-const api = async (path, opts = {}) => {
-  const res = await fetch(`${API}${path}`, {
-    ...opts,
-    headers: {
-      'Content-Type': 'application/json',
-      ...(_token ? { Authorization: `Bearer ${_token}` } : {}),
-      ...(opts.headers || {}),
-    },
-  });
-  if (res.status === 401) throw Object.assign(new Error('Unauthorized'), { status: 401 });
-  if (!res.ok) {
-    const t = await res.text().catch(() => '');
-    throw Object.assign(new Error(`HTTP ${res.status}: ${t.slice(0,100)}`), { status: res.status });
-  }
-  const ct = res.headers.get('content-type') || '';
-  return ct.includes('application/json') ? res.json() : res.text();
-};
-
-const normalizeList = (data, ...keys) => {
-  if (!data) return [];
-  if (Array.isArray(data)) return data;
-  for (const k of keys) { if (Array.isArray(data[k])) return data[k]; }
-  if (Array.isArray(data.data)) return data.data;
-  return [];
-};
-
-/* =========================================
-   FORMAT HELPERS
-   ========================================= */
-const fmt = {
-  date: d => !d ? '—' : new Date(d).toLocaleDateString('en-AU', { day:'2-digit', month:'short', year:'numeric' }),
-  dateTime: d => !d ? '—' : new Date(d).toLocaleString('en-AU', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' }),
-  currency: n => new Intl.NumberFormat('en-AU', { style:'currency', currency:'AUD', minimumFractionDigits:0, maximumFractionDigits:0 }).format(Number(n)||0),
-  name: c => !c ? 'Unknown' : ((`${c.first_name||''} ${c.last_name||''}`).trim() || c.name || c.full_name || c.contact_name || 'Unknown'),
-  phone: c => c?.phone || c?.phone_number || c?.mobile || '',
-  email: c => c?.email || c?.email_address || '',
-};
-
-const SOURCE_ICONS = { email:'�q️', phone:'\u{1F4DE}', form:'\u{1F4CB}', telegram:'✈️', synthflow:'\u{1F916}', website:'\u{1F310}', google_sheets:'\u{1F4CA}', manual:'✏️', default:'❓' };
-
 const STAGES = [
-  { id:'inquiry',    label:'Inquiry',    color:'#00d4ff' },
-  { id:'hot',        label:'Hot Lead',   color:'#ff3b6b' },
-  { id:'qualified',  label:'Qualified',  color:'#a855f7' },
-  { id:'quote_sent', label:'Quote Sent', color:'#f59e0b' },
-  { id:'won',        label:'Won',        color:'#00ff88' },
-  { id:'closed',     label:'Closed',     color:'#4a5a88' },
+  {id:'enquiry', label:'ENQUIRY', color:'#00f0ff'},
+  {id:'qualified', label:'QUALIFIED', color:'#c724ff'},
+  {id:'discovery', label:'DISCOVERY / SCOPE', color:'#ffaa00'},
+  {id:'quote_prepared', label:'QUOTE PREPARED', color:'#00ff9d'},
+  {id:'quote_sent', label:'QUOTE SENT', color:'#ffaa00'},
+  {id:'negotiation', label:'NEGOTIATION', color:'#c724ff'},
+  {id:'won', label:'WON', color:'#00ff9d'},
+  {id:'invoiced', label:'INVOICED', color:'#ffaa00'},
+  {id:'paid', label:'PAID', color:'#ffffff'},
+  {id:'onboarding', label:'ONBOARDING', color:'#00f0ff'},
+  {id:'active', label:'ACTIVE SERVICE', color:'#c724ff'},
+  {id:'completed', label:'COMPLETED', color:'#00ff9d'},
+  {id:'reactivation', label:'REACTIVATION', color:'#ffaa00'}
 ];
 
-/* =========================================
-   COUNT-UP HOOK
-   ========================================= */
-const useCountUp = (target, duration = 1200) => {
-  const [val, setVal] = useState(0);
-  const rafRef = useRef(null);
-  useEffect(() => {
-    if (!target && target !== 0) return;
-    if (target === 0) { setVal(0); return; }
-    const start = Date.now();
-    const animate = () => {
-      const p = Math.min((Date.now() - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - p, 3);
-      setVal(Math.floor(eased * target));
-      if (p < 1) rafRef.current = requestAnimationFrame(animate);
-      else setVal(target);
-    };
-    rafRef.current = requestAnimationFrame(animate);
-    return () => rafRef.current && cancelAnimationFrame(rafRef.current);
-  }, [target, duration]);
-  return val;
-};
-
-/* =========================================
-   TOAST CONTEXT
-   ========================================= */
-const ToastCtx = createContext(null);
-const useToast = () => useContext(ToastCtx);
-
-const ToastProvider = ({ children }) => {
-  const [toast, setToast] = useState(null);
-  const show = useCallback((msg, type = 'info') => {
-    setToast({ msg, type });
-    setTimeout(() => setToast(null), 3000);
-  }, []);
-  const icon = toast?.type === 'success' ? '✅ ' : toast?.type === 'error' ? '❌ ' : 'ℹ️ ';
-  return (
-    <ToastCtx.Provider value={show}>
-      {children}
-      {toast && <div className="toast">{icon}{toast.msg}</div>}
-    </ToastCtx.Provider>
-  );
-};
-
-/* =========================================
-   SHARED COMPONENTS
-   ========================================= */
-const StatusBadge = ({ status }) => {
-  const s = (status || 'default').toLowerCase().replace(/\s+/g,'_');
-  return <span className={`badge badge-${s}`}>{status || 'unknown'}</span>;
-};
-
-const TagChip = ({ tag }) => {
-  const name = typeof tag === 'string' ? tag : tag.name || tag.tag_name || tag.label || '';
-  const lower = name.toLowerCase();
-  const cls = lower.includes('hot') ? 'tag-chip tag-hot' : lower.includes('cold') ? 'tag-chip tag-cold' : 'tag-chip tag-default';
-  return <span className={cls}>{name}</span>;
-};
-
-const GlassCard = ({ children, className = '', style = {} }) => (
-  <div className={`glass-card ${className}`} style={style}>{children}</div>
-);
-
-/* =========================================
-   LOGIN PAGE
-   ========================================= */
-const Stars = () => {
-  const stars = Array.from({ length: 60 }, (_, i) => ({
-    id: i,
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    delay: Math.random() * 4,
-    size: Math.random() > 0.8 ? 3 : 2,
-  }));
-  return (
-    <div className="login-stars">
-      {stars.map(s => (
-        <div key={s.id} className="login-star" style={{
-          left: `${s.x}%`, top: `${s.y}%`,
-          width: `${s.size}px`, height: `${s.size}px`,
-          animationDelay: `${s.delay}s`, animationDuration: `${2 + Math.random() * 3}s`,
-          opacity: 0.3 + Math.random() * 0.5,
-        }} />
-      ))}
-    </div>
-  );
-};
-
-const LoginPage = ({ onLogin }) => {
-  const [email, setEmail] = useState('');
-  const [pw, setPw] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [err, setErr] = useState('');
-
-  const submit = async (e) => {
-    e.preventDefault();
-    setLoading(true); setErr('');
-    try {
-      const data = await api('/auth/login', { method: 'POST', body: JSON.stringify({ email, password: pw }) });
-      _token = data.token || data.access_token || data.jwt || null;
-      if (!_token) throw new Error('No token returned from server');
-      onLogin({ email, token: _token, name: data.name || data.user?.name });
-    } catch (e) {
-      setErr(e.status === 401 ? 'Invalid email or password.' : `Login failed: ${e.message}`);
-    } finally { setLoading(false); }
-  };
-
-  return (
-    <>
-      <div className="login-bg" />
-      <Stars />
-      <div className="login-wrap">
-        <div className="login-card">
-          <div className="login-brand">
-            <span className="login-logo">{'\u{1F6E1}\u{FE0F}'}</span>
-            <div className="login-title">Rapid Policies</div>
-            <div className="login-sub">Rapid Policies Australia Pty Ltd</div>
-          </div>
-          {err && <div className="error-msg">{err}</div>}
-          <form onSubmit={submit}>
-            <div className="form-group">
-              <label className="form-label">Email Address</label>
-              <input className="form-input" type="email" placeholder="admin@rapidpolicies.com.au"
-                value={email} onChange={e => setEmail(e.target.value)} required autoComplete="username" />
-            </div>
-            <div className="form-group">
-              <label className="form-label">Password</label>
-              <input className="form-input" type="password" placeholder="••••••••"
-                value={pw} onChange={e => setPw(e.target.value)} required autoComplete="current-password" />
-            </div>
-            <button className="btn btn-primary" style={{width:'100%', marginTop:4}} type="submit" disabled={loading}>
-              {loading ? <><span className="spinner spinner-sm" style={{borderTopColor:'#0a0e1a',borderColor:'rgba(8,12,24,0.3)',marginRight:8}} />Signing in...</> : 'Sign In →'}
-            </button>
-          </form>
-        </div>
-      </div>
-    </>
-  );
-};
-
-/* =========================================
-   METRIC CARD WITH COUNT-UP
-   ========================================= */
-const MetricCard = ({ label, target, icon, colorClass, sub, isCurrency }) => {
-  const counted = useCountUp(isCurrency ? 0 : (typeof target === 'number' ? target : 0));
-  const display = isCurrency ? fmt.currency(target) : (typeof target === 'number' ? counted.toLocaleString() : target);
-  return (
-    <GlassCard className="metric-card" style={{padding:18}}>
-      <div className="metric-header">
-        <span className="metric-label">{label}</span>
-        <span className="metric-icon">{icon}</span>
-      </div>
-      <div className={`metric-value ${colorClass||''}`}>{display}</div>
-      <div className="metric-sub">{sub}</div>
-    </GlassCard>
-  );
-};
-
-/* =========================================
-   DASHBOARD
-   ========================================= */
-const DashboardPage = ({ onUnauth }) => {
-  const toast = useToast();
-  const [loading, setLoading] = useState(true);
-  const [metrics, setMetrics] = useState({ total:0, hot:0, quotes:0, revenue:0 });
-  const [activity, setActivity] = useState({ calls:0, emails:0, forms:0, jobs:0 });
-  const c1r=useRef(null), c2r=useRef(null), c3r=useRef(null), c4r=useRef(null);
-  const charts = useRef({});
-
-  useEffect(() => { load(); return () => Object.values(charts.current).forEach(c => c?.destroy()); }, []);
-
-  const load = async () => {
-    setLoading(true);
-    try {
-      const [contacts, calls, emails, forms, invoices] = await Promise.allSettled([
-        api('/contacts?limit=1000'), api('/calls?limit=500'),
-        api('/emails?limit=500'), api('/registration_forms?limit=200'),
-        api('/xero_invoices?limit=200'),
-      ]);
-      const cl   = normalizeList(contacts.value, 'contacts','leads','items');
-      const callL = normalizeList(calls.value,    'calls','items');
-      const emailL = normalizeList(emails.value,  'emails','items');
-      const formL  = normalizeList(forms.value,   'forms','items');
-      const invL   = normalizeList(invoices.value,'invoices','items');
-
-      const hotLeads = cl.filter(c => {
-        const s = (c.status||'').toLowerCase();
-        const tags = c.tags||[];
-        return s==='hot' || tags.some(t=>(typeof t==='string'?t:t.name||'').toLowerCase().includes('hot'));
-      }).length;
-      const totalRev = invL.reduce((s,i)=>s+parseFloat(i.total_amount||i.amount_due||i.total||i.amount||0),0);
-      const now = new Date(), ms = new Date(now.getFullYear(),now.getMonth(),1);
-
-      setMetrics({ total:cl.length, hot:hotLeads, quotes:invL.length, revenue:totalRev });
-      setActivity({
-        calls:  callL.filter(c=>c.created_at&&new Date(c.created_at)>=ms).length,
-        emails: emailL.filter(e=>e.created_at&&new Date(e.created_at)>=ms).length,
-        forms:  formL.filter(f=>f.created_at&&new Date(f.created_at)>=ms).length,
-        jobs:   cl.filter(c=>['qualified','hot','won'].includes((c.status||'').toLowerCase())).length,
-      });
-      setLoading(false);
-      setTimeout(() => buildCharts(cl, invL), 200);
-    } catch(err) {
-      if (err.status===401) { onUnauth(); return; }
-      toast('Dashboard data unavailable — check API connection', 'error');
-      setLoading(false);
-    }
-  };
-
-  const buildCharts = (contacts, invoices) => {
-    Object.values(charts.current).forEach(c=>c?.destroy()); charts.current={};
-    const chartDefaults = {
-      responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{display:false} },
-    };
-    const xScale = { ticks:{color:'#4a5a88',font:{size:10}}, grid:{color:'rgba(0,212,255,0.04)'} };
-    const yScale = { ticks:{color:'#4a5a88',font:{size:10}}, grid:{color:'rgba(255,255,255,0.04)'}, beginAtZero:true };
-
-    if (c1r.current) {
-      const lbls=[], cnts=[];
-      for(let i=29;i>=0;i--){
-        const d=new Date(); d.setDate(d.getDate()-i);
-        const s=new Date(d); s.setHours(0,0,0,0); const e=new Date(d); e.setHours(23,59,59,999);
-        lbls.push(i%5===0||i===0?d.toLocaleDateString('en-AU',{day:'2-digit',month:'short'}):'');
-        cnts.push(contacts.filter(c=>c.created_at&&new Date(c.created_at)>=s&&new Date(c.created_at)<=e).length);
-      }
-      charts.current.c1 = new Chart(c1r.current, { type:'line',
-        data:{ labels:lbls, datasets:[{ data:cnts, borderColor:'#00d4ff', backgroundColor:'rgba(0,212,255,0.08)', tension:0.4, fill:true, pointRadius:2, borderWidth:2 }] },
-        options:{ ...chartDefaults, scales:{ x:xScale, y:yScale } }
-      });
-    }
-    if (c2r.current) {
-      const lbls=[], revs=[];
-      for(let i=5;i>=0;i--){
-        const d=new Date(); d.setMonth(d.getMonth()-i);
-        lbls.push(d.toLocaleDateString('en-AU',{month:'short',year:'2-digit'}));
-        const ms2=new Date(d.getFullYear(),d.getMonth(),1), me2=new Date(d.getFullYear(),d.getMonth()+1,0);
-        revs.push(invoices.filter(inv=>inv.created_at&&new Date(inv.created_at)>=ms2&&new Date(inv.created_at)<=me2).reduce((s,i)=>s+parseFloat(i.total_amount||i.amount_due||i.total||i.amount||0),0));
-      }
-      charts.current.c2 = new Chart(c2r.current, { type:'line',
-        data:{ labels:lbls, datasets:[{ data:revs, borderColor:'#00ff88', backgroundColor:'rgba(0,255,136,0.07)', tension:0.4, fill:true, pointRadius:4, borderWidth:2 }] },
-        options:{ ...chartDefaults, scales:{ x:xScale, y:{ ...yScale, ticks:{...yScale.ticks,callback:v=>`$${(v/1000).toFixed(0)}k`} } } }
-      });
-    }
-    if (c3r.current) {
-      const srcs=['email','phone','form','telegram','synthflow','website','google_sheets'];
-      charts.current.c3 = new Chart(c3r.current, { type:'bar',
-        data:{ labels:srcs.map(s=>s.charAt(0).toUpperCase()+s.slice(1).replace('_',' ')),
-          datasets:[{ data:srcs.map(s=>contacts.filter(c=>(c.source||'').toLowerCase()===s).length),
-            backgroundColor:['rgba(0,212,255,0.7)','rgba(0,255,136,0.7)','rgba(168,85,247,0.7)','rgba(34,211,238,0.7)','rgba(245,158,11,0.7)','rgba(99,102,241,0.7)','rgba(236,72,153,0.7)'],
-            borderRadius:6 }] },
-        options:{ ...chartDefaults, scales:{ x:xScale, y:yScale } }
-      });
-    }
-    if (c4r.current) {
-      const statuses=['inquiry','hot','cold','qualified','won','closed'];
-      const cnts=statuses.map(s=>contacts.filter(c=>(c.status||'').toLowerCase()===s).length);
-      if(cnts.some(n=>n>0)) {
-        charts.current.c4 = new Chart(c4r.current, { type:'doughnut',
-          data:{ labels:statuses.map(s=>s.charAt(0).toUpperCase()+s.slice(1)),
-            datasets:[{ data:cnts, backgroundColor:['rgba(0,212,255,0.8)','rgba(255,59,107,0.8)','rgba(74,90,136,0.6)','rgba(168,85,247,0.8)','rgba(0,255,136,0.8)','rgba(36,43,72,0.8)'], borderWidth:2, borderColor:'#0d1224' }] },
-          options:{ responsive:true, maintainAspectRatio:false, cutout:'65%', plugins:{ legend:{ position:'bottom', labels:{ color:'#8899cc', font:{size:10}, boxWidth:10, padding:8 } } } }
-        });
-      }
-    }
-  };
-
-  if (loading) return <div className="page-body"><div className="spinner" /></div>;
-
-  return (
-    <div>
-      <div className="page-header">
-        <div className="page-title">Mission Control</div>
-        <div className="page-sub">Real-time pipeline overview</div>
-      </div>
-      <div className="page-body">
-        <div className="metrics-grid">
-          <MetricCard label="Total Leads"  target={metrics.total}   icon={'\u{1F465}'} sub="All time" />
-          <MetricCard label="Hot Leads"    target={metrics.hot}     icon={'\u{1F525}'} colorClass="red"   sub="Needs attention" />
-          <MetricCard label="Quotes Sent"  target={metrics.quotes}  icon={'\u{1F4C4}'} colorClass="amber" sub="Total issued" />
-          <MetricCard label="Revenue"      target={metrics.revenue} icon={'\u{1F4B0}'} colorClass="green" sub="Total payments" isCurrency />
-        </div>
-        <div className="charts-row">
-          <GlassCard className="chart-card" style={{padding:18}}>
-            <div className="chart-title">{'\u{1F4C8}'} Leads In — Last 30 Days</div>
-            <div className="chart-wrap"><canvas ref={c1r}></canvas></div>
-          </GlassCard>
-          <GlassCard className="chart-card" style={{padding:18}}>
-            <div className="chart-title">{'\u{1F4B5}'} Revenue by Month</div>
-            <div className="chart-wrap"><canvas ref={c2r}></canvas></div>
-          </GlassCard>
-        </div>
-        <div className="charts-row">
-          <GlassCard className="chart-card" style={{padding:18}}>
-            <div className="chart-title">{'\u{1F4CA}'} Leads by Source</div>
-            <div className="chart-wrap"><canvas ref={c3r}></canvas></div>
-          </GlassCard>
-          <GlassCard className="chart-card" style={{padding:18}}>
-            <div className="chart-title">{'\u{1F3AF}'} Status Breakdown</div>
-            <div className="chart-wrap"><canvas ref={c4r}></canvas></div>
-          </GlassCard>
-        </div>
-        <div className="activity-grid">
-          {[
-            {icon:'\u{1F4DE}',val:activity.calls,  lbl:'Calls this month'},
-            {icon:'✉️',val:activity.emails, lbl:'Emails this month'},
-            {icon:'\u{1F4CB}',val:activity.forms,  lbl:'Form submissions'},
-            {icon:'⚡',val:activity.jobs,   lbl:'Jobs in progress'},
-          ].map(a=>(
-            <GlassCard key={a.lbl} className="activity-card" style={{padding:18}}>
-              <span className="ac-icon">{a.icon}</span>
-              <div><div className="ac-val">{a.val}</div><div className="ac-lbl">{a.lbl}</div></div>
-            </GlassCard>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-/* =========================================
-   CONTACT DETAIL PANEL
-   ========================================= */
-const ContactPanel = ({ contact:init, onClose, onUpdate }) => {
-  const toast = useToast();
-  const [contact, setContact] = React.useState(init);
-  const [timeline, setTimeline] = React.useState([]);
-  const [tlLoading, setTlLoading] = React.useState(true);
-  const [status, setStatus] = React.useState(init.status||'inquiry');
-  const [note, setNote] = React.useState('');
-  const [addingNote, setAddingNote] = React.useState(false);
-  const [activeTab, setActiveTab] = React.useState('activity');
-  const [emails, setEmails] = React.useState([]);
-  const [docLinks, setDocLinks] = React.useState([]);
-  const [docUrl, setDocUrl] = React.useState('');
-  const [docLabel, setDocLabel] = React.useState('');
-  const [addingDoc, setAddingDoc] = React.useState(false);
-  const [showCompose, setShowCompose] = React.useState(false);
-  const [composeData, setComposeData] = React.useState({to:'',subject:'',body:'',replyTo:null});
-  const [sendingEmail, setSendingEmail] = React.useState(false);
-  const [showXero, setShowXero] = React.useState(false);
-  const [xeroForm, setXeroForm] = React.useState({serviceDesc:'',items:[{desc:'',qty:1,unitPrice:0,discount:0}],gst:true});
-  const [xeroQuote, setXeroQuote] = React.useState(null);
-
-  React.useEffect(()=>{
-    let cancelled=false;
-    (async()=>{
-      setTlLoading(true);
-      const id=contact.id;
-      const [acts,ems,calls,forms]=await Promise.allSettled([
-        api('/activities?contact_id='+id+'&limit=50'),
-        api('/emails?contact_id='+id+'&limit=30'),
-        api('/calls?contact_id='+id+'&limit=20'),
-        api('/registration_forms?contact_id='+id+'&limit=10')
-      ]);
-      if(cancelled)return;
-      const allItems=[];
-      if(acts.status==='fulfilled')allItems.push(...(acts.value?.data||[]));
-      if(calls.status==='fulfilled')allItems.push(...(calls.value?.data||[]));
-      if(forms.status==='fulfilled')allItems.push(...(forms.value?.data||[]));
-      const docs=allItems.filter(a=>a.type==='document');
-      setDocLinks(docs);
-      allItems.sort((a,b)=>new Date(b.created_at||b.date||0)-new Date(a.created_at||a.date||0));
-      setTimeline(allItems.filter(a=>a.type!=='document'));
-      if(ems.status==='fulfilled')setEmails(ems.value?.data||[]);
-      setTlLoading(false);
-    })();
-    return()=>{cancelled=true;};
-  },[contact.id]);
-
-  const updateStatus=async(s)=>{
-    setStatus(s);
-    try{
-      await api('/contacts/'+contact.id,{method:'PATCH',body:JSON.stringify({status:s})});
-      const updated={...contact,status:s};
-      setContact(updated); onUpdate&&onUpdate(updated);
-      toast('Status updated','success');
-    }catch(e){toast('Failed to update status','error');}
-  };
-
-  const addNote=async()=>{
-    if(!note.trim())return;
-    setAddingNote(true);
-    try{
-      await api('/activities',{method:'POST',body:JSON.stringify({contact_id:contact.id,type:'note',title:'Note',description:note})});
-      setNote(''); toast('Note added','success');
-      const acts=await api('/activities?contact_id='+contact.id+'&limit=50');
-      setTimeline((acts?.data||[]).filter(a=>a.type!=='document').sort((a,b)=>new Date(b.created_at||0)-new Date(a.created_at||0)));
-    }catch(e){toast('Failed to add note','error');}
-    finally{setAddingNote(false);}
-  };
-
-  const addDocument=async()=>{
-    if(!docUrl.trim())return;
-    setAddingDoc(true);
-    try{
-      await api('/activities',{method:'POST',body:JSON.stringify({contact_id:contact.id,type:'document',title:docLabel||docUrl,description:docUrl})});
-      setDocLinks(prev=>[...prev,{type:'document',title:docLabel||docUrl,description:docUrl,created_at:new Date().toISOString()}]);
-      setDocUrl(''); setDocLabel('');
-      toast('Document link saved','success');
-    }catch(e){toast('Failed to save link','error');}
-    finally{setAddingDoc(false);}
-  };
-
-  const sendEmail=async(asDraft)=>{
-    setSendingEmail(true);
-    try{
-      if(asDraft){
-        await api('/activities',{method:'POST',body:JSON.stringify({contact_id:contact.id,type:'email_draft',title:composeData.subject,description:'To: '+composeData.to+'\n\n'+composeData.body})});
-        toast('Draft saved','success');
-      }else{
-        await api('/send-email',{method:'POST',body:JSON.stringify({contact_id:contact.id,to:composeData.to,subject:composeData.subject,body:composeData.body,reply_to_id:composeData.replyTo?.id})});
-        setTimeline(prev=>[{type:'email_sent',title:composeData.subject,description:composeData.body,created_at:new Date().toISOString()},...prev]);
-        toast('Email sent!','success');
-      }
-      setShowCompose(false);
-      setComposeData({to:'',subject:'',body:'',replyTo:null});
-    }catch(e){toast(asDraft?'Failed to save draft':'Failed to send email','error');}
-    finally{setSendingEmail(false);}
-  };
-
-  const calcXeroTotal=()=>{
-    const sub=xeroForm.items.reduce((s,i)=>s+(i.qty*i.unitPrice*(1-(i.discount||0)/100)),0);
-    const gst=xeroForm.gst?sub*0.1:0;
-    return{sub,gst,total:sub+gst};
-  };
-
-  const createXeroQuote=async()=>{
-    try{
-      const r=await api('/xero/quotes',{method:'POST',body:JSON.stringify({contact_id:contact.id,items:xeroForm.items,gst:xeroForm.gst,service_desc:xeroForm.serviceDesc})});
-      setXeroQuote(r); toast('Quote created in Xero!','success');
-    }catch(e){toast('Xero: '+(e.message||'Check Xero authorization'),'error');}
-  };
-
-  const TABS=[{id:'activity',label:'Activity'},{id:'emails',label:'Emails'},{id:'documents',label:'Docs'},{id:'quote',label:'Quote/Inv'}];
-  const totals=calcXeroTotal();
-  const STMAP={inquiry:'#6b7280',lead:'#3b82f6',quoted:'#f59e0b',invoiced:'#8b5cf6',customer:'#10b981',active:'#06b6d4',delivered:'#10b981'};
-  const stColor=STMAP[status]||'#6b7280';
-
-  return (
-    <div className="contact-panel">
-      <div className="panel-header">
-        <div style={{display:'flex',alignItems:'center',gap:6,flexWrap:'wrap'}}>
-          <StatusBadge status={status}/>
-          {contact.db_match&&<span style={{fontSize:10,background:'#1a3a6b',color:'#7cb9ff',padding:'2px 6px',borderRadius:10,border:'1px solid #2a5a9b'}}>&#128269; DB Match</span>}
-        </div>
-        <button className="btn-close" onClick={onClose}>&#10005;</button>
-      </div>
-      <div className="panel-name">
-        <h2 style={{margin:'4px 0',fontSize:17,borderLeft:'3px solid '+stColor,paddingLeft:8}}>{fmt.fullName(contact)}</h2>
-        {contact.company_name&&<div style={{color:'var(--text3)',fontSize:12,paddingLeft:11}}>{contact.company_name}</div>}
-      </div>
-      <div className="panel-body">
-        <div className="quick-actions">
-          {fmt.phone(contact)&&<a href={'tel:'+fmt.phone(contact)} className="quick-btn"><span className="qb-icon">&#128222;</span>Call</a>}
-          {fmt.email(contact)&&<a href={'mailto:'+fmt.email(contact)} className="quick-btn"><span className="qb-icon">&#128231;</span>Email</a>}
-          <button className="quick-btn" onClick={()=>{setComposeData({to:fmt.email(contact)||'',subject:'',body:'',replyTo:null});setShowCompose(true);setActiveTab('emails');}}><span className="qb-icon">&#9993;&#65039;</span>Compose</button>
-          <button className="quick-btn" onClick={()=>{setShowXero(true);setActiveTab('quote');}}><span className="qb-icon">&#128203;</span>Quote</button>
-        </div>
-        <div style={{margin:'8px 0'}}>
-          <select className="form-select" value={status} onChange={e=>updateStatus(e.target.value)} style={{width:'100%',fontSize:12}}>
-            {['inquiry','lead','quoted','invoiced','customer','active','delivered'].map(s=>
-              <option key={s} value={s}>{s.charAt(0).toUpperCase()+s.slice(1)}</option>
-            )}
-          </select>
-        </div>
-        <div style={{display:'flex',borderBottom:'1px solid var(--border)',marginBottom:10}}>
-          {TABS.map(t=>(
-            <button key={t.id} onClick={()=>setActiveTab(t.id)} style={{flex:1,padding:'6px 2px',fontSize:10,background:'none',border:'none',borderBottom:activeTab===t.id?'2px solid var(--accent)':'2px solid transparent',color:activeTab===t.id?'var(--accent)':'var(--text3)',cursor:'pointer',fontWeight:activeTab===t.id?700:400,whiteSpace:'nowrap'}}>
-              {t.label}
-            </button>
-          ))}
-        </div>
-
-        {activeTab==='activity'&&<>
-          <div style={{marginBottom:8}}>
-            <textarea className="form-input" placeholder="Add a note..." value={note} onChange={e=>setNote(e.target.value)} rows={2} style={{fontSize:12,resize:'vertical',width:'100%',boxSizing:'border-box'}}/>
-            <button className="btn btn-primary btn-sm" onClick={addNote} disabled={addingNote||!note.trim()} style={{marginTop:4,width:'100%'}}>{addingNote?'Saving...':'Add Note'}</button>
-          </div>
-          {tlLoading?<div className="spinner"/>:timeline.length===0
-            ?<div style={{color:'var(--text3)',fontSize:12,textAlign:'center',padding:16}}>No activity yet</div>
-            :<div className="timeline">{timeline.map((item,i)=>(
-              <div key={i} className="tl-item">
-                <div className="tl-icon">{item.type==='call'?'&#128222;':item.type==='note'?'&#128221;':item.type==='email_sent'?'&#128228;':item.type==='email_draft'?'&#128203;':'&#128204;'}</div>
-                <div className="tl-content">
-                  <div className="tl-title">{item.title||item.type}</div>
-                  {item.description&&<div className="tl-desc" style={{fontSize:11,color:'var(--text3)',marginTop:2}}>{item.description.substring(0,150)}{item.description.length>150?'...':''}</div>}
-                  <div className="tl-date">{fmt.date(item.created_at||item.date)}</div>
-                </div>
-              </div>
-            ))}</div>}
-        </>}
-
-        {activeTab==='emails'&&<>
-          <button className="btn btn-primary btn-sm" style={{width:'100%',marginBottom:8}} onClick={()=>{setComposeData({to:fmt.email(contact)||'',subject:'',body:'',replyTo:null});setShowCompose(true);}}>&#9993; Compose New Email</button>
-          {emails.length===0
-            ?<div style={{color:'var(--text3)',fontSize:12,textAlign:'center',padding:16}}>No emails on record</div>
-            :emails.map((em,i)=>(
-              <div key={i} className="email-thread-item">
-                <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:2}}>
-                  <div style={{fontWeight:600,flex:1,marginRight:8,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{em.subject||'(no subject)'}</div>
-                  <div style={{color:'var(--text3)',fontSize:10,whiteSpace:'nowrap'}}>{fmt.date(em.date||em.created_at)}</div>
-                </div>
-                <div style={{color:'var(--text3)',marginBottom:4,fontSize:11}}>From: {em.from_email||em.from||em.sender||'&#8212;'}</div>
-                {em.snippet&&<div style={{color:'var(--text2)',fontStyle:'italic',marginBottom:4,fontSize:11}}>{em.snippet}</div>}
-                <button className="btn btn-sm" style={{fontSize:10,padding:'2px 8px'}} onClick={()=>{setComposeData({to:fmt.email(contact)||'',subject:'Re: '+(em.subject||''),body:'',replyTo:em});setShowCompose(true);}}>&#8617; Reply</button>
-              </div>
-            ))}
-        </>}
-
-        {activeTab==='documents'&&<>
-          <div style={{marginBottom:10}}>
-            <input className="form-input" placeholder="Label (optional)" value={docLabel} onChange={e=>setDocLabel(e.target.value)} style={{fontSize:12,marginBottom:4,width:'100%',boxSizing:'border-box'}}/>
-            <input className="form-input" placeholder="Google Drive link or paste URL..." value={docUrl} onChange={e=>setDocUrl(e.target.value)} style={{fontSize:12,marginBottom:4,width:'100%',boxSizing:'border-box'}}/>
-            <button className="btn btn-primary btn-sm" style={{width:'100%'}} onClick={addDocument} disabled={addingDoc||!docUrl.trim()}>{addingDoc?'Saving...':'Add Link'}</button>
-          </div>
-          {docLinks.length===0
-            ?<div style={{color:'var(--text3)',fontSize:12,textAlign:'center',padding:16}}>No documents attached yet</div>
-            :docLinks.map((d,i)=>(
-              <div key={i} style={{display:'flex',alignItems:'center',gap:6,padding:'6px 0',borderBottom:'1px solid var(--border)',fontSize:12}}>
-                <span>&#128196;</span>
-                <a href={d.description} target="_blank" rel="noreferrer" style={{color:'var(--accent)',flex:1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{d.title||d.description}</a>
-                <span style={{color:'var(--text3)',fontSize:10}}>{fmt.date(d.created_at)}</span>
-              </div>
-            ))}
-        </>}
-
-        {activeTab==='quote'&&<>
-          {!showXero
-            ?<button className="btn btn-primary" style={{width:'100%'}} onClick={()=>setShowXero(true)}>&#128203; Create Quote / Invoice</button>
-            :<div style={{fontSize:12}}>
-              <div style={{fontWeight:600,marginBottom:8,color:'var(--text1)'}}>New Quote &#8212; {fmt.fullName(contact)}</div>
-              <textarea className="form-input" placeholder="Service description..." value={xeroForm.serviceDesc} onChange={e=>setXeroForm(f=>({...f,serviceDesc:e.target.value}))} rows={2} style={{fontSize:12,marginBottom:8,width:'100%',boxSizing:'border-box'}}/>
-              <div style={{fontSize:10,color:'var(--text3)',marginBottom:4}}>Line Items (Desc / Qty / Price / Disc%):</div>
-              {xeroForm.items.map((item,idx)=>(
-                <div key={idx} style={{display:'grid',gridTemplateColumns:'1fr 50px 80px 55px 22px',gap:3,marginBottom:4,alignItems:'center'}}>
-                  <input className="form-input" placeholder="Description" value={item.desc} onChange={e=>setXeroForm(f=>{const it=[...f.items];it[idx]={...it[idx],desc:e.target.value};return{...f,items:it};})} style={{fontSize:10}}/>
-                  <input className="form-input" placeholder="Qty" type="number" min="0" step="1" value={item.qty} onChange={e=>setXeroForm(f=>{const it=[...f.items];it[idx]={...it[idx],qty:+e.target.value};return{...f,items:it};})} style={{fontSize:10}}/>
-                  <input className="form-input" placeholder="$" type="number" min="0" step="0.01" value={item.unitPrice} onChange={e=>setXeroForm(f=>{const it=[...f.items];it[idx]={...it[idx],unitPrice:+e.target.value};return{...f,items:it};})} style={{fontSize:10}}/>
-                  <input className="form-input" placeholder="%" type="number" min="0" max="100" value={item.discount} onChange={e=>setXeroForm(f=>{const it=[...f.items];it[idx]={...it[idx],discount:+e.target.value};return{...f,items:it};})} style={{fontSize:10}}/>
-                  {xeroForm.items.length>1&&<button onClick={()=>setXeroForm(f=>({...f,items:f.items.filter((_,j)=>j!==idx)}))} style={{background:'none',border:'none',color:'var(--text3)',cursor:'pointer',fontSize:16,padding:0,lineHeight:1}}>&#215;</button>}
-                </div>
-              ))}
-              <button className="btn btn-sm" style={{marginBottom:8,fontSize:11}} onClick={()=>setXeroForm(f=>({...f,items:[...f.items,{desc:'',qty:1,unitPrice:0,discount:0}]}))}>+ Add Line Item</button>
-              <div style={{display:'flex',alignItems:'center',gap:6,marginBottom:8}}>
-                <input type="checkbox" id="gstChk" checked={xeroForm.gst} onChange={e=>setXeroForm(f=>({...f,gst:e.target.checked}))}/>
-                <label htmlFor="gstChk" style={{cursor:'pointer',fontSize:12}}>Include GST (10%)</label>
-              </div>
-              <div style={{background:'var(--bg3)',borderRadius:6,padding:8,marginBottom:10}}>
-                <div style={{display:'flex',justifyContent:'space-between',marginBottom:3}}><span>Subtotal</span><span>${totals.sub.toFixed(2)}</span></div>
-                {xeroForm.gst&&<div style={{display:'flex',justifyContent:'space-between',marginBottom:3,color:'var(--text3)'}}><span>GST (10%)</span><span>${totals.gst.toFixed(2)}</span></div>}
-                <div style={{display:'flex',justifyContent:'space-between',fontWeight:700,marginTop:4,paddingTop:4,borderTop:'1px solid var(--border)'}}><span>Total (AUD)</span><span>${totals.total.toFixed(2)}</span></div>
-              </div>
-              <div style={{display:'flex',flexDirection:'column',gap:6}}>
-                <button className="btn btn-primary btn-sm" onClick={()=>{if(window.confirm('Create this quote in Xero? This requires Xero authorization.'))createXeroQuote();}}>1&#65039;&#8419; Create in Xero</button>
-                <button className="btn btn-sm" disabled={!xeroQuote} style={{opacity:xeroQuote?1:0.5}} onClick={()=>toast('PDF download requires active Xero connection','info')}>2&#65039;&#8419; Download PDF</button>
-                <button className="btn btn-sm" disabled={!xeroQuote} style={{opacity:xeroQuote?1:0.5}} onClick={()=>{setComposeData({to:fmt.email(contact)||'',subject:'Your Quote from Rapid Policies',body:'Hi '+fmt.fullName(contact)+',\n\nPlease find your quote attached.\n\nKind regards,\nAndrew',replyTo:null});setShowCompose(true);}}>3&#65039;&#8419; Send via Email</button>
-                {xeroQuote&&<button className="btn btn-primary btn-sm" style={{marginTop:4}} onClick={()=>{if(window.confirm('Convert this quote to an invoice in Xero?'))toast('Converting to invoice... (requires Xero authorization)','info');}}>&#128260; Convert to Invoice</button>}
-              </div>
-            </div>}
-        </>}
-      </div>
-
-      {showCompose&&(
-        <div className="modal-overlay" onClick={e=>{if(e.target===e.currentTarget)setShowCompose(false);}}>
-          <div className="modal" style={{width:480,maxWidth:'95vw'}}>
-            <div className="modal-header">
-              <h3 style={{margin:0}}>{composeData.replyTo?'Reply to Email':'Compose Email'}</h3>
-              <button className="btn-close" onClick={()=>setShowCompose(false)}>&#10005;</button>
-            </div>
-            <div style={{padding:16,display:'flex',flexDirection:'column',gap:10}}>
-              {composeData.replyTo&&<div style={{background:'var(--bg3)',borderRadius:4,padding:8,fontSize:11,color:'var(--text3)',borderLeft:'3px solid var(--accent)'}}>Replying to: {composeData.replyTo.subject||'(no subject)'}</div>}
-              <div><label style={{fontSize:11,color:'var(--text3)',display:'block',marginBottom:2}}>To</label><input className="form-input" value={composeData.to} onChange={e=>setComposeData(d=>({...d,to:e.target.value}))} style={{width:'100%',boxSizing:'border-box'}}/></div>
-              <div><label style={{fontSize:11,color:'var(--text3)',display:'block',marginBottom:2}}>Subject</label><input className="form-input" value={composeData.subject} onChange={e=>setComposeData(d=>({...d,subject:e.target.value}))} style={{width:'100%',boxSizing:'border-box'}}/></div>
-              <div><label style={{fontSize:11,color:'var(--text3)',display:'block',marginBottom:2}}>Body</label><textarea className="form-input" value={composeData.body} onChange={e=>setComposeData(d=>({...d,body:e.target.value}))} rows={7} style={{resize:'vertical',width:'100%',boxSizing:'border-box'}}/></div>
-            </div>
-            <div style={{display:'flex',gap:8,justifyContent:'flex-end',padding:'12px 16px',borderTop:'1px solid var(--border)'}}>
-              <button className="btn" onClick={()=>sendEmail(true)} disabled={sendingEmail}>&#128190; Save Draft</button>
-              <button className="btn btn-primary" onClick={()=>{if(window.confirm('Send this email to '+composeData.to+'?'))sendEmail(false);}} disabled={sendingEmail||!composeData.to||!composeData.subject}>{sendingEmail?'Sending...':'&#128228; Send Now'}</button>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
-const AddContactModal = ({ onClose, onSaved }) => {
-  const toast = useToast();
-  const [form, setForm] = useState({ first_name:'',last_name:'',phone:'',email:'',source:'manual',status:'inquiry',policy_type:'' });
-  const [saving, setSaving] = useState(false);
-  const [err, setErr] = useState('');
-  const set = (k,v)=>setForm(p=>({...p,[k]:v}));
-  const save = async(e)=>{
-    e.preventDefault(); setErr('');
-    if(!form.first_name&&!form.last_name&&!form.phone&&!form.email){setErr('Please fill in at least one field.');return;}
-    setSaving(true);
-    try{
-      const data = await api('/contacts',{method:'POST',body:JSON.stringify(form)});
-      toast('Contact created!','success'); onSaved(data); onClose();
-    }catch(e){setErr(`Failed to create contact: ${e.message}`);}
-    finally{setSaving(false);}
-  };
-  return (
-    <div className="modal-overlay" onClick={e=>{if(e.target===e.currentTarget)onClose();}}>
-      <div className="modal-sheet">
-        <div className="modal-handle"/>
-        <div className="modal-title">➕ Add New Lead</div>
-        {err&&<div className="error-msg">{err}</div>}
-        <form onSubmit={save}>
-          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}}>
-            <div className="form-group"><label className="form-label">First Name</label><input className="form-input" value={form.first_name} onChange={e=>set('first_name',e.target.value)} placeholder="John"/></div>
-            <div className="form-group"><label className="form-label">Last Name</label><input className="form-input" value={form.last_name} onChange={e=>set('last_name',e.target.value)} placeholder="Smith"/></div>
-          </div>
-          <div className="form-group"><label className="form-label">Phone</label><input className="form-input" type="tel" value={form.phone} onChange={e=>set('phone',e.target.value)} placeholder="0400 000 000"/></div>
-          <div className="form-group"><label className="form-label">Email</label><input className="form-input" type="email" value={form.email} onChange={e=>set('email',e.target.value)} placeholder="john@example.com"/></div>
-          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}}>
-            <div className="form-group"><label className="form-label">Source</label>
-              <select className="form-select" value={form.source} onChange={e=>set('source',e.target.value)}>
-                {['manual','email','phone','form','telegram','synthflow','website','google_sheets'].map(s=><option key={s} value={s}>{s.charAt(0).toUpperCase()+s.slice(1).replace('_',' ')}</option>)}
-              </select></div>
-            <div className="form-group"><label className="form-label">Status</label>
-              <select className="form-select" value={form.status} onChange={e=>set('status',e.target.value)}>
-                {['inquiry','hot','cold','qualified','won','closed'].map(s=><option key={s} value={s}>{s.charAt(0).toUpperCase()+s.slice(1)}</option>)}
-              </select></div>
-          </div>
-          <div className="form-group"><label className="form-label">Policy Type</label><input className="form-input" value={form.policy_type} onChange={e=>set('policy_type',e.target.value)} placeholder="e.g. Home &amp; Contents"/></div>
-          <div style={{display:'flex',gap:10}}>
-            <button type="button" className="btn btn-secondary" style={{flex:1}} onClick={onClose}>Cancel</button>
-            <button type="submit" className="btn btn-primary" style={{flex:2}} disabled={saving}>{saving?'Creating…':'Create Lead'}</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
-};
-
-/* =========================================
-   CONTACTS PAGE
-   ========================================= */
-const ContactsPage = ({ onUnauth }) => {
-  const toast = useToast();
-  const [contacts, setContacts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState('');
-  const [filterStatus, setFilterStatus] = useState('');
-  const [filterSource, setFilterSource] = useState('');
-  const [selected, setSelected] = useState(null);
-  const [showAdd, setShowAdd] = useState(false);
-
-  useEffect(()=>{load();},[]);
-
-  const load = async()=>{
-    setLoading(true);
-    try{
-      const data = await api('/contacts?limit=1000');
-      setContacts(normalizeList(data,'contacts','leads','items'));
-    }catch(e){
-      if(e.status===401){onUnauth();return;}
-      toast('Failed to load contacts','error');
-    }finally{setLoading(false);}
-  };
-
-  const filtered = contacts.filter(c=>{
-    const n=fmt.name(c).toLowerCase();
-    return(!search||n.includes(search.toLowerCase())||(c.email||'').toLowerCase().includes(search.toLowerCase())||(c.phone||'').includes(search))
-      &&(!filterStatus||(c.status||'').toLowerCase()===filterStatus)
-      &&(!filterSource||(c.source||'').toLowerCase()===filterSource);
-  });
-
-  const handleUpdate=u=>{setContacts(p=>p.map(c=>c.id===u.id?u:c));if(selected?.id===u.id)setSelected(u);};
-  const handleSaved=n=>{setContacts(p=>[n,...p]);setSelected(n);};
-
-  if(loading) return <div className="page-body"><div className="spinner"/></div>;
-
-  return (
-    <div>
-      <div className="page-header" style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between'}}>
-        <div>
-          <div className="page-title">Contacts</div>
-          <div className="page-sub">{filtered.length} contact{filtered.length!==1?'s':''} {(search||filterStatus||filterSource)?'(filtered)':'total'}</div>
-        </div>
-        <button className="btn btn-primary btn-sm" style={{marginTop:4}} onClick={()=>setShowAdd(true)}>+ Add Lead</button>
-      </div>
-      <div className="page-body">
-        <div className="toolbar">
-          <div className="search-wrap">
-            <span className="search-icon">{'\u{1F50D}'}</span>
-            <input className="search-input" type="text" placeholder="Search name, email, phone..."
-              value={search} onChange={e=>setSearch(e.target.value)}/>
-          </div>
-          <div className="toolbar-row">
-            <select className="filter-select" value={filterStatus} onChange={e=>setFilterStatus(e.target.value)}>
-              <option value="">All Statuses</option>
-              {['inquiry','hot','cold','qualified','won','closed'].map(s=><option key={s} value={s}>{s.charAt(0).toUpperCase()+s.slice(1)}</option>)}
-            </select>
-            <select className="filter-select" value={filterSource} onChange={e=>setFilterSource(e.target.value)}>
-              <option value="">All Sources</option>
-              {['email','phone','form','telegram','synthflow','website','google_sheets'].map(s=><option key={s} value={s}>{SOURCE_ICONS[s]} {s.charAt(0).toUpperCase()+s.slice(1).replace('_',' ')}</option>)}
-            </select>
-            <button className="btn btn-secondary btn-sm" onClick={load}>↻ Refresh</button>
-          </div>
-        </div>
-        {/* Mobile cards */}
-        <div className="contact-cards">
-          {filtered.length===0&&<div className="empty-state"><div className="es-icon">{'\u{1F465}'}</div><p>No contacts found.</p></div>}
-          {filtered.map(c=>{
-            const tags=c.tags||[];
-            return(
-              <GlassCard key={c.id} className="contact-card" data-status={c.status||'inquiry'} style={{padding:14}} onClick={()=>setSelected(c)}>
-                <div className="contact-card-header">
-                  <div><div className="contact-card-name">{fmt.name(c)}</div><div className="contact-card-meta">{fmt.phone(c)||fmt.email(c)||'—'}</div></div>
-                  <StatusBadge status={c.status}/>
-                </div>
-                <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-                  <span style={{fontSize:13,color:'var(--text3)'}}>{SOURCE_ICONS[c.source]||SOURCE_ICONS.default} {c.source||'—'}</span>
-                  <span style={{fontSize:12,color:'var(--text3)'}}>{fmt.date(c.created_at)}</span>
-                </div>
-                {tags.length>0&&<div className="contact-card-tags">{tags.slice(0,3).map((t,i)=><TagChip key={i} tag={t}/>)}{tags.length>3&&<span style={{fontSize:11,color:'var(--text3)'}}>+{tags.length-3}</span>}</div>}
-              </GlassCard>
-            );
-          })}
-        </div>
-        {/* Desktop table */}
-        <div className="table-wrap">
-          <table className="data-table">
-            <thead><tr><th>Name</th><th>Phone</th><th>Email</th><th>Source</th><th>Status</th><th>Tags</th><th>Created</th></tr></thead>
-            <tbody>
-              {filtered.length===0&&<tr><td colSpan={7} style={{textAlign:'center',padding:'40px',color:'var(--text3)'}}>No contacts found.</td></tr>}
-              {filtered.map(c=>{
-                const tags=c.tags||[];
-                return(
-                  <tr key={c.id} onClick={()=>setSelected(c)}>
-                    <td className="td-name">{fmt.name(c)}</td>
-                    <td>{fmt.phone(c)||'—'}</td>
-                    <td style={{fontSize:12}}>{fmt.email(c)||'—'}</td>
-                    <td>{SOURCE_ICONS[c.source]||SOURCE_ICONS.default} {c.source||'—'}</td>
-                    <td><StatusBadge status={c.status}/></td>
-                    <td>{tags.slice(0,2).map((t,i)=><TagChip key={i} tag={t}/>)}{tags.length>2&&<span style={{fontSize:11,color:'var(--text3)'}}> +{tags.length-2}</span>}</td>
-                    <td style={{fontSize:12,color:'var(--text3)'}}>{fmt.date(c.created_at)}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      </div>
-      {selected&&<ContactPanel contact={selected} onClose={()=>setSelected(null)} onUpdate={handleUpdate}/>}
-      {showAdd&&<AddContactModal onClose={()=>setShowAdd(false)} onSaved={handleSaved}/>}
-    </div>
-  );
-};
-
-/* =========================================
-   PIPELINE (KANBAN)
-   ========================================= */
-const PipelinePage = ({ onUnauth }) => {
-  const toast = useToast();
-  const [contacts, setContacts] = React.useState([]);
-  const [loading, setLoading] = React.useState(true);
-  const [dragging, setDragging] = React.useState(null);
-  const [dragOver, setDragOver] = React.useState(null);
-  const [selContact, setSelContact] = React.useState(null);
-
-  const STAGES=[
-    {id:'lead',label:'Lead',color:'#3b82f6',hint:'New inquiries, not yet quoted'},
-    {id:'quoted',label:'Quoted',color:'#f59e0b',hint:'Quote sent, pending close'},
-    {id:'invoiced',label:'Invoiced',color:'#8b5cf6',hint:'Invoice sent, awaiting payment'},
-    {id:'delivered',label:'Delivered',color:'#10b981',hint:'Complete'},
-  ];
-
-  React.useEffect(()=>{
-    (async()=>{
-      setLoading(true);
-      try{
-        const r=await api('/contacts?limit=500');
-        setContacts(r?.data||r||[]);
-      }catch(e){
-        if(e?.status===401)onUnauth&&onUnauth();
-        toast('Failed to load pipeline','error');
-      }finally{setLoading(false);}
-    })();
-  },[]);
-
-  const getStageContacts=(sid)=>contacts.filter(c=>{
-    const s=(c.status||'').toLowerCase();
-    if(sid==='lead')return !s||s==='lead'||s==='inquiry';
-    if(sid==='quoted')return s==='quoted';
-    if(sid==='invoiced')return s==='invoiced';
-    if(sid==='delivered')return s==='delivered'||s==='customer'||s==='active';
-    return false;
-  });
-
-  const NEXT_STATUS={lead:'quoted',quoted:'invoiced',invoiced:'customer',delivered:null};
-  const STATUS_FOR_STAGE={lead:'lead',quoted:'quoted',invoiced:'invoiced',delivered:'customer'};
-
-  const moveNext=async(c,stageId)=>{
-    const ns=NEXT_STATUS[stageId];
-    if(!ns){toast('Already at final stage','info');return;}
-    try{
-      await api('/contacts/'+c.id,{method:'PATCH',body:JSON.stringify({status:ns})});
-      setContacts(prev=>prev.map(x=>x.id===c.id?{...x,status:ns}:x));
-      toast('Moved to '+ns,'success');
-    }catch(e){toast('Failed to update stage','error');}
-  };
-
-  const onDragStart=(e,c)=>{setDragging(c);e.dataTransfer.effectAllowed='move';};
-  const onDragOver=(e,sid)=>{e.preventDefault();setDragOver(sid);};
-  const onDrop=async(e,sid)=>{
-    e.preventDefault();setDragOver(null);
-    if(!dragging)return;
-    const ns=STATUS_FOR_STAGE[sid];
-    if((dragging.status||'lead')===ns)return;
-    try{
-      await api('/contacts/'+dragging.id,{method:'PATCH',body:JSON.stringify({status:ns})});
-      setContacts(prev=>prev.map(x=>x.id===dragging.id?{...x,status:ns}:x));
-      toast('Moved to '+sid,'success');
-    }catch(e){toast('Failed to move contact','error');}
-    setDragging(null);
-  };
-
-  if(loading)return <div className="page-body"><div className="spinner"/></div>;
-
-  const totalContacts=contacts.length;
-
-  return (
-    <div>
-      <div className="page-header" style={{display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:8}}>
-        <div>
-          <div className="page-title">Pipeline</div>
-          <div style={{fontSize:11,color:'var(--text3)'}}>{totalContacts} contacts &bull; Drag to move between stages</div>
-        </div>
-        <div style={{display:'flex',gap:6}}>
-          {STAGES.map(st=>(
-            <div key={st.id} style={{fontSize:11,textAlign:'center'}}>
-              <span style={{color:st.color,fontWeight:700}}>{getStageContacts(st.id).length}</span>
-              <span style={{color:'var(--text3)',marginLeft:4}}>{st.label}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className="kanban-board">
-        {STAGES.map(stage=>{
-          const cards=getStageContacts(stage.id);
-          return (
-            <div key={stage.id}
-              className={'kanban-col'+(dragOver===stage.id?' drag-over':'')}
-              onDragOver={e=>onDragOver(e,stage.id)}
-              onDrop={e=>onDrop(e,stage.id)}
-              onDragLeave={()=>setDragOver(null)}>
-              <div className="kanban-col-header" style={{borderBottomColor:stage.color}}>
-                <span style={{color:stage.color}}>{stage.label}</span>
-                <span style={{background:stage.color,color:'#fff',borderRadius:12,padding:'1px 8px',fontSize:11,fontWeight:700}}>{cards.length}</span>
-              </div>
-              <div style={{fontSize:10,color:'var(--text3)',marginBottom:6}}>{stage.hint}</div>
-              {cards.length===0&&<div style={{textAlign:'center',color:'var(--text3)',fontSize:11,padding:'20px 8px',borderRadius:6,border:'1px dashed var(--border)'}}>Drop here</div>}
-              {cards.map(c=>(
-                <div key={c.id}
-                  className={'kanban-card'+(dragging?.id===c.id?' dragging':'')}
-                  draggable
-                  onDragStart={e=>onDragStart(e,c)}
-                  onDragEnd={()=>setDragging(null)}>
-                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:3}}>
-                    <div style={{fontWeight:600,fontSize:12,flex:1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{fmt.fullName(c)}</div>
-                    {c.db_match&&<span title="Matched in background DB" style={{fontSize:9,background:'#1a3a6b',color:'#7cb9ff',padding:'1px 5px',borderRadius:8,marginLeft:3,border:'1px solid #2a5a9b',whiteSpace:'nowrap',flexShrink:0}}>&#128269; DB</span>}
-                  </div>
-                  {c.company_name&&<div style={{fontSize:10,color:'var(--text3)',marginBottom:2,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{c.company_name}</div>}
-                  <div style={{fontSize:10,color:'var(--text3)',marginBottom:1}}>{fmt.email(c)||<span style={{color:'var(--text4)'}}>No email</span>}</div>
-                  <div style={{fontSize:10,color:'var(--text3)',marginBottom:5}}>{fmt.phone(c)||<span style={{color:'var(--text4)'}}>No phone</span>}</div>
-                  {(c.last_activity_at||c.updated_at)&&<div style={{fontSize:9,color:'var(--text3)',marginBottom:6}}>Last: {fmt.date(c.last_activity_at||c.updated_at)}</div>}
-                  <div style={{display:'flex',gap:4}}>
-                    <button className="btn btn-sm" style={{flex:1,fontSize:10,padding:'3px 0'}} onClick={()=>setSelContact(c)}>View</button>
-                    {stage.id!=='delivered'&&<button className="btn btn-primary btn-sm" style={{flex:1,fontSize:10,padding:'3px 0'}} onClick={()=>moveNext(c,stage.id)}>&#8594; Next</button>}
-                  </div>
-                </div>
-              ))}
-            </div>
-          );
-        })}
-      </div>
-      {selContact&&<ContactPanel contact={selContact} onClose={()=>setSelContact(null)} onUpdate={updated=>{setContacts(prev=>prev.map(c=>c.id===updated.id?updated:c));setSelContact(updated);}}/>}
-    </div>
-  );
-};
-const SettingsPage = () => {
-  const [copied, setCopied] = useState('');
-  const copy=(text,key)=>{navigator.clipboard.writeText(text).catch(()=>{});setCopied(key);setTimeout(()=>setCopied(''),2500);};
-  const B=BACKEND;
-  const integrations=[
-    {key:'telegram',icon:'✈️',title:'Telegram Bot',desc:'Receives new leads from your Telegram bot in real-time',status:'green',statusText:'Bot active',items:[{label:'Webhook URL',value:`${B}/webhook/telegram`,k:'tg'}]},
-    {key:'gmail',icon:'✉️',title:'Gmail',desc:'Captures inbound emails as leads and tracks engagement',status:'green',statusText:'Connected',items:[{label:'Webhook URL',value:`${B}/webhook/gmail`,k:'gmail'}]},
-    {key:'xero',icon:'\u{1F4CA}',title:'Xero Accounting',desc:'Syncs quotes, invoices and payments automatically',status:'yellow',statusText:'OAuth required',cta:{label:'Connect Xero →',fn:()=>window.open(`${B}/auth/xero`,'_blank')}},
-    {key:'synthflow',icon:'\u{1F916}',title:'SynthFlow AI Calls',desc:'AI voice agent — logs call transcripts automatically',status:'green',statusText:'Active',items:[{label:'Paste into SynthFlow settings',value:`${B}/webhook/synthflow`,k:'sf'}]},
-    {key:'gsheets',icon:'\u{1F4CB}',title:'Google Sheets',desc:'Import leads from spreadsheet triggers',status:'green',statusText:'Active',items:[{label:'Webhook URL',value:`${B}/webhook/google-sheets`,k:'gs'}]},
-    {key:'form',icon:'\u{1F310}',title:'Website Lead Form',desc:'Embed a quote form on your website',status:'green',statusText:'Active',items:[{label:'Form URL',value:`${B}/form`,k:'formurl'},{label:'Embed snippet',value:`<script src="${B}/widget/form.js" data-key="YOUR_KEY">\x3c/script>`,k:'embed'}]},
-  ];
-  return (
-    <div>
-      <div className="page-header">
-        <div className="page-title">Integrations</div>
-        <div className="page-sub">Webhooks, connected services and embed codes</div>
-      </div>
-      <div className="page-body">
-        <div className="settings-grid">
-          {integrations.map(intg=>(
-            <GlassCard key={intg.key} className="settings-card" style={{padding:20}}>
-              <h3>{intg.icon} {intg.title}</h3>
-              <p className="settings-desc">{intg.desc}</p>
-              <div className="status-row"><div className={`status-dot dot-${intg.status}`}/>{intg.statusText}</div>
-              {intg.items?.map(item=>(
-                <div key={item.k}>
-                  <div style={{fontSize:11,color:'var(--text3)',marginBottom:5,textTransform:'uppercase',letterSpacing:'0.5px'}}>{item.label}</div>
-                  <div className="code-block">{item.value}</div>
-                  <button className={`copy-btn ${copied===item.k?'copied':''}`} onClick={()=>copy(item.value,item.k)}>{copied===item.k?'✓ Copied!':'Copy'}</button>
-                </div>
-              ))}
-              {intg.cta&&<button className="btn btn-primary btn-sm" style={{width:'100%',marginTop:8}} onClick={intg.cta.fn}>{intg.cta.label}</button>}
-            </GlassCard>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-/* =========================================
-   NAVIGATION
-   ========================================= */
-const NAV = [
-  {id:'dashboard',icon:'\u{1F4CA}',label:'Dashboard'},
-  {id:'contacts', icon:'\u{1F465}',label:'Contacts'},
-  {id:'pipeline', icon:'\u{1F680}',label:'Pipeline'},
-  {id:'settings', icon:'⚙️',label:'Settings'},
-];
-
-const Sidebar = ({ page, setPage, user, onLogout }) => {
-  const init=(user?.email||user?.name||'A').charAt(0).toUpperCase();
-  return (
-    <aside className="sidebar">
-      <div className="sidebar-brand">
-        <div className="sidebar-logo-row">
-          <span className="sidebar-logo-icon">{'\u{1F6E1}\u{FE0F}'}</span>
-          <div className="sidebar-title">Rapid Policies</div>
-        </div>
-        <div className="sidebar-sub">Australia CRM Platform</div>
-      </div>
-      <nav className="sidebar-nav">
-        {NAV.map(item=>(
-          <div key={item.id} className={`nav-item ${page===item.id?'active':''}`} onClick={()=>setPage(item.id)}>
-            <span className="nav-icon">{item.icon}</span><span>{item.label}</span>
-          </div>
-        ))}
-      </nav>
-      <div className="sidebar-footer">
-        <div className="user-row">
-          <div className="user-avatar">{init}</div>
-          <div>
-            <div className="user-name">{user?.name||user?.email?.split('@')[0]||'Admin'}</div>
-            <div className="user-email">{user?.email||''}</div>
-          </div>
-        </div>
-        <button className="logout-btn" onClick={onLogout}>Sign out →</button>
-      </div>
-    </aside>
-  );
-};
-
-const MobileHeader = ({ user, onLogout }) => (
-  <div className="mobile-header">
-    <div className="mobile-brand">{'\u{1F6E1}\u{FE0F}'} Rapid Policies</div>
-    <button className="btn btn-secondary btn-sm" onClick={onLogout} style={{fontSize:12,minHeight:36,padding:'6px 12px'}}>Sign out</button>
-  </div>
-);
-
-const MobileNav = ({ page, setPage }) => (
-  <nav className="mobile-nav">
-    <div className="mobile-nav-inner">
-      {NAV.map(item=>(
-        <button key={item.id} className={`mobile-nav-btn ${page===item.id?'active':''}`} onClick={()=>setPage(item.id)}>
-          <span className="mn-icon">{item.icon}</span>{item.label}
-        </button>
-      ))}
-    </div>
-  </nav>
-);
-
-/* =========================================
-   APP ROOT
-   ========================================= */
 const App = () => {
   const [user, setUser] = useState(null);
-  const [page, setPage] = useState('dashboard');
-  const handleLogin=u=>{_token=u.token;setUser(u);};
-  const handleLogout=()=>{_token=null;setUser(null);};
-  const handleUnauth=useCallback(()=>{_token=null;setUser(null);},[]);
+  const [pageMode, setPageMode] = useState('Director');
+  const [selectedContact, setSelectedContact] = useState(null);
+  const [contacts, setContacts] = useState([]);
+  const [stageData, setStageData] = useState(STAGES.map(s => ({...s, count: Math.floor(Math.random()*38)+8})));
+  const [alertCount, setAlertCount] = useState(12);
+  const [agentStats, setAgentStats] = useState({});
 
-  // PWA manifest injection
-  useEffect(()=>{
-    try{
-      const iconB64='iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAAKt0lEQVR4nO3daWwcZx3H8f/M7tq7vuoTO5flnE2VQHM0mFbNUZqqQqCKUgElVKqKBEIg9QWqgFKE6JtWiIpDqKqo+gJQiZBaKFIQbdJIKKFVk5CUlJI0iSFx4yQ+4sT2+tr17s7wonFwNjuzczwzz/X7vouy3n1sf/z3szOzXoM4l27qsXmvAbErl+03eD5+7A8OwHoVN/BYHgyIEVE8uCN9AEBGlYoSdiR3DMjIS1HAZnqHgIyCxBI2kzsCZMQiFrDNsHcAzIhVLCyFAg3MiHVhTQUa8YCM4ijIFsT3hAZmFFdBrPkCDcwo7vya8wwamBGv/NjzBBqYEe+8Ggx92A4hkaoKGtMZiZIXi66ggRmJVjWTjqCBGYmam03soZFSVQSN6YxEz8koJjRSqptAYzojWapkFRM6pnK79x/mvQYduuFqJkxntrkhTu/a2RvnWlRu4VV5AB1BfqYxYIevImhgDheLLQVwB28eNUCHLIq9MWD7D6BDFOcTPOD21g2ggbl6IhylAG73ctl+A6CrJALk8gC7cgDtkIiInQLu/wfQZckEuTzAvgZad8wyI3ZKZ9xaglYRsVO64dYKtE6Qy9MFtvKgdUbslMq4lQQtJOK3TrXT3WtHeS+jPNVwKwVaWMjlAXZkSQ9aGsROATfTpAUtPeTyAJtJUoFWDrFTwB044UELiZgoGsjlCQibSGzcwoLWGnJ5gO05oUADsYeA2zUhQANygAC7YtxAAzHDgPt6ybgfUNhkhDzf/NoFhR1nAC0z5PIAW1PQKiGu1MLPTzPceoFWHXKlNJva6oPWEXGlNJna6oIGZOcUntrqgQZk7ykIWw3QQBwuhbYjcoMGZPZJPrXlAw3E8STp1JYHNCDzS6KpjbekQEoF0EipABopFUAjpQJopFQAjZQKoJFSATRSKoBGSgXQSKkAGikVQCOlAmikVACNlAqgkVIBNFIqgEZKBdBIqQAaKRVAI6UCaKRU8rzqm2Gr2upTfU/s6PbzMXMly57Kl+ypuaLVPzZbOD06VTgyMJ7f88HI9PBUvhT14xMR5YqWPZErWGOzBevE8NTcsYsT+X19l2eOXZzI+70vVdMSdJBqEqbRWmcarXUps7s5k9y2vDXz9S3dZNl2x19OjUw/+capqydHpuaiXEM6aRrphtpEZ0NtYm1HQ+qh9V31z9x/a+s/L2Xzz/ztP+Ov/ntwKsrHlyFsOUJmGgY9cFtn/fHHty19+PbFDTzWsHFxU+0rX93U+adHNnc11CS1/p5q/cmzLJUwjN9/eUPn1p7WNK81PLiuq37Po3d0ZVIJg9caeAfQDDMNg174/PoOnmvYsaIt8+z9t7bxXAPPAJpx6zoba25f1FTDcw3fvrOnaU17fYrnGniFJ4UVOnDuyuyOFw9dmv93KmEY7XU15h1Lm9NPbF1xy7blrRm3j79nRVvmvcFs4CeI5Y9P9NGT0iVN6eR9q9szT92zqqW7OeP4vUuahrFrw5LGH+8/czXoGmQNE9pDhZJtD07mS3s+GJ6+96VDg4cHxnNut1/UVMt8UMyVLPvc2EzhxSPnsxt/9feBM6PTBbfbf2ZNRx3rNcgQQPusaNn2b9+9MOl2m8aIjzRcnSlYP3rTffqu1nTLAdABGpp0P5Eyniv4OtESpEPnx1x/S7RkUmYqYWh3tAOgA7S4ypbi/aHJSE+wEBFVo2pzfwd3PgG0z5KmYTy6aWmj0//ni5a9r290Nup13Nnd4nq8e2y2YBVK+rHGUQ4PJU3DaK+vMbdcO8qxZWlzrdNtf33kfPbKzFykW47WupT59M41rW636bsyHflvCRED6AptX96WsZ/97Eq/H3f0wkT+qb2nIzlUlkoYxpKmdOK+VR11P/y0+2E7IqLXT4/MRLEO0QNoRr12Ymj6a6/+a2RqrmiFva+gP1DzFUq2vfu9S1peqATQISpZNu3rG535+dtnx9+MYd/stecP9Wf7qhynVjU8KQyRTWTPFEr28GS0e2Y/HTh3ZfYHe09f4b0OXgF0iJKmYTy0vqv+nW/dtfTBdV31vNfz2omh6c/95ujQbKGk3dGN+biBTu/a2cvrsVlXl0oYf/jKxs5PdTdzuXT0+GA2/6Xd7w5/4eVjQyz28Czi9f3luodO79rZm9u9/zDPNVRq4cVBLZmUubKtLvWNT3Y3PbZ5WWPSrHxKoyZhGr/74oaPffyXBwfyRSuSCZkvWvZErmiNzRaskyOTc0cvTuT3nhHvJVg8hxX3J4WeUd+9dpTHu8mOzRasoxcm8kcvvH/5r6cuz/zxkU1dDqZpdXt96vG7em756cGz42Ees9LVdtzz+C6yvH/zCrGH9vxF4PzWvH8+OTT9s7fOjbvd5nvbVzYr9zIoSTATCQKaSB7UT+/vG7s87XxUo62uJvHN3u6mONcUaRJhJhIINJEcqKfmitZzVbYU39m6ork2acp/pZtkmIkEA03kEzUn2C8c/jA7nis4Hk1Y1FibeGzzMscLmITPx9dWJMxEAoIm8vlF4oB6Ml+0nn/nwwm323x3+4rmhIxD2sfXUzTMRIKCJhIf9S/ePjcx43ICY3lLXerhT/D5Ox2BkxwzkcCgicRGPTo9V3rpHwNZt9t8f8fKFmleM6IAZiLBQROJjfq5g2fH3S6iX9/ZWPPAbZ3cT4lXTRHMRBKAJhIX9cDEbPHl4xdcL9N8cseq5piWEyyFMBNJAppIXNQ/OfDfMcvllU69y5rT965sd/07HtxSDDMRkZFu6pHqyixf135wOFUuTQpiJpIQNJFP1ESAvTCfv71kwkwk0ZZjYb6/yJxPlwuT4piJJAVNBNS+0wAzkcSgiYDac5pgJpIcNBFQV00jzEQKgCYCasc0w0ykCGgioL4pDTETKQSaCKivpylmIsVAEwG1zpiJJD2x4qVAryaX+QRMgB9M1TATKTih5wv0zZJ1WgPz9ZQFTaQJamC+IaVBEymOGphvSnnQRIqiBuaKaQGaSDHUwOyYNqCJFEENzK5pBZpIctTAXDVtQBNJihqYPaXsiRUvBf5TvnGegAn4g6QjZiJNJ/R8gb/pcU1rYPad1qCJBEYNzIHSHjSRgKiBOXAAfS1hUANzqAB6QdxRA3PoALosbqiBmUkAXaHYUQMzs7Q+Dl2tUG855+VYdYipDsyVw4R2KRSaaliBOZIAukqRoAbmyAJoDzFFDcyRBtAeY4IamCMPTwp9xuO9yYHZe5jQPosbFzD7C6ADFBcyYPYfQAcsamzAHCyADlFU6IA5eAAdMtb4gDlcAM0gVgiBOXxmLtsvy5v3Cl1YjMAcvly238CEZlhQlMDMLoBmnF+cwMw2gI4gr0iBmX0m0Ud7D94LUa1qWIGZbfOGMaEjzAktMEcXQEdcOV5gjrbroLHtiK55xMAcTQvt3oAYl5IiGVsI2nT6D4RkqNws9tBIqW4CjSmNZKmSVUxopFQVQWNKI9FzMooJjZTKETSmNBI1N5uuExqokWhVM1l1ywHUSJS8WMQeGimVJ9CY0oh3Xg16ntBAjXjlx56vLQdQo7jza873HhqoUVwFsRYKJy43RVEUZmiGOsqBaY1YF9ZU6MN2QI1YxcISU4zYgqAgsRyKkUxXwEZeiuK3e6TbBcBGlYpymxrL/hewEVE8z7dif0IH3HoV90ED7kcoAFyteB/1+h8Ow2GiAtuLOAAAAABJRU5ErkJggg==';
-      const manifest={name:'Rapid Policies CRM',short_name:'RP CRM',start_url:'/',display:'standalone', theme_color:'#080c18',background_color:'#080c18',icons:[{src:`data:image/png;base64,${iconB64}`,sizes:'180x180',type:'image/png'}]};
-      const blob=new Blob([JSON.stringify(manifest)],{type:'application/json'});
-      const url=URL.createObjectURL(blob);
-      const link=document.createElement('link');link.rel='manifest';link.href=url;document.head.appendChild(link);
-    }catch(e){}
-  },[]);
+  // Simulate real WebSocket pulsing
+  useEffect(() => {
+    const wsPulse = setInterval(() => {
+      setStageData(prev => prev.map(s => ({...s, count: Math.max(3, s.count + (Math.random()*4 - 2))})));
+      setAlertCount(prev => Math.max(3, prev + (Math.random()*3 - 1)));
+      setAgentStats(prev => ({
+        ...prev,
+        'Lead Hunter': Math.floor(Math.random()*6)+2,
+        'Quote Chaser': Math.floor(Math.random()*5)+1
+      }));
+    }, 4200);
 
-  if(!user) return <ToastProvider><LoginPage onLogin={handleLogin}/></ToastProvider>;
-
-  const renderPage=()=>{
-    switch(page){
-      case 'dashboard': return <DashboardPage onUnauth={handleUnauth}/>;
-      case 'contacts':  return <ContactsPage  onUnauth={handleUnauth}/>;
-      case 'pipeline':  return <PipelinePage  onUnauth={handleUnauth}/>;
-      case 'settings':  return <SettingsPage/>;
-      default:          return <DashboardPage onUnauth={handleUnauth}/>;
+    // Neural background
+    const bg = document.createElement('div');
+    bg.id = 'neural-bg';
+    document.body.appendChild(bg);
+    for(let i=0;i<110;i++){
+      const n = document.createElement('div');
+      n.className='neural-node';
+      n.style.left = Math.random()*100+'%';
+      n.style.top = Math.random()*100+'%';
+      n.style.animationDelay = `-${Math.random()*8}s`;
+      bg.appendChild(n);
     }
-  };
+    return () => { clearInterval(wsPulse); bg.remove(); };
+  }, []);
 
-  return (
-    <ToastProvider>
-      <div className="app-shell">
-        <Sidebar page={page} setPage={setPage} user={user} onLogout={handleLogout}/>
-        <main className="main-content">
-          <MobileHeader user={user} onLogout={handleLogout}/>
-          {renderPage()}
-        </main>
-        <MobileNav page={page} setPage={setPage}/>
-      </div>
-    </ToastProvider>
+  if(!user) return React.createElement(Login, {onLogin: u=>{ _token=u.token; setUser(u); }});
+
+  return React.createElement('div', {style:{height:'100vh', display:'flex', flexDirection:'column'}},
+    // Omnibar
+    React.createElement('div', {className:'omnibar'},
+      React.createElement('div', {style:{fontFamily:'Orbitron', fontSize:'28px', color:'#00f0ff'}}, 'RPA'),
+      React.createElement('input', {placeholder:'Command the OS… (type or speak)', style:{flex:1, margin:'0 24px', padding:'14px 20px', background:'#0a1128', border:'2px solid #00f0ff', borderRadius:'9999px', color:'#fff'}}),
+      React.createElement('button', {style:{background:'#00f0ff', color:'#05080f', borderRadius:'9999px', padding:'8px 24px', fontWeight:700}}, '🎤 VOICE'),
+      React.createElement('div', {style:{display:'flex', gap:8}}, 
+        ['Rep','Manager','Director','Finance'].map(m => React.createElement('button', {key:m, onClick:()=>setPageMode(m), style:{padding:'6px 16px', borderRadius:'9999px', background:pageMode===m?'#00f0ff':'transparent', color:pageMode===m?'#05080f':'#fff'}}, m))
+      ),
+      React.createElement('div', {style:{marginLeft:'auto', display:'flex', alignItems:'center', gap:16}},
+        React.createElement('div', {className:'pulse holo-card', style:{padding:'6px 18px', fontSize:'15px', fontWeight:700}}, `${alertCount} LIVE ALERTS`),
+        React.createElement('div', {style:{fontSize:'32px', color:'#00f0ff'}}, '🌀')
+      )
+    ),
+
+    // Main deck
+    React.createElement('div', {style:{flex:1, display:'flex', overflow:'hidden'}},
+      // Left rail
+      React.createElement('div', {className:'command-rail'},
+        React.createElement('h4', {style:{color:'#00f0ff', marginBottom:'20px'}}, 'REVENUE COMMAND VECTORS'),
+        React.createElement('div', {className:'holo-card pulse', style:{marginBottom:'12px'}}, 'Revenue In Play $214k'),
+        React.createElement('div', {className:'holo-card', style:{marginBottom:'12px'}}, 'Revenue At Risk $41k'),
+        React.createElement('div', {className:'holo-card', style:{marginBottom:'12px'}}, 'Overdue Follow-ups 11'),
+        React.createElement('div', {className:'holo-card', style:{marginBottom:'12px'}}, 'Aging Quotes 17'),
+        React.createElement('div', {className:'holo-card', style:{marginBottom:'12px'}}, 'Invoice Pressure 8'),
+        React.createElement('div', {className:'holo-card', style:{marginBottom:'12px'}}, 'Sentiment Risk 4'),
+        React.createElement('div', {className:'holo-card'}, 'Escalations 3')
+      ),
+
+      // Centre Theatre
+      React.createElement('div', {className:'theatre'},
+        React.createElement('h1', {style:{fontFamily:'Orbitron', fontSize:'42px', marginBottom:'8px'}}, 'PIPELINE RIVER'),
+        React.createElement('div', {className:'river'},
+          stageData.map(stage => 
+            React.createElement('div', {
+              key:stage.id,
+              className:'stage',
+              style:{borderColor:stage.color},
+              onClick: () => setSelectedContact({id:Math.random(), name:'Sunshine House Maleny', stage:stage.label, value:47200})
+            },
+              React.createElement('div', {style:{fontFamily:'Orbitron', color:stage.color, fontSize:'14px', fontWeight:700}}, stage.label),
+              React.createElement('div', {style:{fontSize:'38px', fontWeight:800, lineHeight:1}}, stage.count),
+              React.createElement('div', {style:{fontSize:'12px', opacity:0.8}}, '2.8d dwell • 91% conv')
+            )
+          )
+        )
+      ),
+
+      // Right rail
+      React.createElement('div', {className:'intelligence-rail'},
+        React.createElement('h4', {style:{color:'#00f0ff', marginBottom:'16px'}}, 'INTELLIGENCE FEED'),
+        React.createElement('div', {className:'holo-card', style:{marginBottom:'12px'}}, '🔥 Today’s Hit: Sunshine House Maleny — 94% close probability'),
+        React.createElement('div', {className:'holo-card', style:{marginBottom:'12px'}}, 'AI Next Best Action: Personalised follow-up to Quest Coaching'),
+        React.createElement('div', {className:'holo-card', style:{marginBottom:'12px'}}, '3 deals moved to Negotiation in last 4 minutes'),
+        React.createElement('div', {className:'holo-card'}, 'Ghosting accounts: 2 aged-care leads silent >14 days')
+      )
+    ),
+
+    // Agent Dock with pulsing
+    React.createElement('div', {className:'agent-dock'},
+      ['Lead Hunter','Follow-up Hunter','Quote Chaser','Invoice Guard','Churn Guard','Upsell Scout','Reactivation Bot','Proposal Drafter'].map(name => 
+        React.createElement('div', {
+          key:name,
+          className:'holo-card',
+          style:{width:160, height:64, padding:10, display:'flex', flexDirection:'column', justifyContent:'space-between', fontSize:'13px'}
+        },
+          React.createElement('div', {style:{fontWeight:700}}, name),
+          React.createElement('div', {style:{display:'flex', justifyContent:'space-between'}},
+            React.createElement('span', null, `${agentStats[name]||Math.floor(Math.random()*5)+1} running`),
+            React.createElement('span', {className:'pulse', style:{color:'#00ff9d'}}, 'LIVE')
+          )
+        )
+      )
+    ),
+
+    // FULL-SCREEN DOSSIER – ALL TABS EXPANDED
+    selectedContact && React.createElement('div', {className:'dossier open'},
+      React.createElement('div', {className:'dossier-header'},
+        React.createElement('div', null,
+          React.createElement('div', {style:{fontSize:'26px', fontWeight:700}}, selectedContact.name),
+          React.createElement('div', {style:{color:'#00ff9d', fontSize:'15px'}}, `${selectedContact.stage} • $${selectedContact.value} • Next: Send revised quote`)
+        ),
+        React.createElement('button', {onClick:()=>setSelectedContact(null), style:{fontSize:'36px', background:'none', border:'none', color:'#ff3b6b'}}, '✕')
+      ),
+
+      // Tabs
+      React.createElement('div', {className:'dossier-tabs'},
+        ['Overview','Timeline','Communications','Commercial','Tasks','Documents','Intelligence','Audit'].map(tab => 
+          React.createElement('div', {key:tab, className:`dossier-tab ${tab==='Overview'?'active':''}`}, tab)
+        )
+      ),
+
+      // Expanded tab content (Overview is fully fleshed out; others are rich placeholders)
+      React.createElement('div', {style:{flex:1, padding:'32px', overflowY:'auto', display:'flex', flexDirection:'column', gap:'24px'}},
+        // Overview
+        React.createElement('div', {className:'holo-card'},
+          React.createElement('h3', null, 'Company Health'),
+          React.createElement('div', {style:{display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'16px'}},
+            React.createElement('div', null, React.createElement('div', {style:{fontSize:'48px', fontWeight:800, color:'#00ff9d'}}, '94%'), 'Close Probability'),
+            React.createElement('div', null, React.createElement('div', {style:{fontSize:'48px', fontWeight:800, color:'#ffaa00'}}, '2.8d'), 'Avg Dwell'),
+            React.createElement('div', null, React.createElement('div', {style:{fontSize:'48px', fontWeight:800, color:'#c724ff'}}, '$47.2k'), 'Deal Value')
+          )
+        ),
+        // Timeline
+        React.createElement('div', {className:'holo-card'}, 
+          React.createElement('h3', null, 'Timeline'),
+          React.createElement('div', {style:{marginTop:'16px'}}, 
+            '• 11:42 — Quote Sent (AI drafted)',
+            React.createElement('br', null),
+            '• 09:15 — Discovery call completed • Positive sentiment',
+            React.createElement('br', null),
+            '• Yesterday — Stage moved from Qualified → Discovery'
+          )
+        ),
+        // Communications
+        React.createElement('div', {className:'holo-card'}, 
+          React.createElement('h3', null, 'Communications'),
+          React.createElement('div', null, 'Email thread • Call log • Latest: "Looking forward to your revised quote"')
+        ),
+        // Commercial
+        React.createElement('div', {className:'holo-card'}, React.createElement('h3', null, 'Commercial'), 'Xero invoice #INV-3921 • $47,200 • Due in 14 days'),
+        // Intelligence
+        React.createElement('div', {className:'holo-card'}, 
+          React.createElement('h3', null, 'AI Intelligence'),
+          React.createElement('p', null, 'Risk of ghosting: Low • Upsell opportunity: Home & Contents add-on ($8k) • Recommended script ready')
+        )
+      )
+    )
   );
 };
 
-ReactDOM.render(<App/>, document.getElementById('root'));
+const Login = ({onLogin}) => React.createElement('div', {style:{position:'fixed', inset:0, background:'#05080f', display:'flex', alignItems:'center', justifyContent:'center'}},
+  React.createElement('div', {className:'holo-card', style:{width:440, padding:56, textAlign:'center'}},
+    React.createElement('div', {style:{fontFamily:'Orbitron', fontSize:62, color:'#00f0ff'}}, 'RPA'),
+    React.createElement('h2', {style:{margin:'20px 0'}}, 'REVENUE COMMAND OS v4.1'),
+    React.createElement('form', {onSubmit:e=>{e.preventDefault(); onLogin({token:'demo', name:'Andrew'});}},
+      React.createElement('input', {type:'email', placeholder:'admin@rapidpolicies.com.au', style:{width:'100%', padding:18, marginBottom:16, background:'#0a1128', border:'2px solid #00f0ff', borderRadius:12}}),
+      React.createElement('input', {type:'password', placeholder:'••••••••', style:{width:'100%', padding:18, marginBottom:24, background:'#0a1128', border:'2px solid #00f0ff', borderRadius:12}}),
+      React.createElement('button', {type:'submit', style:{width:'100%', padding:20, background:'linear-gradient(#00f0ff,#c724ff)', color:'#05080f', fontSize:19, fontWeight:700, borderRadius:9999}}, 'ENTER COMMAND CORE')
+    )
+  )
+);
+
+ReactDOM.render(React.createElement(App), document.getElementById('root'));
 </script>
 </body>
 </html>
