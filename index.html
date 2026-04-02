@@ -57,10 +57,28 @@ const App = () => {
   const [emails, setEmails] = useState([]);
   const [calls, setCalls] = useState([]);
 
-  const login = () => {
-    _token = 'demo-token'; // Real login form can be added later
-    setUser({name:'Andrew'});
-    fetchContacts();
+  // Real login with pre-filled email
+  const [email, setEmail] = useState('andrew@rapidpolicies.com.au');
+  const [password, setPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setLoginError('');
+    try {
+      const res = await fetch(`${API}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Login failed');
+      _token = data.token || data.access_token;
+      setUser({name: data.name || 'Andrew'});
+      fetchContacts();
+    } catch (err) {
+      setLoginError(err.message || 'Access denied');
+    }
   };
 
   const fetchContacts = async () => {
@@ -104,32 +122,50 @@ const App = () => {
       React.createElement('div', {style:{textAlign:'center'}},
         React.createElement('div', {className:'rpa-logo'}, 'RPA'),
         React.createElement('div', {style:{fontSize:'28px', color:'#8899cc', marginTop:'-30px'}}, 'COMMAND CENTRE'),
-        React.createElement('button', {onClick:login, style:{marginTop:'60px', padding:'18px 40px', background:'linear-gradient(#00f0ff,#c724ff)', color:'#05080f', borderRadius:'9999px', fontWeight:700}}, 'ACCESS COMMAND CENTRE')
+        React.createElement('form', {onSubmit:handleLogin, style:{marginTop:'40px', width:'320px'}},
+          React.createElement('input', {
+            type:'email',
+            value:email,
+            onChange:e=>setEmail(e.target.value),
+            style:{width:'100%', padding:'16px', marginBottom:'12px', background:'#0a1128', border:'2px solid #00f0ff', borderRadius:12, color:'#fff', fontSize:'16px'}
+          }),
+          React.createElement('input', {
+            type:'password',
+            placeholder:'Password',
+            value:password,
+            onChange:e=>setPassword(e.target.value),
+            style:{width:'100%', padding:'16px', marginBottom:'20px', background:'#0a1128', border:'2px solid #00f0ff', borderRadius:12, color:'#fff', fontSize:'16px'}
+          }),
+          loginError && React.createElement('div', {style:{color:'#ff3b6b', marginBottom:'12px'}}, loginError),
+          React.createElement('button', {
+            type:'submit',
+            style:{width:'100%', padding:'18px', background:'linear-gradient(#00f0ff,#c724ff)', color:'#05080f', borderRadius:'9999px', fontWeight:700, fontSize:'18px'}
+          }, 'ACCESS COMMAND CENTRE')
+        )
       )
     ),
 
-    user && React.createElement('div', {style:{flex:1, display:'flex', overflow:'hidden'}},
-      React.createElement('div', {className:'theatre'},
-        React.createElement('h1', {style:{fontFamily:'Orbitron', fontSize:'42px'}}, 'PIPELINE RIVER'),
-        React.createElement('div', {className:'river'},
-          STAGES.map(stage => 
-            React.createElement('div', {
-              key:stage.id,
-              className:'stage',
-              style:{borderColor:stage.color},
-              onDragOver:e=>e.preventDefault(),
-              onDrop:e=>handleDrop(e, stage.id)
-            },
-              React.createElement('div', {className:'stage-header', style:{color:stage.color}}, stage.label),
-              contacts.filter(c=>c.stage===stage.id).map(contact =>
-                React.createElement('div', {
-                  key:contact.id,
-                  className:'card holo-card',
-                  draggable:true,
-                  onDragStart:e=>setDragging(contact),
-                  onClick:()=>{ setSelectedContact(contact); fetchContactDetails(contact.id); }
-                }, contact.name)
-              )
+    /* Pipeline River + full futuristic UI */
+    user && React.createElement('div', {className:'theatre'},
+      React.createElement('h1', {style:{fontFamily:'Orbitron', fontSize:'42px'}}, 'PIPELINE RIVER'),
+      React.createElement('div', {className:'river'},
+        STAGES.map(stage => 
+          React.createElement('div', {
+            key:stage.id,
+            className:'stage',
+            style:{borderColor:stage.color},
+            onDragOver:e=>e.preventDefault(),
+            onDrop:e=>handleDrop(e, stage.id)
+          },
+            React.createElement('div', {className:'stage-header', style:{color:stage.color}}, stage.label),
+            contacts.filter(c=>c.stage===stage.id).map(contact =>
+              React.createElement('div', {
+                key:contact.id,
+                className:'card holo-card',
+                draggable:true,
+                onDragStart:e=>setDragging(contact),
+                onClick:()=>{ setSelectedContact(contact); fetchContactDetails(contact.id); }
+              }, contact.name)
             )
           )
         )
