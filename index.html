@@ -10,45 +10,19 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
   <style>
-    :root {
-      --neon-cyan: #00f0ff;
-      --neon-purple: #c724ff;
-      --neon-green: #00ff9d;
-      --glass: rgba(10,15,40,0.92);
-      --glow: 0 0 40px #00f0ff;
-    }
+    :root { --neon-cyan: #00f0ff; --neon-purple: #c724ff; --glass: rgba(10,15,40,0.92); --glow: 0 0 40px #00f0ff; }
     body { background:#05080f; color:#e0f8ff; font-family:'Space Grotesk',sans-serif; margin:0; overflow:hidden; height:100vh; }
     #neural-bg { position:fixed; inset:0; z-index:-2; background:radial-gradient(circle at 50% 20%, rgba(0,240,255,0.12) 0%, transparent 70%); pointer-events:none; }
     .neural-node { position:absolute; width:4px; height:4px; background:#00f0ff; border-radius:50%; box-shadow:0 0 14px #00f0ff; animation:neuralPulse 6s infinite alternate; }
     @keyframes neuralPulse { 0%{transform:scale(0.7);opacity:0.4} 100%{transform:scale(1.8);opacity:1} }
-
-    .login-splash { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background:#05080f; z-index:10000; }
-    .rpa-logo { font-family:'Orbitron'; font-size:128px; font-weight:700; background:linear-gradient(90deg,#00f0ff,#c724ff); -webkit-background-clip:text; -webkit-text-fill-color:transparent; text-shadow:0 0 80px #00f0ff, 0 0 120px #c724ff; animation:pulse 2.5s infinite; }
+    .rpa-logo { font-family:'Orbitron'; font-size:128px; font-weight:700; background:linear-gradient(90deg,#00f0ff,#c724ff); -webkit-background-clip:text; -webkit-text-fill-color:transparent; text-shadow:0 0 80px #00f0ff; animation:pulse 2.5s infinite; }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.85} }
-
-    .omnibar { position:fixed; top:0; left:0; right:0; height:68px; background:rgba(5,8,15,0.95); backdrop-filter:blur(20px); border-bottom:1px solid #00f0ff; z-index:1000; display:flex; align-items:center; padding:0 24px; gap:16px; }
-    .command-rail { position:fixed; left:0; top:68px; bottom:0; width:220px; background:var(--glass); border-right:1px solid #00f0ff; padding:24px 16px; overflow-y:auto; z-index:900; }
-    .theatre { margin-left:220px; margin-right:320px; margin-top:68px; height:calc(100vh - 68px - 78px); padding:24px; overflow:auto; }
-    .intelligence-rail { position:fixed; right:0; top:68px; bottom:78px; width:320px; background:var(--glass); border-left:1px solid #00f0ff; padding:24px 16px; overflow-y:auto; z-index:900; }
-    .agent-dock { position:fixed; bottom:0; left:220px; right:320px; height:78px; background:rgba(5,8,15,0.95); backdrop-filter:blur(20px); border-top:1px solid #00f0ff; display:flex; align-items:center; padding:0 16px; gap:12px; overflow-x:auto; z-index:950; }
-
-    .holo-card { background:var(--glass); border:1px solid #00f0ff; border-radius:16px; padding:16px; box-shadow:var(--glow); transition:all .3s cubic-bezier(0.23,1,0.32,1); }
+    .holo-card { background:var(--glass); border:1px solid #00f0ff; border-radius:16px; padding:14px; box-shadow:var(--glow); transition:all .3s; cursor:pointer; }
     .holo-card:hover { transform:translateY(-4px); box-shadow:0 0 60px #00f0ff; }
-
-    .river { display:flex; gap:20px; overflow-x:auto; padding:20px 0; position:relative; }
-    .stage { flex-shrink:0; width:218px; background:rgba(15,22,55,0.95); border-radius:18px; padding:14px; border:2px solid transparent; position:relative; }
-    .stage::after { content:''; position:absolute; bottom:-2px; left:0; right:0; height:4px; background:linear-gradient(90deg, transparent, #00f0ff); animation:flowLine 4s linear infinite; }
-    @keyframes flowLine { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
-
-    .dossier { position:fixed; inset:0; background:rgba(5,8,15,0.98); z-index:9999; display:none; flex-direction:column; }
-    .dossier.open { display:flex; }
-    .dossier-header { height:84px; background:rgba(10,15,40,0.98); border-bottom:3px solid #00f0ff; padding:0 32px; display:flex; align-items:center; justify-content:space-between; }
-    .dossier-tabs { display:flex; border-bottom:1px solid #00f0ff; }
-    .dossier-tab { padding:18px 24px; font-weight:600; border-bottom:3px solid transparent; cursor:pointer; }
-    .dossier-tab.active { border-bottom-color:#00f0ff; color:#00f0ff; }
-
-    .seismograph { height:80px; background:rgba(10,15,40,0.6); border-radius:12px; position:relative; overflow:hidden; }
-    .heartbeat { height:100px; }
+    .stage { flex-shrink:0; width:260px; background:rgba(15,22,55,0.95); border-radius:18px; padding:14px; border:2px solid transparent; min-height:520px; }
+    .card { background:#0a1128; border-radius:12px; padding:12px; margin-bottom:10px; box-shadow:0 4px 15px rgba(0,0,0,0.4); cursor:grab; }
+    .modal { position:fixed; inset:0; background:rgba(5,8,15,0.95); z-index:10000; display:flex; align-items:center; justify-content:center; }
+    .modal-content { background:var(--glass); border:2px solid #00f0ff; border-radius:20px; width:90%; max-width:900px; max-height:90vh; overflow:auto; padding:24px; }
   </style>
 </head>
 <body>
@@ -56,6 +30,8 @@
 
 <script type="text/babel">
 const { useState, useEffect } = React;
+const API = 'https://rapid-policies-backend-production.up.railway.app/api';
+let _token = null;
 
 const STAGES = [
   {id:'enquiry', label:'ENQUIRY', color:'#00f0ff'},
@@ -75,53 +51,101 @@ const STAGES = [
 
 const App = () => {
   const [user, setUser] = useState(null);
+  const [contacts, setContacts] = useState([]);
+  const [dragging, setDragging] = useState(null);
   const [selectedContact, setSelectedContact] = useState(null);
-  const [stageData, setStageData] = useState(STAGES.map(s => ({...s, count: Math.floor(Math.random()*38)+8})));
+  const [emails, setEmails] = useState([]);
+  const [calls, setCalls] = useState([]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setStageData(prev => prev.map(s => ({...s, count: Math.max(4, s.count + Math.floor(Math.random()*5 - 2))})));
-    }, 3800);
-    return () => clearInterval(interval);
-  }, []);
+  const login = () => {
+    _token = 'demo-token'; // Real login form can be added later
+    setUser({name:'Andrew'});
+    fetchContacts();
+  };
 
-  if (!user) {
-    return React.createElement('div', {className:'login-splash'},
-      React.createElement('div', {style:{textAlign:'center'}},
-        React.createElement('div', {className:'rpa-logo'}, 'RPA'),
-        React.createElement('div', {style:{fontSize:'28px', fontWeight:400, color:'#8899cc', marginTop:'-30px'}}, 'COMMAND CENTRE'),
-        React.createElement('div', {style:{marginTop:'60px', fontSize:'15px', color:'#8899cc'}}, 'Every client. Every connection. One command centre.'),
-        React.createElement('button', {
-          onClick: () => setUser({name:'Andrew'}),
-          style:{marginTop:'40px', padding:'18px 40px', fontSize:'18px', background:'linear-gradient(#00f0ff,#c724ff)', color:'#05080f', borderRadius:'9999px', fontWeight:700}
-        }, 'ACCESS COMMAND CENTRE')
-      )
-    );
-  }
+  const fetchContacts = async () => {
+    try {
+      const res = await fetch(`${API}/contacts?limit=500`, {
+        headers: { Authorization: `Bearer ${_token}` }
+      });
+      const data = await res.json();
+      setContacts(data.data || data || []);
+    } catch(e) { console.error(e); }
+  };
+
+  const fetchContactDetails = async (contactId) => {
+    try {
+      const emailRes = await fetch(`${API}/emails?contact_id=${contactId}`, { headers: { Authorization: `Bearer ${_token}` } });
+      const emailData = await emailRes.json();
+      setEmails(emailData.data || emailData || []);
+
+      const callRes = await fetch(`${API}/calls?contact_id=${contactId}`, { headers: { Authorization: `Bearer ${_token}` } });
+      const callData = await callRes.json();
+      setCalls(callData.data || callData || []);
+    } catch(e) { console.error(e); }
+  };
+
+  const handleDrop = async (e, newStage) => {
+    e.preventDefault();
+    if (!dragging) return;
+    try {
+      await fetch(`${API}/contacts/${dragging.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${_token}` },
+        body: JSON.stringify({ status: newStage })
+      });
+      setContacts(prev => prev.map(c => c.id === dragging.id ? {...c, stage: newStage} : c));
+    } catch(e) { console.error(e); }
+    setDragging(null);
+  };
 
   return React.createElement('div', {style:{height:'100vh', display:'flex', flexDirection:'column'}},
-    /* Omnibar, rails, river, etc. — all previous amazing improvements */
-    /* (full 5-layer deck + pulsing + dossier with all 8 tabs) */
-    /* Seismograph + Heartbeat added below the river */
-    React.createElement('div', {className:'theatre'},
-      React.createElement('h1', {style:{fontFamily:'Orbitron', fontSize:'42px'}}, 'PIPELINE RIVER'),
-      React.createElement('div', {className:'river'}, 
-        stageData.map(stage => React.createElement('div', {key:stage.id, className:'stage', style:{borderColor:stage.color}, onClick:()=>setSelectedContact({name:'Sunshine House Maleny', stage:stage.label})}, 
-          React.createElement('div', {style:{fontFamily:'Orbitron', color:stage.color}}, stage.label),
-          React.createElement('div', {style:{fontSize:'38px', fontWeight:800}}, stage.count)
-        ))
-      ),
-      React.createElement('div', {style:{marginTop:'30px'}},
-        React.createElement('h3', null, 'ACTIVITY SEISMOGRAPH'),
-        React.createElement('div', {className:'seismograph'}, React.createElement('canvas', {id:'seismo', height:80}))
-      ),
-      React.createElement('div', {style:{marginTop:'20px'}},
-        React.createElement('h3', null, 'REVENUE HEARTBEAT'),
-        React.createElement('canvas', {id:'heartbeat', height:100})
+    !user && React.createElement('div', {className:'login-splash'}, 
+      React.createElement('div', {style:{textAlign:'center'}},
+        React.createElement('div', {className:'rpa-logo'}, 'RPA'),
+        React.createElement('div', {style:{fontSize:'28px', color:'#8899cc', marginTop:'-30px'}}, 'COMMAND CENTRE'),
+        React.createElement('button', {onClick:login, style:{marginTop:'60px', padding:'18px 40px', background:'linear-gradient(#00f0ff,#c724ff)', color:'#05080f', borderRadius:'9999px', fontWeight:700}}, 'ACCESS COMMAND CENTRE')
       )
     ),
-    /* Full dossier with all 8 tabs (same rich content as before) */
-    selectedContact && React.createElement('div', {className:'dossier open'}, /* ... 8 tabs fully expanded ... */)
+
+    user && React.createElement('div', {style:{flex:1, display:'flex', overflow:'hidden'}},
+      React.createElement('div', {className:'theatre'},
+        React.createElement('h1', {style:{fontFamily:'Orbitron', fontSize:'42px'}}, 'PIPELINE RIVER'),
+        React.createElement('div', {className:'river'},
+          STAGES.map(stage => 
+            React.createElement('div', {
+              key:stage.id,
+              className:'stage',
+              style:{borderColor:stage.color},
+              onDragOver:e=>e.preventDefault(),
+              onDrop:e=>handleDrop(e, stage.id)
+            },
+              React.createElement('div', {className:'stage-header', style:{color:stage.color}}, stage.label),
+              contacts.filter(c=>c.stage===stage.id).map(contact =>
+                React.createElement('div', {
+                  key:contact.id,
+                  className:'card holo-card',
+                  draggable:true,
+                  onDragStart:e=>setDragging(contact),
+                  onClick:()=>{ setSelectedContact(contact); fetchContactDetails(contact.id); }
+                }, contact.name)
+              )
+            )
+          )
+        )
+      )
+    ),
+
+    /* Full dossier with Gmail + Synthflow */
+    selectedContact && React.createElement('div', {className:'modal', onClick:()=>setSelectedContact(null)},
+      React.createElement('div', {className:'modal-content', onClick:e=>e.stopImmediatePropagation()},
+        React.createElement('h2', null, selectedContact.name),
+        React.createElement('h3', null, '📧 Gmail Emails'),
+        emails.length === 0 ? React.createElement('p', null, 'No emails yet') : emails.map(em => React.createElement('div', {key:em.id, style:{padding:'12px', background:'#0a1128', marginBottom:'8px', borderRadius:'12px'}}, em.subject || '(no subject)')),
+        React.createElement('h3', {style:{marginTop:'24px'}}, '📞 Synthflow Calls'),
+        calls.length === 0 ? React.createElement('p', null, 'No Synthflow calls yet') : calls.map(call => React.createElement('div', {key:call.id, style:{padding:'12px', background:'#0a1128', marginBottom:'8px', borderRadius:'12px'}}, `Call ${new Date(call.created_at).toLocaleString()}`))
+      )
+    )
   );
 };
 
